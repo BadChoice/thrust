@@ -14,11 +14,16 @@ class Edit
         $this->resource = $resource;
     }
 
+    public function getEditFields()
+    {
+        return collect($this->resource->fields())->where('showInEdit', true);
+    }
+
     public function show($id)
     {
         return view('thrust::edit', [
             'resourceName'  => $this->resource->name(),
-            'fields'        => $this->resource->fields(),
+            'fields'        => $this->getEditFields(),
             'object'        => $this->resource->find($id)
         ]);
     }

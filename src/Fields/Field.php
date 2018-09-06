@@ -11,8 +11,8 @@ abstract class Field{
     protected $title;
     protected $validationRules;
 
-    protected $showInIndex = true;
-    protected $showInEdit = true;
+    public $showInIndex = true;
+    public $showInEdit = true;
 
     public abstract function displayInIndex($object);
     public abstract function displayInEdit($object);
