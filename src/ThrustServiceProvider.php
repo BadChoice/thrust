@@ -12,6 +12,11 @@ class ThrustServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'thrust');
         $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'thrust');
         $this->loadRoutesFrom(__DIR__.'/routes.php');
+
+        $this->publishes([
+            __DIR__.'/../config/thrust.php' => config_path('thrust.php')
+        ], 'config');
+
         app(ResourceManager::class)->boot();
     }
 
