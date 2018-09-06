@@ -1,0 +1,28 @@
+{
+    "name": "badchoice/thrust",
+    "description": "A simple resource crud generator",
+    "type": "library",
+    "require": {
+        "laravel/framework": "5.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jordi Puigdellivol",
+            "email": "jordi@gloobus.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "BadChoice\\Thrust\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BadChoice\\Thrust\\ThrustServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
+}
