@@ -21,7 +21,7 @@ abstract class Resource{
     /**
      * Defines the searchable fields
      */
-    protected static $search = [];
+    public static $search = [];
 
     protected $query = null;
 
