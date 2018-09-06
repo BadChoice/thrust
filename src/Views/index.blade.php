@@ -1,10 +1,9 @@
-
 <table class="list">
     <thead>
         @foreach($fields as $field)
             <th>
                 <div class='flexContainer'>{{ $field->getTitle() }}
-                @if ($field->sortable)
+                @if ($field->sortable && !request('search'))
                     <div class='sortArrows'>
                         <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'desc')}}' class='sortUp'>▲</a>
                         <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'asc')}}'  class='sortDown'>▼</a>
