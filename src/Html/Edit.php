@@ -4,8 +4,9 @@ namespace BadChoice\Thrust\Html;
 
 use BadChoice\Thrust\Resource;
 
-class Index
+class Edit
 {
+
     protected $resource;
 
     public function __construct(Resource $resource)
@@ -13,13 +14,12 @@ class Index
         $this->resource = $resource;
     }
 
-    public function show()
+    public function show($id)
     {
-        return view('thrust::index', [
+        return view('thrust::edit', [
             'fields' => $this->resource->getFields(),
-            'rows' => $this->resource->getRows()
+            'object' => $this->resource->find($id)
         ]);
     }
-
 
 }

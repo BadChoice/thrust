@@ -8,6 +8,7 @@ abstract class Field{
     protected $title;
 
     public abstract function displayInIndex($object);
+    public abstract function displayInEdit($object);
 
     public static function make($dbField, $title = null)
     {

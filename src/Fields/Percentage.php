@@ -2,10 +2,20 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Percentage extends Field{
+class Percentage extends Text {
 
     public function displayInIndex($object){
-        return $object->{$this->field} . '%';
+        return $this->getValue($object) . '%';
     }
+
+    protected function getFieldType()
+    {
+        return 'number';
+    }
+
+    protected function getFieldAttributes(){
+        return 'step=any';
+    }
+
 
 }
