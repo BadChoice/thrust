@@ -3,25 +3,29 @@
 namespace BadChoice\Thrust\Controllers;
 
 use BadChoice\Thrust\Html\Edit;
+use BadChoice\Thrust\ResourceManager;
 use Illuminate\Routing\Controller;
 
 class ThrustController extends Controller
 {
 
-    public function edit($resource, $id)
+    public function edit($resourceName, $id)
     {
-        return (new Edit(new \App\Thrust\Tax))->show($id);
+        $resource = app(ResourceManager::class)->make($resourceName);
+        return (new Edit($resource))->show($id);
     }
 
-    public function update($resource, $id)
+    public function update($resourceName, $id)
     {
-        (new \App\Thrust\Tax)->update($id, request()->all());
+        app(ResourceManager::class)->make($resourceName)
+                                   ->update($id, request()->all());
         return back()->withMessage(__('updated'));
     }
 
-    public function delete($resource, $id)
+    public function delete($resourceName, $id)
     {
-        (new \App\Thrust\Tax)->delete($id);
+        app(ResourceManager::class)->make($resourceName)
+                                   ->delete($id);
         return back()->withMessage(__('deleted'));
     }
 }

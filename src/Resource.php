@@ -4,18 +4,22 @@ namespace BadChoice\Thrust;
 
 abstract class Resource{
 
-    protected $class;
+    public static $model;
     protected $paginate = 25;
 
-    abstract public function getFields();
+    abstract public function fields();
 
     public function getRows(){
-        return ($this->class)::paginate($this->paginate);
+        return (static::$model)::paginate($this->paginate);
+    }
+
+    public function name(){
+        return app(ResourceManager::class)->resourceNameFromModel(static::$model);
     }
 
     public function find($id)
     {
-        return ($this->class)::find($id);
+        return (static::$model)::find($id);
     }
 
     public function update($id, $newData)
@@ -25,7 +29,7 @@ abstract class Resource{
 
     public function delete()
     {
-        return ($this->class)::delete($id);
+        return (static::$model)::delete($id);
     }
 
 }

@@ -17,7 +17,7 @@ class Edit
     public function show($id)
     {
         return view('thrust::edit', [
-            'fields' => $this->resource->getFields(),
+            'fields' => $this->resource->fields(),
             'object' => $this->resource->find($id)
         ]);
     }

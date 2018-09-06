@@ -13,8 +13,8 @@
                 <td> {{ $field->displayInIndex($row) }}</td>
             @endforeach
 
-            <td class="action"> <a class='showPopup edit' href="{{route('thrust.edit', ['tax', $row->id]) }}"> </a> </td>
-            <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.delete', ['tax', $row->id])}}"></a></td>
+            <td class="action"> <a class='showPopup edit' href="{{route('thrust.edit', [$resource, $row->id]) }}"> </a> </td>
+            <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.delete', [$resource, $row->id])}}"></a></td>
         </tr>
     @endforeach
 </table>
