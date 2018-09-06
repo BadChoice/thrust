@@ -1,3 +1,4 @@
+@paginator($rows)
 <table class="list">
     <thead>
         @foreach($fields as $field)
@@ -35,3 +36,4 @@
         </tr>
     @endforeach
 </table>
+@paginator($rows)

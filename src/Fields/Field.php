@@ -11,6 +11,9 @@ abstract class Field{
     protected $title;
     protected $validationRules;
 
+    protected $showInIndex = true;
+    protected $showInEdit = true;
+
     public abstract function displayInIndex($object);
     public abstract function displayInEdit($object);
 
@@ -40,6 +43,28 @@ abstract class Field{
 
     public function getHtmlValidation($object, $type) {
         return Validation::make($this->validationRules, $type)->generate();
+    }
+
+    public function onlyInIndex(){
+        $this->showInIndex = true;
+        $this->showInEdit = false;
+        return $this;
+    }
+
+    public function hideInIndex(){
+        $this->showInIndex = false;
+        return $this;
+    }
+
+    public function hideInEdit(){
+        $this->showInEdit = false;
+        return $this;
+    }
+
+    public function onlyInEdit(){
+        $this->showInIndex = false;
+        $this->showInEdit = true;
+        return $this;
     }
 
 }
