@@ -10,6 +10,7 @@ class Text extends Field{
 
     public function displayInEdit($object){
         return view('thrust::fields.input',[
+            'title' => $this->getTitle(),
             'type' => $this->getFieldType(),
             'field' => $this->field,
             'value' => $this->getValue($object),

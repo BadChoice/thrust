@@ -35,7 +35,7 @@ abstract class Field{
 
     public function getTitle()
     {
-        return $this->title ?? __($this->field);
+        return $this->title ?? __(config('thrust.translationsPrefix').$this->field);
     }
 
     public function getHtmlValidation($object, $type) {

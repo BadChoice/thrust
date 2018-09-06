@@ -1,4 +1,4 @@
-<div class="label">{{__($field)}}</div>
+<div class="label">{{__($title)}}</div>
 <div class="field">
     <input type={{$type}}
             id="{{$field}}" value="{{$value}}" name="{{$field}}"
