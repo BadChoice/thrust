@@ -16,9 +16,9 @@ class Index
     public function show()
     {
         return view('thrust::index', [
-            'resource' => $this->resource->name(),
-            'fields' => $this->resource->fields(),
-            'rows' => $this->resource->getRows()
+            'resource'  => $this->resource,
+            'fields'    => $this->resource->fields(),
+            'rows'      => $this->resource->rows()
         ]);
     }
 

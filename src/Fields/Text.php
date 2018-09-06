@@ -13,6 +13,7 @@ class Text extends Field{
             'type' => $this->getFieldType(),
             'field' => $this->field,
             'value' => $this->getValue($object),
+            'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
             'attributes' => $this->getFieldAttributes()
         ]);
     }

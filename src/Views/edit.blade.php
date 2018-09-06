@@ -2,7 +2,7 @@
     <h2> {{ $object->name }}</h2>
 </div>
 
-<form action="{{route('thrust.update', ['tax', $object->id] )}}" method="POST">
+<form action="{{route('thrust.update', [$resourceName, $object->id] )}}" method="POST">
     {{ csrf_field() }}
     {{ method_field('PUT') }}
 

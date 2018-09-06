@@ -2,10 +2,14 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Html\Validation;
+
 abstract class Field{
 
-    protected $field;
+    public $field;
+    public $sortable = false;
     protected $title;
+    protected $validationRules;
 
     public abstract function displayInIndex($object);
     public abstract function displayInEdit($object);
@@ -18,9 +22,24 @@ abstract class Field{
         return $field;
     }
 
+    public function rules($validationRules){
+        $this->validationRules = $validationRules;
+        return $this;
+    }
+
+    public function sortable($sortable = true)
+    {
+        $this->sortable = $sortable;
+        return $this;
+    }
+
     public function getTitle()
     {
         return $this->title ?? __($this->field);
+    }
+
+    public function getHtmlValidation($object, $type) {
+        return Validation::make($this->validationRules, $type)->generate();
     }
 
 }
