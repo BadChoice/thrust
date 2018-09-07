@@ -1,5 +1,5 @@
 <div class="configForm">
-    <h2> {{ $object->name }}</h2>
+    <h2> {{ $object->{$nameField} }}</h2>
 </div>
 
 <form action="{{route('thrust.update', [$resourceName, $object->id] )}}" method="POST">

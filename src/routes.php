@@ -3,6 +3,7 @@
 /**
  * TODO:
  * [] Make visibleWhen (for checkboxes, or type of printers... etc)
+ * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  */
 
 Route::group(['prefix' => 'thrust', 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){

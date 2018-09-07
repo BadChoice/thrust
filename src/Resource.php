@@ -14,6 +14,11 @@ abstract class Resource{
     public static $model;
 
     /**
+     * @var string The field that will be used to display the resource main name
+     */
+    public $nameField = 'name';
+
+    /**
      * Defines de number of items to paginate
      */
     protected $pagination = 25;
