@@ -5,7 +5,6 @@ namespace BadChoice\Thrust\Fields;
 
 class BelongsToMany extends Relationship
 {
-    protected $relationDisplayField = 'name';
 
     public function displayInIndex($object)
     {
