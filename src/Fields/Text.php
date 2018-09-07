@@ -4,8 +4,19 @@ namespace BadChoice\Thrust\Fields;
 
 class Text extends Field{
 
+    protected $displayInIndexCallback = null;
+
     public function displayInIndex($object){
+        if ($this->displayInIndexCallback){
+            return call_user_func($this->displayInIndexCallback, $object);
+        }
         return $this->getValue($object);
+    }
+
+    public function displayInIndexCallback($callback)
+    {
+        $this->displayInIndexCallback = $callback;
+        return $this;
     }
 
     public function displayInEdit($object){

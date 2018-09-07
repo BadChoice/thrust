@@ -41,6 +41,11 @@ abstract class Field{
         return $this->title ?? __(config('thrust.translationsPrefix').$this->field);
     }
 
+    protected function getValue($object)
+    {
+        return $object->{$this->field};
+    }
+
     public function getHtmlValidation($object, $type) {
         return Validation::make($this->validationRules, $type)->generate();
     }
