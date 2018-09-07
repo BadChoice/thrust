@@ -2,30 +2,28 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Text extends Field{
+class TextArea extends Field{
+
+    public $showInIndex = false;
 
     public function displayInIndex($object){
         return $this->getValue($object);
     }
 
+    protected function getFieldAttributes(){
+        return "cols=50 rows=10";
+    }
+
     public function displayInEdit($object){
-        return view('thrust::fields.input',[
+        return view('thrust::fields.textarea',[
             'title' => $this->getTitle(),
-            'type' => $this->getFieldType(),
             'field' => $this->field,
             'value' => $this->getValue($object),
-            'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
+            'validationRules' => $this->getHtmlValidation($object, 'textarea'),
             'attributes' => $this->getFieldAttributes()
         ]);
     }
 
-    protected function getFieldType(){
-        return 'text';
-    }
-
-    protected function getFieldAttributes(){
-        return '';
-    }
 
     protected function getValue($object)
     {

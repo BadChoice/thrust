@@ -19,7 +19,7 @@
     @foreach ($rows as $row)
         <tr>
             @foreach($fields as $field)
-                <td> {{ $field->displayInIndex($row) }}</td>
+                <td> {!! $field->displayInIndex($row) !!}</td>
             @endforeach
 
             @if ($resource->canEdit($row))

@@ -2,5 +2,6 @@
 <div class="field">
     <input type={{$type}}
             id="{{$field}}" value="{{$value}}" name="{{$field}}"
+            placeholder="{{$title}}"
             {{$attributes}} {!! $validationRules !!}>
 </div>

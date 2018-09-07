@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Html;
 
+use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\Resource;
 
 class Index
@@ -15,7 +16,10 @@ class Index
 
     public function getIndexFields()
     {
-        return collect($this->resource->fields())->where('showInIndex', true);
+        return collect($this->resource->fields())->map(function($field){
+            if ($field instanceof Panel) return $field->fields;
+            return $field;
+        })->flatten()->where('showInIndex',true);
     }
 
     public function show()

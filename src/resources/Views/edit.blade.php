@@ -11,7 +11,7 @@
             {!! $field->displayInEdit($object) !!}
         @endforeach
     </div>
-    <div class="configForm">
-        <button> {{ __("save") }} </button>
-    </div>
+
+    <button> {{ __("thrust::messages.save") }} </button>
+
 </form>

@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'search' => 'Buscar'
+    'search' => 'Buscar',
+    'save'   => 'Guardar',
 ];
