@@ -29,7 +29,7 @@ class BelongsTo extends Relationship
     {
         return view('thrust::fields.select',[
             'title' => $this->getTitle(),
-            'field' => $this->field,
+            'field' => $this->getRelation($object)->getForeignKey(),
             'value' => $object->{$this->field}->id ?? null,
             'options' => $this->getOptions($object),
         ]);
