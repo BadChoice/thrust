@@ -1,9 +1,12 @@
-@paginator($rows)
+@include('thrust::components.paginator',["data" => $rows])
 <table class="list">
     <thead>
+        @if ($sortable)
+            <th class="hide-mobile">  </th>
+        @endif
         @foreach($fields as $field)
             <th>
-                <div class='flexContainer'>{{ $field->getTitle() }}
+                <div class='sortableHeader'>{{ $field->getTitle() }}
                 @if ($field->sortable && !request('search'))
                     <div class='sortArrows'>
                         <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'desc')}}' class='sortUp'>▲</a>
@@ -16,8 +19,12 @@
         <th class="action" colspan="2"></th>
     </thead>
 
+    <tbody class="@if($sortable) sortable @endif">
     @foreach ($rows as $row)
-        <tr>
+        <tr id="sort_{{$row->id}}">
+            @if ($sortable)
+                <td class="sort action hide-mobile"></td>
+            @endif
             @foreach($fields as $field)
                 <td> {!! $field->displayInIndex($row) !!}</td>
             @endforeach
@@ -35,5 +42,6 @@
             @endif
         </tr>
     @endforeach
+    </tbody>
 </table>
-@paginator($rows)
+@include('thrust::components.paginator',["data" => $rows])

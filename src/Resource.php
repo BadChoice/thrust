@@ -28,6 +28,17 @@ abstract class Resource{
      */
     public static $search = [];
 
+    /**
+     * @var bool define if the resource is sortable and can be arranged in the index view
+     */
+    public static $sortable = false;
+    public static $sortField = 'order';
+
+    /**
+     * @var array Set the default eager loading relationships
+     */
+    protected $with = [];
+
     protected $query = null;
 
     /**
@@ -46,11 +57,13 @@ abstract class Resource{
      */
     public function query()
     {
-        $query = $this->query ?? static::$model::query();
+        $query = $this->query ?? static::$model::query()->with($this->with);
         if (request('search')){
             Search::apply($query, request('search'), static::$search);
         }
-        if (request('sort')){
+        if (static::$sortable){
+            Sort::apply($query, static::$sortField, 'ASC');
+        }else if (request('sort')){
             Sort::apply($query, request('sort'), request('sort_order'));
         }
         return $query;

@@ -25,6 +25,7 @@ class Index
     public function show()
     {
         return view('thrust::index', [
+            'sortable'  => $this->resource::$sortable,
             'resource'  => $this->resource,
             'fields'    => $this->getIndexFields(),
             'rows'      => $this->resource->rows()
