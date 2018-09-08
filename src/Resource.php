@@ -103,4 +103,15 @@ abstract class Resource{
         return true;
     }
 
+    public function getValidationRules()
+    {
+        $fields = collect($this->fields())->map(function($field){
+            if ($field instanceof Panel) return $field->fields;
+            return $field;
+        })->flatten()->where('showInEdit',true);
+        return $fields->mapWithKeys(function($field){
+           return [$field->field => $field->validationRules];
+        })->toArray();
+    }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'translationsPrefix' => 'admin.'
+    'translationsPrefix' => 'admin.',
+    'routePrefix' => 'thrust'
 ];

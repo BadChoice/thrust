@@ -9,7 +9,7 @@ abstract class Field{
     public $field;
     public $sortable = false;
     protected $title;
-    protected $validationRules;
+    public $validationRules;
 
     public $showInIndex = true;
     public $showInEdit = true;
