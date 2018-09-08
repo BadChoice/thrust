@@ -8,7 +8,7 @@ class ResourceManager
     protected $resourcesFolder = 'Thrust';
     protected $resources;
 
-    public function boot(){
+    public function __construct(){
         $this->findResources();
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class ThrustServiceProvider extends ServiceProvider
 {
+    protected $defer = true;
 
     public function boot()
     {
@@ -16,14 +17,17 @@ class ThrustServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/thrust.php' => config_path('thrust.php')
         ], 'config');
-
-        app(ResourceManager::class)->boot();
     }
 
     public function register() {
         app()->singleton(ResourceManager::class , function(){
             return new ResourceManager();
         });
+    }
+
+    public function provides()
+    {
+        return [ResourceManager::class];
     }
 
 }
