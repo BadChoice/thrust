@@ -32,6 +32,9 @@ class ResourceManager
 
     public function resourceNameFromModel($class)
     {
+        if (! is_string($class)) {
+            $class = get_class($class);
+        }
         $path = explode('\\', $class);
         $name = array_pop($path);
         return strtolower(str_plural($name)) ;

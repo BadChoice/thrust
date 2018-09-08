@@ -23,4 +23,5 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
     Route::get('{resourceName}/search/{search}', 'ThrustController@search')->name('thrust.search');
 
     Route::get('{resourceName}/{id}/related/{relationship}', 'ThrustRelationshipController@search')->name('thrust.relationship.search');
+    Route::get('{resourceName}/{id}/toggle/{field}', 'ThrustActionsController@toggle')->name('thrust.toggle');
 });
