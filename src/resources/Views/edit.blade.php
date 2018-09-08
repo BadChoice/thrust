@@ -18,5 +18,9 @@
 
 <script>
     // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
-    $('.searchable').select2({ width: '325', dropdownAutoWidth : true });
+    $('.searchable').select2({
+        width: '300px',
+        dropdownAutoWidth : true,
+        dropdownParent: $('#popup')
+    });
 </script>

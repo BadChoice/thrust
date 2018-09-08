@@ -10,8 +10,9 @@ class ThrustRelationshipController extends Controller
     public function search($resourceName, $id, $relationship)
     {
         $resource = app(ResourceManager::class)->make($resourceName);
+        $searchText = request('search');
         return $resource->find($id)->{$relationship}()->getRelated()->query()
-                        ->where('name','like','%'.request('text').'%')
+                        ->where('name','like','%'.$searchText.'%')
                         ->select('id','name')->limit(10)->get();
     }
 

@@ -10,6 +10,7 @@
  * [] Delete validation
  * [] Configurable route prefix
  * [] Employee, photo upload...
+ * [] Migrate to select2 4.0
  */
 
 Route::group(['prefix' => 'thrust', 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){

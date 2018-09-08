@@ -46,6 +46,7 @@ class BelongsTo extends Relationship
                 'field' => $this->getRelation($object)->getForeignKey(),
                 'relationship' => $this->field,
                 'value' => $object->{$this->field}->id ?? null,
+                'name' => $this->displayInIndex($object),
                 'id' => $object->id,
             ]);
         }
