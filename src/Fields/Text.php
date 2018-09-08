@@ -13,7 +13,7 @@ class Text extends Field{
         return $this->getValue($object);
     }
 
-    public function displayInIndexCallback($callback)
+    public function displayWith($callback)
     {
         $this->displayInIndexCallback = $callback;
         return $this;

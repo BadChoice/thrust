@@ -6,12 +6,20 @@ namespace BadChoice\Thrust\Fields;
 class BelongsTo extends Relationship
 {
     protected $allowNull = false;
+    protected $searchable = false;
 
     public function allowNull($allowNull = true)
     {
         $this->allowNull = $allowNull;
         return $this;
     }
+
+    public function searchable($searchable = true)
+    {
+        $this->searchable = $searchable;
+        return $this;
+    }
+
     public function displayInIndex($object)
     {
         $relation = $object->{$this->field};
@@ -30,6 +38,7 @@ class BelongsTo extends Relationship
         return view('thrust::fields.select',[
             'title' => $this->getTitle(),
             'field' => $this->getRelation($object)->getForeignKey(),
+            'searchable' => $this->searchable,
             'value' => $object->{$this->field}->id ?? null,
             'options' => $this->getOptions($object),
         ]);

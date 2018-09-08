@@ -14,4 +14,13 @@
 
     <button> {{ __("thrust::messages.save") }} </button>
 
+    <input id="test" value="hello">
+
+
 </form>
+
+<script>
+    // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
+    $('.searchable').select2({ width: '325', dropdownAutoWidth : true });
+    new RVAjaxSelect2('{{ route('thrust.relationship.search', ['employees', $object->id, 'Permission']) }}').show('#test');
+</script>

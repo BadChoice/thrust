@@ -6,11 +6,18 @@ class Select extends Field{
 
     protected $options = [];
     protected $allowNull = false;
+    protected $searchable = false;
 
     public function options($options, $allowNull = false)
     {
         $this->options = $options;
         $this->allowNull = $allowNull;
+        return $this;
+    }
+
+    public function searchable($searchable = true)
+    {
+        $this->searchable = $searchable;
         return $this;
     }
 
@@ -36,6 +43,7 @@ class Select extends Field{
         return view('thrust::fields.select',[
             'title' => $this->getTitle(),
             'field' => $this->field,
+            'searchable' => $this->searchable,
             'value' => $this->getValue($object),
             'options' => $this->getOptions(),
         ]);
