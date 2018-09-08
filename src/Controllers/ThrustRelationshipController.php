@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-
 use BadChoice\Thrust\ResourceManager;
 use Illuminate\Routing\Controller;
 
@@ -12,8 +11,8 @@ class ThrustRelationshipController extends Controller
     {
         $resource = app(ResourceManager::class)->make($resourceName);
         return $resource->find($id)->{$relationship}()->getRelated()->query()
-            ->where('name','like','%'.request('text').'%')
-            ->get(['id','name']);
+                        ->where('name','like','%'.request('text').'%')
+                        ->select('id','name')->limit(10)->get();
     }
 
 }

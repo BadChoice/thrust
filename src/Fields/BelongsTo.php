@@ -3,10 +3,13 @@
 namespace BadChoice\Thrust\Fields;
 
 
+use BadChoice\Thrust\ResourceManager;
+
 class BelongsTo extends Relationship
 {
     protected $allowNull = false;
     protected $searchable = false;
+    protected $ajaxSearch = false;
 
     public function allowNull($allowNull = true)
     {
@@ -14,9 +17,10 @@ class BelongsTo extends Relationship
         return $this;
     }
 
-    public function searchable($searchable = true)
+    public function searchable($searchable = true, $usingAjax = false)
     {
         $this->searchable = $searchable;
+        $this->ajaxSearch = $usingAjax;
         return $this;
     }
 
@@ -35,6 +39,16 @@ class BelongsTo extends Relationship
 
     public function displayInEdit($object)
     {
+        if ($this->ajaxSearch){
+            return view('thrust::fields.selectAjax',[
+                'resourceName' => app(ResourceManager::class)->resourceNameFromModel(get_class($object)),
+                'title' => $this->getTitle(),
+                'field' => $this->getRelation($object)->getForeignKey(),
+                'relationship' => $this->field,
+                'value' => $object->{$this->field}->id ?? null,
+                'id' => $object->id,
+            ]);
+        }
         return view('thrust::fields.select',[
             'title' => $this->getTitle(),
             'field' => $this->getRelation($object)->getForeignKey(),
