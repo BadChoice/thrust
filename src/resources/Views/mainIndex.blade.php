@@ -1,5 +1,18 @@
 @extends(config('thrust.indexLayout'))
 @section('content')
+
+    <div class="description">
+        <span class="title">
+            {{ $resourceName }}
+        </span>
+        <br><br>
+        <div class="actions">
+            @foreach($resource->actions() as $action)
+                {!! $action->display($resourceName) !!}
+            @endforeach
+        </div>
+    </div>
+
     @include('thrust::components.search')
     <div id="all">
         {!! (new BadChoice\Thrust\Html\Index($resource))->show() !!}

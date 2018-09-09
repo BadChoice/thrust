@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Actions\Action;
 use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
@@ -115,6 +116,13 @@ abstract class Resource{
         })->filter(function($value){
             return $value != null;
         })->toArray();
+    }
+
+    public function actions()
+    {
+        return [
+            Action::make('new'),
+        ];
     }
 
 }

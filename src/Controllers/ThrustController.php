@@ -18,6 +18,13 @@ class ThrustController extends Controller
             'resource' => $resource
         ]);
     }
+
+    public function create($resourceName)
+    {
+        $resource = app(ResourceManager::class)->make($resourceName);
+        return "new";
+    }
+
     public function edit($resourceName, $id)
     {
         $resource = app(ResourceManager::class)->make($resourceName);
