@@ -2,18 +2,18 @@
 
 /**
  * TODO:
+ * [x] Migrate to select2 4.0
+ * [x] Make check fields to be toggable from the index
+ * [x] Pin validation not working (digits 4)
+ * [x] Update validation
+ * [x] Configurable route prefix
+ * [x] Make the service provider deffered as it doesn't need to be called in the API
  * [] Make visibleWhen (for checkboxes, or type of printers... etc)
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
- * [] Make check fields to be toggable from the index
- * [] Pin validation not working (digits 4)
- * [x] Update validation
  * [] Delete validation
- * [x] Configurable route prefix
  * [] Employee, photo upload...
- * [x] Migrate to select2 4.0
  * [] ThrustRelationshipController to use the $relationDisplayName instead of `name`
  * [] Make the resource found in app service provider recursive into thrust directory
- * [x] Make the service provider deffered as it doesn't need to be called in the API
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  */
 
