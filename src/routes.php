@@ -14,6 +14,7 @@
  * [] ThrustRelationshipController to use the $relationDisplayName instead of `name`
  * [] Make the resource found in app service provider recursive into thrust directory
  * [x] Make the service provider deffered as it doesn't need to be called in the API
+ * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  */
 
 Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){
