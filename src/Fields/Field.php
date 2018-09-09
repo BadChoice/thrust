@@ -48,7 +48,7 @@ abstract class Field{
 
     public function getTitle()
     {
-        return $this->title ?? __(config('thrust.translationsPrefix').$this->field);
+        return $this->title ?? trans_choice(config('thrust.translationsPrefix').$this->field, 1);
     }
 
     public function getDescription(){
