@@ -55,6 +55,12 @@ abstract class Field{
         return ($this->withDesc && !$this->description) ? __(config('thrust.translationsPrefix').$this->field.'Desc') : $this->description;
     }
 
+    public function getRelationName($object)
+    {
+        $relation = $object->{$this->field};
+        return $relation->{$this->relationDisplayField} ?? '--';
+    }
+
     protected function getValue($object)
     {
         return $object->{$this->field};

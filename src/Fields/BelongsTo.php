@@ -31,12 +31,6 @@ class BelongsTo extends Relationship
         return $this;
     }
 
-    public function getRelationName($object)
-    {
-        $relation = $object->{$this->field};
-        return $relation->{$this->relationDisplayField} ?? '--';
-    }
-
     public function displayInIndex($object)
     {
         $relation = $object->{$this->field};
