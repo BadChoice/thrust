@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
 use Illuminate\Database\Query\Builder;

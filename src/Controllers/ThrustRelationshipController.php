@@ -11,9 +11,14 @@ class ThrustRelationshipController extends Controller
     {
         $resource = app(ResourceManager::class)->make($resourceName);
         $searchText = request('search');
-        return $resource->find($id)->{$relationship}()->getRelated()->query()
+        $results =  $resource->find($id)->{$relationship}()->getRelated()->query()
                         ->where('name','like','%'.$searchText.'%')
                         ->select('id','name')->limit(10)->get();
+
+        if (request('allowNull')){
+           return $results->prepend(["id" => "", "name" => "--"]);
+        }
+        return $results;
     }
 
 }

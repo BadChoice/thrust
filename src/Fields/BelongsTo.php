@@ -67,6 +67,7 @@ class BelongsTo extends Relationship
                 'value' => $object->{$this->field}->id ?? null,
                 'name' => $this->getRelationName($object),
                 'id' => $object->id,
+                'allowNull' => $this->allowNull
             ]);
         }
         return view('thrust::fields.select',[

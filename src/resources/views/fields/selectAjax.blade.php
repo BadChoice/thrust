@@ -6,7 +6,7 @@
     </select>
 </div>
 <script>
-    new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $id, $relationship]) }}',{
-        dropdownParent: $('#popup')
+    new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $id, $relationship]) }}?allowNull={{$allowNull}}',{
+        dropdownParent: $('#popup'),
     }).show('#{{$field}}');
 </script>
