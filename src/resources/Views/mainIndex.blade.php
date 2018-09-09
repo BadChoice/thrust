@@ -1,4 +1,4 @@
-@extends(config('thrust.layout'))
+@extends(config('thrust.indexLayout'))
 @section('content')
     @include('thrust::components.search')
     <div id="all">
