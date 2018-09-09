@@ -29,7 +29,7 @@ class Index
             'resource'  => $this->resource,
             'fields'    => $this->getIndexFields(),
             'rows'      => $this->resource->rows()
-        ]);
+        ])->render();
     }
 
 

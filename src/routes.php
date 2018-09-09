@@ -18,6 +18,7 @@
  */
 
 Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){
+    Route::get('{resourceName}', 'ThrustController@index')->name('thrust.index');
     Route::get('{resourceName}/edit/{id}', 'ThrustController@edit')->name('thrust.edit');
     Route::put('{resourceName}/{id}', 'ThrustController@update')->name('thrust.update');
     Route::delete('{resourceName}/{id}', 'ThrustController@delete')->name('thrust.delete');

@@ -2,5 +2,6 @@
 
 return [
     'translationsPrefix' => 'admin.',
-    'routePrefix' => 'thrust'
+    'routePrefix' => 'thrust',
+    'layout'      => 'layout.app'
 ];

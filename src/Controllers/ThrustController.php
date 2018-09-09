@@ -10,6 +10,14 @@ use Illuminate\Routing\Controller;
 class ThrustController extends Controller
 {
 
+    public function index($resourceName)
+    {
+        $resource = app(ResourceManager::class)->make($resourceName);
+        return view('thrust::mainIndex',[
+            'resourceName' => $resourceName,
+            'resource' => $resource
+        ]);
+    }
     public function edit($resourceName, $id)
     {
         $resource = app(ResourceManager::class)->make($resourceName);

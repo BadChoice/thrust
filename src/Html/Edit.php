@@ -26,7 +26,7 @@ class Edit
             'resourceName'  => $this->resource->name(),
             'fields'        => $this->getEditFields(),
             'object'        => $this->resource->find($id)
-        ]);
+        ])->render();
     }
 
 }
