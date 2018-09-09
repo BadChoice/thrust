@@ -52,7 +52,7 @@ abstract class Field{
     }
 
     public function getDescription(){
-        return ($this->withDesc && !$this->description) ? __(config('thrust.translationsPrefix').$this->field.'Desc') : $this->description;
+        return ($this->withDesc && !$this->description) ? trans_choice(config('thrust.translationsPrefix').$this->field.'Desc', 1) : $this->description;
     }
 
     public function getRelationName($object)
