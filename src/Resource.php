@@ -104,15 +104,15 @@ abstract class Resource{
         return true;
     }
 
-    public function getValidationRules()
+    public function getValidationRules($objectId)
     {
         $fields = collect($this->fields())->map(function($field){
             if ($field instanceof Panel) return $field->fields;
             return $field;
         })->flatten()->where('showInEdit',true);
-        return $fields->mapWithKeys(function($field){
-           return [$field->field => $field->validationRules];
-        })->filter(function($value, $key){
+        return $fields->mapWithKeys(function($field) use($objectId){
+           return [$field->field => str_replace("{id}", $objectId, $field->validationRules)];
+        })->filter(function($value){
             return $value != null;
         })->toArray();
     }

@@ -35,6 +35,8 @@ class Validation
             $this->appendRuleMin($output, $params[1]);
         } elseif ($rule == 'max') {
             $this->appendRuleMax($output, $params[1]);
+        } elseif ($rule == 'digits') {
+            $this->appendRuleDigits($output, $params[1]);
         } elseif ($rule == 'email') {
             $this->appendRuleEmail($output);
         } elseif ($rule == 'ip') {
@@ -61,6 +63,11 @@ class Validation
             return $this->appendRuleNumberMax($output, $max);
         }
         $output .= " pattern='.{0,".$max."}' title='Max ".$max." characters' ";
+    }
+
+    public function appendRuleDigits(&$output, $digits)
+    {
+        $output .= "pattern='.{".$digits.",".$digits."}' title='Digits ".$digits." characters' ";
     }
 
     public function appendRuleEmail(&$output)

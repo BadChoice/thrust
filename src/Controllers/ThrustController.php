@@ -19,7 +19,7 @@ class ThrustController extends Controller
     public function update($resourceName, $id)
     {
         $resource = app(ResourceManager::class)->make($resourceName);
-        request()->validate($resource->getValidationRules());
+        request()->validate($resource->getValidationRules($id));
 
         $resource->update($id, request()->all());
         return back()->withMessage(__('updated'));
