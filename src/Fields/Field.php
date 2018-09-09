@@ -14,6 +14,9 @@ abstract class Field{
     public $showInIndex = true;
     public $showInEdit = true;
 
+    public $withDesc = false;
+    public $description = false;
+
     public abstract function displayInIndex($object);
     public abstract function displayInEdit($object);
 
@@ -36,9 +39,20 @@ abstract class Field{
         return $this;
     }
 
+    public function withDesc($withDesc = true, $description = null)
+    {
+        $this->withDesc = $withDesc;
+        $this->description = $description;
+        return $this;
+    }
+
     public function getTitle()
     {
         return $this->title ?? __(config('thrust.translationsPrefix').$this->field);
+    }
+
+    public function getDescription(){
+        return ($this->withDesc && !$this->description) ? __(config('thrust.translationsPrefix').$this->field.'Desc') : $this->description;
     }
 
     protected function getValue($object)

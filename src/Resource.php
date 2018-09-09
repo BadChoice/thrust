@@ -111,6 +111,8 @@ abstract class Resource{
         })->flatten()->where('showInEdit',true);
         return $fields->mapWithKeys(function($field){
            return [$field->field => $field->validationRules];
+        })->filter(function($value, $key){
+            return $value != null;
         })->toArray();
     }
 

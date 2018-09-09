@@ -10,6 +10,7 @@ class BelongsTo extends Relationship
     protected $allowNull = false;
     protected $searchable = false;
     protected $ajaxSearch = false;
+    protected $withLink  = false;
 
     public function allowNull($allowNull = true)
     {
@@ -24,16 +25,34 @@ class BelongsTo extends Relationship
         return $this;
     }
 
-    public function displayInIndex($object)
+    public function withLink($withLink = true)
+    {
+        $this->withLink = $withLink;
+        return $this;
+    }
+
+    public function getRelationName($object)
     {
         $relation = $object->{$this->field};
         return $relation->{$this->relationDisplayField} ?? '--';
     }
 
+    public function displayInIndex($object)
+    {
+        $relation = $object->{$this->field};
+        $relationName = $this->getRelationName($object);
+        if (! $this->withLink) return $relationName;
+        return view('thrust::fields.link',[
+            'url' => route('thrust.edit',[app(ResourceManager::class)->resourceNameFromModel($relation), $object->id]),
+            'value' => $relationName,
+            'class' => 'showPopup'
+        ]);
+    }
+
     public function getOptions($object)
     {
         $possibleRelations = $this->getRelation($object)->getRelated()->pluck($this->relationDisplayField, 'id');
-        if ($this->allowNull) return array_merge(["" => "--"], $possibleRelations->toArray());
+        if ($this->allowNull) return $possibleRelations->prepend("--", "")->toArray();
         return $possibleRelations;
     }
 
@@ -46,7 +65,7 @@ class BelongsTo extends Relationship
                 'field' => $this->getRelation($object)->getForeignKey(),
                 'relationship' => $this->field,
                 'value' => $object->{$this->field}->id ?? null,
-                'name' => $this->displayInIndex($object),
+                'name' => $this->getRelationName($object),
                 'id' => $object->id,
             ]);
         }

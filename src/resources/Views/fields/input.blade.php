@@ -4,4 +4,7 @@
             id="{{$field}}" value="{{$value}}" name="{{$field}}"
             placeholder="{{$title}}"
             {{$attributes}} {!! $validationRules !!}>
+    @if (isset($description))
+        <p>{!! $description !!}</p>
+    @endif
 </div>

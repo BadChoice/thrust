@@ -26,8 +26,9 @@ class Text extends Field{
             'field' => $this->field,
             'value' => $this->getValue($object),
             'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
-            'attributes' => $this->getFieldAttributes()
-        ]);
+            'attributes' => $this->getFieldAttributes(),
+            'description' => $this->getDescription(),
+        ])->render();
     }
 
     protected function getFieldType(){
