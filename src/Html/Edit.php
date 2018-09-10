@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Html;
 
+use BadChoice\Thrust\Fields\Hidden;
 use BadChoice\Thrust\Resource;
 
 class Edit
@@ -16,7 +17,11 @@ class Edit
 
     public function getEditFields()
     {
-        return collect($this->resource->fields())->where('showInEdit', true);
+        $fields = collect($this->resource->fields())->where('showInEdit', true);
+        if ($this->resource::$sortable) {
+            $fields->prepend(Hidden::make($this->resource::$sortField));
+        }
+        return $fields;
     }
 
     public function show($id)

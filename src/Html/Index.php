@@ -16,10 +16,7 @@ class Index
 
     public function getIndexFields()
     {
-        return collect($this->resource->fields())->map(function($field){
-            if ($field instanceof Panel) return $field->fields;
-            return $field;
-        })->flatten()->where('showInIndex',true);
+        return $this->resource->fieldsFlattened()->where('showInIndex', true);
     }
 
     public function show()

@@ -49,6 +49,14 @@ abstract class Resource{
      */
     abstract public function fields();
 
+    public function fieldsFlattened()
+    {
+        return collect($this->fields())->map(function($field){
+            if ($field instanceof Panel) return $field->fields;
+            return $field;
+        })->flatten();
+    }
+
     public function setQuery($query){
         $this->query = $query;
         return $this;
@@ -111,6 +119,10 @@ abstract class Resource{
         $object = new static::$model;
         if (collect(class_implements($this))->contains(FormatsNewObject::class)){
             $this->formatNewObject($object);
+        }
+
+        if (static::$sortable) {
+            $object->{static::$sortField} = static::$model::count();
         }
         return $object;
     }
