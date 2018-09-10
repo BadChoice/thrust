@@ -14,6 +14,7 @@ class BelongsToMany extends Relationship
     public $allowDuplicates = false;
 
     public $indexTextCallback = null;
+    public $pivotFields = [];
 
     public function displayInIndex($object)
     {
@@ -29,6 +30,11 @@ class BelongsToMany extends Relationship
     public function withLink($withLink = true)
     {
         $this->withLink = $withLink;
+        return $this;
+    }
+
+    public function pivotFields($pivotFields){
+        $this->pivotFields = $pivotFields;
         return $this;
     }
 

@@ -68,6 +68,7 @@ abstract class Field{
 
     protected function getValue($object)
     {
+        if (! $object) return null;
         return $object->{$this->field};
     }
 
