@@ -57,11 +57,4 @@ class ThrustController extends Controller
                                    ->delete($id);
         return back()->withMessage(__('deleted'));
     }
-
-    public function search($resourceName, $searchText)
-    {
-        request()->merge(["search" => $searchText]);
-        $resource = app(ResourceManager::class)->make($resourceName);
-        return (new Index($resource))->show();
-    }
 }
