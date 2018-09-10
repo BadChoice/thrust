@@ -3,25 +3,19 @@
 namespace BadChoice\Thrust\Fields;
 
 
+use BadChoice\Thrust\Fields\Traits\Searchable;
 use BadChoice\Thrust\ResourceManager;
 
 class BelongsTo extends Relationship
 {
+    use Searchable;
+
     protected $allowNull = false;
-    public $searchable = false;
-    public $ajaxSearch = false;
     protected $withLink  = false;
 
     public function allowNull($allowNull = true)
     {
         $this->allowNull = $allowNull;
-        return $this;
-    }
-
-    public function searchable($searchable = true, $usingAjax = false)
-    {
-        $this->searchable = $searchable;
-        $this->ajaxSearch = $usingAjax;
         return $this;
     }
 

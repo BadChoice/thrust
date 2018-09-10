@@ -3,14 +3,15 @@
 namespace BadChoice\Thrust\Fields;
 
 
+use BadChoice\Thrust\Fields\Traits\Searchable;
 use BadChoice\Thrust\ResourceManager;
 
 class BelongsToMany extends Relationship
 {
+    use Searchable;
+
     public $withLink        = false;
     public $allowDuplicates = false;
-    public $searchable = false;
-    public $ajaxSearch = false;
 
     public $indexTextCallback = null;
 
@@ -28,13 +29,6 @@ class BelongsToMany extends Relationship
     public function withLink($withLink = true)
     {
         $this->withLink = $withLink;
-        return $this;
-    }
-
-    public function searchable($searchable = true, $usingAjax = false)
-    {
-        $this->searchable = $searchable;
-        $this->ajaxSearch = $usingAjax;
         return $this;
     }
 
