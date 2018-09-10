@@ -3,7 +3,7 @@
 
     <div class="description">
         <span class="title">
-            {{ $resourceName }}
+            {{ trans_choice( config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
         </span>
         <br><br>
         <div class="actions">
