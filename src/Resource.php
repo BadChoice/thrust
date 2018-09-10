@@ -3,6 +3,7 @@
 namespace BadChoice\Thrust;
 
 use BadChoice\Thrust\Actions\Action;
+use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
@@ -103,6 +104,15 @@ abstract class Resource{
     public function canDelete($row)
     {
         return true;
+    }
+
+    public function makeNew()
+    {
+        $object = new static::$model;
+        if (collect(class_implements($this))->contains(FormatsNewObject::class)){
+            $this->formatNewObject($object);
+        }
+        return $object;
     }
 
     public function getValidationRules($objectId)

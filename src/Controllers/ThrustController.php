@@ -22,13 +22,23 @@ class ThrustController extends Controller
     public function create($resourceName)
     {
         $resource = app(ResourceManager::class)->make($resourceName);
-        return "new";
+        $object = $resource->makeNew();
+        return (new Edit($resource))->show($object);
     }
 
     public function edit($resourceName, $id)
     {
         $resource = app(ResourceManager::class)->make($resourceName);
         return (new Edit($resource))->show($id);
+    }
+
+    public function store($resourceName)
+    {
+        $resource = app(ResourceManager::class)->make($resourceName);
+        request()->validate($resource->getValidationRules(null));
+        $object = $resource::$model::create(request()->all());
+        //dd($object);
+        return back()->withMessage(__('created'));
     }
 
     public function update($resourceName, $id)

@@ -21,11 +21,12 @@ class Edit
 
     public function show($id)
     {
+        $object = is_numeric($id) ? $this->resource->find($id) : $id;
         return view('thrust::edit', [
             'nameField'     => $this->resource->nameField,
             'resourceName'  => $this->resource->name(),
             'fields'        => $this->getEditFields(),
-            'object'        => $this->resource->find($id)
+            'object'        => $object
         ])->render();
     }
 
