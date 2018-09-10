@@ -1,8 +1,9 @@
 <h2> {{$title}} </h2>
 <table>
-    @foreach($children as $child)
+    @foreach ($children as $row)
         <tr>
-            <td> {{ $child->{$relationshipDisplayName} }}</td>
+            <td> {{ $row->{$relationshipDisplayName} }}</td>
+            <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.belongsToMany.delete', [$resourceName, $object->id, $belongsToManyField->field, $row->id])}}"></a></td>
         </tr>
     @endforeach
 </table>
@@ -18,3 +19,7 @@
         <button class="secondary">{{__('thrust::messages.add') }}</button>
     </form>
 </div>
+
+<script>
+    addListeners();
+</script>

@@ -30,4 +30,12 @@ class ThrustBelongsToManyController extends Controller
         $object->{$relationship}()->attach(request('id'));
         return back()->withMessage('added');
     }
+
+    public function delete($resourceName, $id, $relationship, $detachId)
+    {
+        $resource = app(ResourceManager::class)->make($resourceName);
+        $object = $resource->find($id);
+        $object->{$relationship}()->detach($detachId);
+        return back()->withMessage('deleted');
+    }
 }
