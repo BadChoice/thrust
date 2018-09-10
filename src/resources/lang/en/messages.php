@@ -4,5 +4,6 @@ return [
     'search' => 'Search',
     'save'   => 'Save',
     'new'    => 'New',
-    'saveOrder' => 'Save Order'
+    'saveOrder' => 'Save Order',
+    'add'   => 'Add',
 ];

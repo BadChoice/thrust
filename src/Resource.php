@@ -135,10 +135,7 @@ abstract class Resource{
 
     public function getValidationRules($objectId)
     {
-        $fields = collect($this->fields())->map(function($field){
-            if ($field instanceof Panel) return $field->fields;
-            return $field;
-        })->flatten()->where('showInEdit',true);
+        $fields = $this->fieldsFlattened()->where('showInEdit',true);
         return $fields->mapWithKeys(function($field) use($objectId){
            return [$field->field => str_replace("{id}", $objectId, $field->validationRules)];
         })->filter(function($value){

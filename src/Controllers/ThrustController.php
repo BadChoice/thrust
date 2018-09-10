@@ -3,7 +3,6 @@
 namespace BadChoice\Thrust\Controllers;
 
 use BadChoice\Thrust\Html\Edit;
-use BadChoice\Thrust\Html\Index;
 use BadChoice\Thrust\ResourceManager;
 use Illuminate\Routing\Controller;
 

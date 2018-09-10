@@ -23,6 +23,10 @@ class ResourceManager
         });
     }
 
+    /**
+     * @param $resourceName
+     * @return Resource
+     */
     public function make($resourceName)
     {
         $type = strtolower($resourceName);
@@ -30,6 +34,10 @@ class ResourceManager
         return new $class;
     }
 
+    /**
+     * @param $class
+     * @return string
+     */
     public function resourceNameFromModel($class)
     {
         if (! is_string($class)) {

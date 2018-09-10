@@ -5,4 +5,5 @@ return [
     'save'   => 'Guardar',
     'new'    => 'Nou',
     'saveOrder' => 'Guardar ordre',
+    'add'   => 'Afegir',
 ];

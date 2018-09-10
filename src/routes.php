@@ -28,6 +28,9 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
     Route::delete('{resourceName}/{id}', 'ThrustController@delete')->name('thrust.delete');
     Route::get('{resourceName}/search/{search}', 'ThrustSearchController@index')->name('thrust.search');
 
+    Route::get('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@index')->name('thrust.belongsToMany');
+    Route::post('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@store')->name('thrust.belongsToMany.store');
+
     Route::get('{resourceName}/{id}/related/{relationship}', 'ThrustRelationshipController@search')->name('thrust.relationship.search');
     Route::get('{resourceName}/{id}/toggle/{field}', 'ThrustActionsController@toggle')->name('thrust.toggle');
 });
