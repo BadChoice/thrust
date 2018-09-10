@@ -5,6 +5,7 @@ namespace BadChoice\Thrust;
 use BadChoice\Thrust\Actions\Action;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Fields\Panel;
+use BadChoice\Thrust\Fields\Relationship;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
 use Illuminate\Database\Query\Builder;
@@ -68,7 +69,7 @@ abstract class Resource{
      */
     public function query()
     {
-        $query = $this->query ?? static::$model::query()->with($this->with);
+        $query = $this->query ?? static::$model::query()->with($this->getWithFields());
         if (request('search')){
             Search::apply($query, request('search'), static::$search);
         }
@@ -150,6 +151,17 @@ abstract class Resource{
         return [
             Action::make('new'),
         ];
+    }
+
+    public function getWithFields()
+    {
+        return count($this->with) ? $this->with : $this->getRelationshipsFields()->toArray();
+    }
+
+    public function getRelationshipsFields(){
+        return $this->fieldsFlattened()->filter(function($field){
+            return $field instanceof Relationship;
+        })->pluck('field');
     }
 
 }
