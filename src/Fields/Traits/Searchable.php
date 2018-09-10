@@ -15,4 +15,11 @@ trait Searchable
         return $this;
     }
 
+    public function ajaxSearch()
+    {
+        $this->searchable = true;
+        $this->ajaxSearch = true;
+        return $this;
+    }
+
 }
