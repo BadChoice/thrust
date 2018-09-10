@@ -30,7 +30,7 @@ class ThrustBelongsToManyController extends Controller
     {
         $resource = app(ResourceManager::class)->make($resourceName);
         $object = $resource->find($id);
-        $object->{$relationship}()->attach(request('id'));
+        $object->{$relationship}()->attach(request('id'), request()->except(['id', '_token']));
         return back()->withMessage('added');
     }
 

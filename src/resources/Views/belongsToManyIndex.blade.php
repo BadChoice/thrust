@@ -3,7 +3,12 @@
     @foreach ($children as $row)
         <tr>
             <td> {{ $row->{$relationshipDisplayName} }}</td>
+            @foreach($belongsToManyField->pivotFields as $field)
+                <td>{!! $field->displayInIndex($row)  !!}</td>
+            @endforeach
+
             <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.belongsToMany.delete', [$resourceName, $object->id, $belongsToManyField->field, $row->id])}}"></a></td>
+
         </tr>
     @endforeach
 </table>
