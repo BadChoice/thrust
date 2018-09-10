@@ -7,13 +7,17 @@ use BadChoice\Thrust\ResourceManager;
 
 class BelongsToMany extends Relationship
 {
-    public $withLink = false;
+    public $withLink        = false;
     public $allowDuplicates = false;
+    public $searchable = false;
+    public $ajaxSearch = false;
+
+    public $indexTextCallback = null;
 
     public function displayInIndex($object)
     {
         return view('thrust::fields.belongsToMany',[
-            "value"         => $object->{$this->field}->pluck($this->relationDisplayField)->implode(', '),
+            "value"         => $this->getIndexText($object),
             "withLink"      => $this->withLink,
             "relationship"  => $this->field,
             "id"            => $object->id,
@@ -27,15 +31,35 @@ class BelongsToMany extends Relationship
         return $this;
     }
 
+    public function searchable($searchable = true, $usingAjax = false)
+    {
+        $this->searchable = $searchable;
+        $this->ajaxSearch = $usingAjax;
+        return $this;
+    }
+
     public function allowDuplicates($allowDuplicates = true)
     {
         $this->allowDuplicates = $allowDuplicates;
         return $this;
     }
 
+    public function displayInIndexCallback($callback){
+        $this->indexTextCallback = $callback;
+        return $this;
+    }
+
     public function getTitle()
     {
         return $this->title ?? trans_choice(config('thrust.translationsPrefix') . str_singular($this->field), 2);
+    }
+
+    public function getIndexText($object)
+    {
+        if ($this->indexTextCallback){
+            return call_user_func($this->indexTextCallback, $object);
+        }
+        return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
     }
 
     public function getOptions($object)
@@ -53,5 +77,6 @@ class BelongsToMany extends Relationship
             "value" => $this->displayInIndex($object),
         ]);
     }
+
 
 }

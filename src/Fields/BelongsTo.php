@@ -8,8 +8,8 @@ use BadChoice\Thrust\ResourceManager;
 class BelongsTo extends Relationship
 {
     protected $allowNull = false;
-    protected $searchable = false;
-    protected $ajaxSearch = false;
+    public $searchable = false;
+    public $ajaxSearch = false;
     protected $withLink  = false;
 
     public function allowNull($allowNull = true)
