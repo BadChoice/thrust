@@ -20,6 +20,9 @@ class ThrustBelongsToManyController extends Controller
             "children"                => $object->{$relationship},
             "belongsToManyField"      => $belongsToManyField,
             "relationshipDisplayName" => $belongsToManyField->relationDisplayField,
+            "searchable"              => $belongsToManyField->searchable,
+            "ajaxSearch"              => $belongsToManyField->ajaxSearch,
+            "allowDuplicates"         => $belongsToManyField->allowDuplicates ? "1" : "0",
         ]);
     }
 
