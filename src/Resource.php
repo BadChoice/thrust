@@ -94,6 +94,11 @@ abstract class Resource{
         return (static::$model)::find($id);
     }
 
+    public function count()
+    {
+        return (static::$model)::count();
+    }
+
     public function update($id, $newData)
     {
         return $this->find($id)->update($newData);

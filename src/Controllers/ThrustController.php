@@ -15,7 +15,8 @@ class ThrustController extends Controller
         $resource = app(ResourceManager::class)->make($resourceName);
         return view('thrust::mainIndex',[
             'resourceName' => $resourceName,
-            'resource' => $resource
+            'resource' => $resource,
+            'searchable' => count($resource::$search) > 0
         ]);
     }
 
