@@ -58,7 +58,15 @@ abstract class Resource{
         })->flatten();
     }
 
-    public function setQuery($query){
+    public function panels()
+    {
+        return collect($this->fields())->filter(function($field){
+            return ($field instanceof Panel);
+        });
+    }
+
+    public function setQuery($query)
+    {
         $this->query = $query;
         return $this;
     }

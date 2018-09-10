@@ -26,7 +26,7 @@ class Link extends Field
         return view('thrust::fields.link',[
             'class' => $this->classes,
             'value' => $this->getTitle(),
-            'url' => str_replace("{field}", $this->getValue($object) ,$this->link)
+            'url' => str_replace("{field}", $this->getValue($object), $this->link)
         ]);
     }
 

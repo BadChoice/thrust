@@ -11,6 +11,12 @@ abstract class Relationship extends Field
         return $object->{$this->field}();
     }
 
+    public function getRelationName($object)
+    {
+        $relation = $object->{$this->field};
+        return $relation->{$this->relationDisplayField} ?? '--';
+    }
+
     public function relationDisplayField($relationDisplayField = 'name')
     {
         $this->relationDisplayField = $relationDisplayField;

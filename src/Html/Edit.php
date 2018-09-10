@@ -24,6 +24,18 @@ class Edit
         return $fields;
     }
 
+    public function getVisiblityJson()
+    {
+        return $this->resource->panels()->filter(function($panel){
+            return $panel->hideWhenField != null;
+        })->mapWithKeys(function($panel){
+            return [$panel->title => [
+                "field" => $panel->hideWhenField,
+                "value" => $panel->hideWhenValue]
+            ];
+        });
+    }
+
     public function show($id)
     {
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
@@ -31,7 +43,8 @@ class Edit
             'nameField'     => $this->resource->nameField,
             'resourceName'  => $this->resource->name(),
             'fields'        => $this->getEditFields(),
-            'object'        => $object
+            'object'        => $object,
+            'visibility'    => $this->getVisiblityJson(),
         ])->render();
     }
 

@@ -26,4 +26,6 @@
         dropdownAutoWidth : true,
         dropdownParent: $('#popup')
     });
+
+    setupVisibility({!! json_encode($visibility)  !!});
 </script>

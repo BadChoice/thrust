@@ -9,6 +9,7 @@ class Check extends Text
 {
     protected $withLink = false;
     protected $asSwitch = false;
+    public $rowClass = 'action';
 
     public function withLink($withLink = true){
         $this->withLink = $withLink;

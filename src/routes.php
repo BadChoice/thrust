@@ -8,6 +8,7 @@
  * [x] Update validation
  * [x] Configurable route prefix
  * [x] Make the service provider deffered as it doesn't need to be called in the API
+ * [x] Panel visibility by check and select
  * [] Make visibleWhen (for checkboxes, or type of printers... etc)
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation

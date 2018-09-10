@@ -5,7 +5,7 @@
             <th class="hide-mobile">  </th>
         @endif
         @foreach($fields as $field)
-            <th>
+            <th class="{{$field->rowClass}}">
                 <div class='sortableHeader'>{{ $field->getTitle() }}
                 @if ($field->sortable && !request('search'))
                     <div class='sortArrows'>
@@ -26,7 +26,11 @@
                 <td class="sort action hide-mobile"></td>
             @endif
             @foreach($fields as $field)
-                <td> {!! $field->displayInIndex($row) !!}</td>
+                <td class="{{$field->rowClass}}">
+                    @if (! $field->shouldHide($row))
+                        {!! $field->displayInIndex($row) !!}
+                    @endif
+                </td>
             @endforeach
 
             @if ($resource->canEdit($row))

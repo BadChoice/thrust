@@ -2,9 +2,12 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Fields\Traits\Visibility;
 use BadChoice\Thrust\Html\Validation;
 
 abstract class Field{
+
+    use Visibility;
 
     public $field;
     public $sortable = false;
@@ -16,6 +19,8 @@ abstract class Field{
 
     public $withDesc = false;
     public $description = false;
+
+    public $rowClass = "";
 
     public abstract function displayInIndex($object);
     public abstract function displayInEdit($object);
@@ -30,6 +35,11 @@ abstract class Field{
 
     public function rules($validationRules){
         $this->validationRules = $validationRules;
+        return $this;
+    }
+
+    public function rowClass($class){
+        $this->rowClass = $class;
         return $this;
     }
 
@@ -55,11 +65,6 @@ abstract class Field{
         return ($this->withDesc && !$this->description) ? trans_choice(config('thrust.translationsPrefix').$this->field.'Desc', 1) : $this->description;
     }
 
-    public function getRelationName($object)
-    {
-        $relation = $object->{$this->field};
-        return $relation->{$this->relationDisplayField} ?? '--';
-    }
 
     protected function getValue($object)
     {
