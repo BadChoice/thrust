@@ -1,12 +1,6 @@
-<div id="{{$field}}_div">
-    <div class="label">{{ $title }}</div>
-    <div class="field">
-        <input type={{$type}}
-                id="{{$field}}" value="{{$value}}" name="{{$field}}"
-                placeholder="{{$title}}"
-                {{$attributes}} {!! $validationRules !!}>
-        @if (isset($description))
-            <p>{!! $description !!}</p>
-        @endif
-    </div>
-</div>
+@component('thrust::fields.formField', ["field" => $field, "title" => $title, "description" => $description])
+    <input type={{$type}}
+            id="{{$field}}" value="{{$value}}" name="{{$field}}"
+           placeholder="{{$title}}"
+            {{$attributes}} {!! $validationRules !!}>
+@endcomponent
