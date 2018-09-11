@@ -1,4 +1,4 @@
-@component('thrust::fields.formField', ["field" => $field, "title" => $title, "description" => $description ?? null])
+@component('thrust::components.formField', ["field" => $field, "title" => $title, "description" => $description ?? null])
     <input type="hidden" value="0" name="{{$field}}">
     <input type="checkbox" id="{{$field}}" @if($value) checked @endif value="1" name="{{$field}}">
 @endcomponent

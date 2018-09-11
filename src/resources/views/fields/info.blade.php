@@ -1,4 +1,3 @@
-<div class="label">{{ $title }}</div>
-<div class="field">
+@component('thrust::components.formField', ["field" => $field ?? null, "title" => $title ?? null, "description" => $description ?? null])
     {{ $value }}
-</div>
+@endcomponent
