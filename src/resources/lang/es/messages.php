@@ -6,4 +6,6 @@ return [
     'new'    => 'Nuevo',
     'saveOrder' => 'Guardar Orden',
     'add'   => 'Añadir',
+    'delete' => 'Eliminar',
+    'noData' => 'No hay registros',
 ];

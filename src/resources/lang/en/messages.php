@@ -6,4 +6,6 @@ return [
     'new'    => 'New',
     'saveOrder' => 'Save Order',
     'add'   => 'Add',
+    'delete' => 'Delete',
+    'noData' => 'No data'
 ];

@@ -58,6 +58,11 @@ abstract class Resource{
         })->flatten();
     }
 
+    public function fieldFor($field)
+    {
+        return $this->fieldsFlattened()->where('field', $field)->first();
+    }
+
     public function panels()
     {
         return collect($this->fields())->filter(function($field){

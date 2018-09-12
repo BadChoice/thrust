@@ -2,11 +2,17 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\ResourceManager;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image as InterventionImage;
+
 class Image extends Field
 {
     protected $basePath;
     protected $basePathBindings = [];
-    protected $classes = 'gravatar';
+    protected $displayCallback;
+    protected $classes          = 'gravatar';
+    protected $resizedPrefix    = 'resized_';
     protected $gravatarField;
 
     public function gravatar($field = 'email')
@@ -15,23 +21,41 @@ class Image extends Field
         return $this;
     }
 
+    public function classes($classes)
+    {
+        $this->classes = $classes;
+        return $this;
+    }
+
     public function path($path, $bindings = [])
     {
-        $this->basePath = $path;
+        $this->basePath         = $path . '/';
         $this->basePathBindings = $bindings;
+        return $this;
+    }
+
+    /**
+     * Set a callback that will be used to convert the filename to a full url
+     * The callback can also be a class with the __invoke so it can be reused without wiring anything into the resource
+     * @param $displayCallback
+     * @return $this
+     */
+    public function display($displayCallback)
+    {
+        $this->displayCallback = $displayCallback;
         return $this;
     }
 
     public function displayInIndex($object)
     {
-        if ($this->getValue($object)) {
-            $photoPath = url($this->getBasePath() . "resized_" . $this->getValue($object));
-            return "<img src='{$photoPath}' class='$this->classes' style='height:30px; width:30px; object-fit: cover;'>";
-        }
-        if ($this->gravatarField){
-            return Gravatar::make($this->gravatarField)->displayInIndex($object);
-        }
-        return "+";
+        return view('thrust::fields.image',[
+            'path'          => $this->displayPath($object, $this->resizedPrefix),
+            'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->getImageTag($object) : null,
+            'classes'       => $this->classes,
+            'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
+            'id'            => $object->id,
+            'field'         => $this->field,
+        ])->render();
     }
 
     public function displayInEdit($object, $inline = false)
@@ -39,9 +63,45 @@ class Image extends Field
 
     }
 
-    protected function getBasePath(){
+    public function displayPath($object, $prefix = '')
+    {
+        if (! $this->getValue($object)) return null;
+        if ($this->displayCallback){
+            return call_user_func($this->displayCallback, $object, $prefix);
+        }
+        return $this->filePath($object, $prefix);
+    }
+
+    protected function filePath($object, $namePrefix = '')
+    {
+        if (! $this->getValue($object)) return null;
+        return $this->getPath() . $namePrefix . $this->getValue($object);
+    }
+
+    protected function getPath()
+    {
         if (! $this->basePath) return storage_path('thrust');
         return str_replace("{user}", auth()->user()->username, $this->basePath);
+    }
+
+    public function store($object, $file)
+    {
+        $this->delete($object, false);
+        $image      = InterventionImage::make($file);
+        $filename   = str_random(10) . '.png';
+        Storage::put($this->getPath() . $filename,                           (string)$image->encode('png'));
+        Storage::put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->encode('png'));
+        $object->update([$this->field => $filename]);
+    }
+
+    public function delete($object, $updateObject = false)
+    {
+        if (! $this->getValue($object)) return;
+        Storage::delete($this->filePath($object, $this->resizedPrefix));
+        Storage::delete($this->filePath($object));
+        if ($updateObject) {
+            $object->update([$this->field => null]);
+        }
     }
 
 }

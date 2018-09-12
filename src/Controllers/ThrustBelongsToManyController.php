@@ -12,7 +12,7 @@ class ThrustBelongsToManyController extends Controller
     public function index($resourceName, $id, $relationship){
         $resource           = app(ResourceManager::class)->make($resourceName);
         $object             = $resource->find($id);
-        $belongsToManyField = $resource->fieldsFlattened()->where('field', $relationship)->first();
+        $belongsToManyField = $resource->fieldFor($relationship);
         return view('thrust::belongsToManyIndex',[
             "resourceName"            => $resourceName,
             "object"                  => $object,

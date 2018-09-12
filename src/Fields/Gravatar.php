@@ -24,10 +24,15 @@ class Gravatar extends Field
         return $this;
     }
 
-    public function getImageTag($email, $size = 30) {
+    public function getUrl($email, $size = 30){
         $email = md5(strtolower(trim($email)));
         $gravatarURL = "https://www.gravatar.com/avatar/";
         $gravatarURL.= $email."?s=".$size."&d={$this->default}";
+        return $gravatarURL;
+    }
+
+    public function getImageTag($email, $size = 30) {
+        $gravatarURL = $this->getUrl($email, $size);
         return '<img id = '.$email.''.$size.' class="gravatar" src="'.$gravatarURL.'" width="'.$size.'">';
     }
 }

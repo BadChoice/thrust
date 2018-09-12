@@ -9,7 +9,7 @@
  * [x] Configurable route prefix
  * [x] Make the service provider deffered as it doesn't need to be called in the API
  * [x] Panel visibility by check and select
- * [] Make visibleWhen (for checkboxes, or type of printers... etc)
+ * [x] Make visibleWhen (for checkboxes, or type of printers... etc)
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
  * [] Employee, photo upload...
@@ -30,6 +30,10 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
     Route::put('{resourceName}/{id}', 'ThrustController@update')->name('thrust.update');
     Route::delete('{resourceName}/{id}', 'ThrustController@delete')->name('thrust.delete');
     Route::get('{resourceName}/search/{search}', 'ThrustSearchController@index')->name('thrust.search');
+
+    Route::get('{resourceName}/{id}/image/{field}', 'ThrustImageController@edit')->name('thrust.image.edit');
+    Route::post('{resourceName}/{id}/image/{field}', 'ThrustImageController@store')->name('thrust.image.store');
+    Route::delete('{resourceName}/{id}/image/{field}', 'ThrustImageController@delete')->name('thrust.image.delete');
 
     Route::get('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@index')->name('thrust.belongsToMany');
     Route::post('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@store')->name('thrust.belongsToMany.store');
