@@ -38,7 +38,7 @@ class Select extends Field{
         return $this->getOptions()[$this->getValue($object)] ?? "--";
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         return view('thrust::fields.select',[
             'title' => $this->getTitle(),

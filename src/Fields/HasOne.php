@@ -12,7 +12,7 @@ class HasOne extends Relationship
         return $this->getRelationName($object);
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         return;
     }

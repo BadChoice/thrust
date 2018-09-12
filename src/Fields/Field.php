@@ -23,7 +23,7 @@ abstract class Field{
     public $rowClass = "";
 
     public abstract function displayInIndex($object);
-    public abstract function displayInEdit($object);
+    public abstract function displayInEdit($object, $inline = false);
 
     public static function make($dbField, $title = null)
     {

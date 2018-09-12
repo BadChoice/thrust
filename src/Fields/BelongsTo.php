@@ -45,7 +45,7 @@ class BelongsTo extends Relationship
         return $possibleRelations;
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         if ($this->ajaxSearch){
             return view('thrust::fields.selectAjax',[

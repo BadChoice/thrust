@@ -14,7 +14,7 @@ class Gravatar extends Field
         return $this->getImageTag($object->{$this->field});
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         return "";
     }

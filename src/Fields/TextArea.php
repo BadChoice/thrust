@@ -14,7 +14,7 @@ class TextArea extends Field{
         return "cols=50 rows=10";
     }
 
-    public function displayInEdit($object){
+    public function displayInEdit($object, $inline = false){
         return view('thrust::fields.textarea',[
             'title' => $this->getTitle(),
             'field' => $this->field,

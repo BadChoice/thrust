@@ -19,8 +19,9 @@ class Text extends Field{
         return $this;
     }
 
-    public function displayInEdit($object){
+    public function displayInEdit($object, $inline = false){
         return view('thrust::fields.input',[
+            'inline' => $inline,
             'title' => $this->getTitle(),
             'type' => $this->getFieldType(),
             'field' => $this->field,

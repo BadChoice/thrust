@@ -69,7 +69,7 @@ class BelongsToMany extends Relationship
         return $relatedQuery->query()->whereNotIn('id', $object->{$this->field}->pluck('id'))->get();
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         $this->withLink = false;
         return view('thrust::fields.info',[

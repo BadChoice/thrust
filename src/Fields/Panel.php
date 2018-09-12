@@ -19,7 +19,7 @@ class Panel
         return $panel;
     }
 
-    public function displayInEdit($object){
+    public function displayInEdit($object, $inline = false){
         return '<div class="formPanel" id="panel_'.$this->title.'">' .
         collect($this->fields)->where('showInEdit',true)->reduce(function($carry, Field $field) use($object){
             return $carry .$field->displayInEdit($object);

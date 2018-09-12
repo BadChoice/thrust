@@ -30,7 +30,7 @@ class Link extends Field
         ]);
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         return $this->displayInIndex($object);
     }

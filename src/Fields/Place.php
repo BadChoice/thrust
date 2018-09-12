@@ -54,7 +54,7 @@ class Place extends Text
         return $this;
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         return view('thrust::fields.place',[
             "field" => $this->field,

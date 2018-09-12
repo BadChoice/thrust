@@ -33,7 +33,7 @@ class Check extends Text
         ]);
     }
 
-    public function displayInEdit($object)
+    public function displayInEdit($object, $inline = false)
     {
         return view('thrust::fields.check',[
             'title' => $this->getTitle(),
