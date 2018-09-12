@@ -20,6 +20,7 @@
  * [] Update saveOrder function to use the plural version of the resource name (the one we use on whole thrust) instead of the singular one
  * [] BelongsTo many ajax searchable
  * [] Add latlang to algolia places search?
+ * [] Prunable files, should be deleted when deleting resource
  */
 
 Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){

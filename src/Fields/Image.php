@@ -14,6 +14,10 @@ class Image extends Field
     protected $classes          = 'gravatar';
     protected $resizedPrefix    = 'resized_';
     protected $gravatarField;
+    public    $prunable         = true;
+
+    protected $maxHeight = 400;
+    protected $maxWidth = 400;
 
     public function gravatar($field = 'email')
     {
@@ -31,6 +35,18 @@ class Image extends Field
     {
         $this->basePath         = $path . '/';
         $this->basePathBindings = $bindings;
+        return $this;
+    }
+
+    public function maxSize($width, $height){
+        $this->maxWidth = $width;
+        $this->maxHeight = $height;
+        return $this;
+    }
+
+    public function prunable($prunable = true)
+    {
+        $this->prunable = $prunable;
         return $this;
     }
 
@@ -88,9 +104,18 @@ class Image extends Field
     {
         $this->delete($object, false);
         $image      = InterventionImage::make($file);
+
+        $image->resize($this->maxWidth, $this->maxHeight, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
         $filename   = str_random(10) . '.png';
         Storage::put($this->getPath() . $filename,                           (string)$image->encode('png'));
-        Storage::put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->encode('png'));
+        Storage::put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        })->encode('png'));
         $object->update([$this->field => $filename]);
     }
 
