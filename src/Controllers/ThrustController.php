@@ -37,7 +37,6 @@ class ThrustController extends Controller
         $resource = app(ResourceManager::class)->make($resourceName);
         request()->validate($resource->getValidationRules(null));
         $object = $resource::$model::create(request()->all());
-        //dd($object);
         return back()->withMessage(__('created'));
     }
 
