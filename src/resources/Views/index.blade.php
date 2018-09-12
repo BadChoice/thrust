@@ -51,7 +51,5 @@
     </table>
     @include('thrust::components.paginator',["data" => $rows])
 @else
-    <div class="center">
-        {{ __("thrust::messages.noData") }}
-    </div>
+    @include('thrust::components.noData')
 @endif

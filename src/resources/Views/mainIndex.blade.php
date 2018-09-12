@@ -1,6 +1,5 @@
 @extends(config('thrust.indexLayout'))
 @section('content')
-
     <div class="description">
         <span class="title">
             {{ trans_choice( config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
