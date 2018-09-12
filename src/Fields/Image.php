@@ -2,12 +2,14 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\ResourceManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
 
-class Image extends Field
+class Image extends Field implements Prunable
 {
+    public $rowClass = 'fw3';
     protected $basePath;
     protected $basePathBindings = [];
     protected $displayCallback;
@@ -128,5 +130,11 @@ class Image extends Field
             $object->update([$this->field => null]);
         }
     }
+
+    public function prune($object)
+    {
+        $this->delete($object);
+    }
+
 
 }

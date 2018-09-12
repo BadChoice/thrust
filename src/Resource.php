@@ -4,6 +4,7 @@ namespace BadChoice\Thrust;
 
 use BadChoice\Thrust\Actions\Action;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
+use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\Fields\Relationship;
 use BadChoice\Thrust\ResourceFilters\Search;
@@ -37,6 +38,7 @@ abstract class Resource{
      */
     public static $sortable = false;
     public static $sortField = 'order';
+    public static $defaultSort = 'id';
 
     /**
      * @var array Set the default eager loading relationships
@@ -88,8 +90,11 @@ abstract class Resource{
         }
         if (static::$sortable){
             Sort::apply($query, static::$sortField, 'ASC');
-        }else if (request('sort')){
+        } else if (request('sort')){
             Sort::apply($query, request('sort'), request('sort_order'));
+        }
+        else{
+            Sort::apply($query, static::$defaultSort, 'ASC');
         }
         return $query;
     }
@@ -118,9 +123,11 @@ abstract class Resource{
         return $this->find($id)->update($newData);
     }
 
-    public function delete()
+    public function delete($id)
     {
-        return (static::$model)::delete($id);
+        $object = $this->find($id);
+        $this->prune($object);
+        return $object->delete();
     }
 
     public function canEdit($row)
@@ -172,6 +179,17 @@ abstract class Resource{
         return $this->fieldsFlattened()->filter(function($field){
             return $field instanceof Relationship;
         })->pluck('field');
+    }
+
+    public function prune($object)
+    {
+        $prunableFields = $this->fieldsFlattened()->filter(function ($field) {
+            return $field instanceof Prunable;
+        });
+        if ($prunableFields->count() == 0) return;
+        $prunableFields->each(function (Prunable $field) use ($object) {
+            $field->prune($object);
+        });
     }
 
 }
