@@ -10,6 +10,8 @@
  * [x] Make the service provider deffered as it doesn't need to be called in the API
  * [x] Panel visibility by check and select
  * [x] Make visibleWhen (for checkboxes, or type of printers... etc)
+ * [x] BelongsTo many ajax searchable
+ * [x] Prunable files, should be deleted when deleting resource
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
  * [] Employee, photo upload...
@@ -18,9 +20,7 @@
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  * [] Update saveOrder function to use a thrust one instead of the retail/xef yet
  * [] Update saveOrder function to use the plural version of the resource name (the one we use on whole thrust) instead of the singular one
- * [] BelongsTo many ajax searchable
  * [] Add latlang to algolia places search?
- * [] Prunable files, should be deleted when deleting resource
  */
 
 Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){

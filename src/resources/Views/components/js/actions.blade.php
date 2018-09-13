@@ -17,10 +17,11 @@
             "_token": "{{ csrf_token() }}",
             "action" : actionClass,
             "ids" : selected
-        }).done(function(){
+        }).done(function(data){
+            showMessage(data["message"]);
             location.reload();
         }).fail(function(){
-
+            showMessage("Something went wrong");
         });
     }
 

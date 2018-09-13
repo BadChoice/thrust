@@ -18,10 +18,10 @@ class ThrustActionsController extends Controller
 
     public function perform($resourceName)
     {
-        $actionClass = request('action');
-        $action = new $actionClass;
-        $action->resource = app(ResourceManager::class)->make($resourceName);
-        $action->handle($action->resource->find(request('ids')));
-        return response()->json(["ok" => true]);
+        $actionClass        = request('action');
+        $action             = new $actionClass;
+        $action->resource   = app(ResourceManager::class)->make($resourceName);
+        $response           = $action->handle($action->resource->find(request('ids')));
+        return response()->json(["ok" => true, "message" => $response ?? "done"]);
     }
 }
