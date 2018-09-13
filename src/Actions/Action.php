@@ -13,6 +13,8 @@ abstract class Action
     public $icon = null;
     public $main = false;
 
+    public $resource;
+
     public abstract function handle(Collection $objects);
 
     /**

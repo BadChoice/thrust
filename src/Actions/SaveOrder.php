@@ -10,7 +10,7 @@ class SaveOrder extends MainAction
         $title = __('thrust::messages.'.$this->title);
         return view('thrust::actions.saveOrder', [
             'title' => $title,
-            'resource' => ucfirst(str_singular($resourceName))
+            'resourceName' => $resourceName
         ])->render();
     }
 

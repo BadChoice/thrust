@@ -11,6 +11,13 @@ class UpdateValue extends Action
     public $icon = "pencil";
     public $field = 'name';
 
+    public static function make($field = 'name')
+    {
+        $action = new static;
+        $action->field = $field;
+        return $action;
+    }
+
     public function fields()
     {
         return [

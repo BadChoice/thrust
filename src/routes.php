@@ -12,20 +12,23 @@
  * [x] Make visibleWhen (for checkboxes, or type of printers... etc)
  * [x] BelongsTo many ajax searchable
  * [x] Prunable files, should be deleted when deleting resource
+ * [x] Update saveOrder function to use a thrust one instead of the retail/xef yet
+ * [x] Update saveOrder function to use the plural version of the resource name (the one we use on whole thrust) instead of the singular one
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
  * [] Employee, photo upload...
  * [] ThrustRelationshipController to use the $relationDisplayName instead of `name`
  * [] Make the resource found in app service provider recursive into thrust directory
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
- * [] Update saveOrder function to use a thrust one instead of the retail/xef yet
- * [] Update saveOrder function to use the plural version of the resource name (the one we use on whole thrust) instead of the singular one
  * [] Add latlang to algolia places search?
  */
 
 Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){
     Route::post('{resourceName}/actions', 'ThrustActionsController@perform')->name('thrust.actions.perform');
     Route::get('{resourceName}/actions', 'ThrustActionsController@create')->name('thrust.actions.create');
+
+    Route::post('{resourceName}/updateOrder', 'ThrustSortController@updateOrder')->name('thrust.updateOrder');
+    Route::get('{resourceName}/{id}/toggle/{field}', 'ThrustActionsController@toggle')->name('thrust.toggle');
 
     Route::get('{resourceName}', 'ThrustController@index')->name('thrust.index');
     Route::post('{resourceName}', 'ThrustController@store')->name('thrust.store');
@@ -44,5 +47,4 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
     Route::delete('{resourceName}/{id}/belongsToMany/{field}/{detachId}', 'ThrustBelongsToManyController@delete')->name('thrust.belongsToMany.delete');
 
     Route::get('{resourceName}/{id}/related/{relationship}', 'ThrustRelationshipController@search')->name('thrust.relationship.search');
-    Route::get('{resourceName}/{id}/toggle/{field}', 'ThrustActionsController@toggle')->name('thrust.toggle');
 });
