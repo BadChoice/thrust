@@ -85,7 +85,7 @@ abstract class Resource{
      */
     public function query()
     {
-        $query = $this->query ?? static::$model::query()->with($this->getWithFields());
+        $query = $this->getBaseQuery();
         if (request('search')){
             Search::apply($query, request('search'), static::$search);
         }
@@ -201,6 +201,11 @@ abstract class Resource{
         $prunableFields->each(function (Prunable $field) use ($object) {
             $field->prune($object);
         });
+    }
+
+    protected function getBaseQuery()
+    {
+        return $this->query ?? static::$model::query()->with($this->getWithFields());
     }
 
 }
