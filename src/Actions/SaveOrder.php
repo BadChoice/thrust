@@ -2,7 +2,7 @@
 
 namespace BadChoice\Thrust\Actions;
 
-class SaveOrder extends Action
+class SaveOrder extends MainAction
 {
 
     public function display($resourceName)

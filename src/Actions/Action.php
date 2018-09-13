@@ -2,22 +2,29 @@
 
 namespace BadChoice\Thrust\Actions;
 
-class Action
+
+use Illuminate\Support\Collection;
+
+abstract class Action
 {
-    public $title;
+    public $needsConfirmation = true;
+    public $confirmationMessage = "Are you sure?";
+    public $title = null;
+    public $icon = null;
 
-    public static function make($title)
+    public abstract function handle(Collection $objects);
+
+    public function getClassForJs()
     {
-        $action = new static;
-        $action->title = $title;
-        return $action;
+        return str_replace("\\", "\\\\", get_class($this));
     }
 
-    public function display($resourceName)
+    public function getTitle()
     {
-        $title = __('thrust::messages.'.$this->title);
-        $link = route('thrust.create', $resourceName);
-        return "<a class='button showPopup' href='{$link}'> <i class='fa fa-plus'></i> {$title} </a>";
+        if ($this->icon)
+            return icon($this->icon);
+        if ($this->title)
+            return $this->title;
+        return collect(explode("\\", get_class($this)))->last();
     }
-
 }

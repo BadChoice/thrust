@@ -2,7 +2,8 @@
 
 namespace BadChoice\Thrust;
 
-use BadChoice\Thrust\Actions\Action;
+use BadChoice\Thrust\Actions\MainAction;
+use BadChoice\Thrust\Actions\Delete;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Fields\Panel;
@@ -125,7 +126,7 @@ abstract class Resource{
 
     public function delete($id)
     {
-        $object = $this->find($id);
+        $object = is_numeric($id) ? $this->find($id) : $id;
         $this->prune($object);
         return $object->delete();
     }
@@ -163,10 +164,17 @@ abstract class Resource{
         })->toArray();
     }
 
+    public function mainActions()
+    {
+        return [
+            MainAction::make('new'),
+        ];
+    }
+
     public function actions()
     {
         return [
-            Action::make('new'),
+            new Delete
         ];
     }
 

@@ -15,4 +15,13 @@ class ThrustActionsController extends Controller
         $object->update([$field => !$object->{$field}]);
         return back();
     }
+
+    public function perform($resourceName)
+    {
+        $actionClass = request('action');
+        $action = new $actionClass;
+        $action->resource = app(ResourceManager::class)->make($resourceName);
+        $action->handle($action->resource->find(request('ids')));
+        return response()->json(["ok" => true]);
+    }
 }

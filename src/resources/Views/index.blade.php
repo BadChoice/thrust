@@ -2,6 +2,9 @@
 @if (count($rows) > 0)
     <table class="list">
         <thead>
+            <th class="hide-mobile">
+                <input type="checkbox" onclick="toggleSelectAll(this)">
+            </th>
             @if ($sortable)
                 <th class="hide-mobile">  </th>
             @endif
@@ -23,6 +26,7 @@
         <tbody class="@if($sortable) sortable @endif">
         @foreach ($rows as $row)
             <tr id="sort_{{$row->id}}">
+                <td class="action"><input class='actionCheckbox' type="checkbox" name="selected[{{$row->id}}]" meta:id="{{$row->id}}"></td>
                 @if ($sortable)
                     <td class="sort action hide-mobile"></td>
                 @endif

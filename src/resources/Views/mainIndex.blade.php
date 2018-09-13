@@ -7,7 +7,7 @@
         </span>
         <br><br>
         <div class="actions">
-            @foreach($resource->actions() as $action)
+            @foreach($resource->mainActions() as $action)
                 {!! $action->display($resourceName) !!}
             @endforeach
         </div>
@@ -16,6 +16,13 @@
 
     @if ($searchable)
         @include('thrust::components.search')
+    @endif
+    @if (count($resource->actions()) > 0)
+    <div class="pt4 pb1 text-right">
+        @foreach($resource->actions() as $action)
+            <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}}, "{{$action->confirmationMessage}}")'>{!! $action->getTitle() !!}</button>
+        @endforeach
+    </div>
     @endif
     <div id="all">
         {!! (new BadChoice\Thrust\Html\Index($resource))->show() !!}
@@ -28,4 +35,6 @@
     @if ($searchable)
         @include('thrust::components.searchScript', ['resourceName' => $resourceName])
     @endif
+    @include('thrust::components.js.actions', ['resourceName' => $resourceName]);
+
 @stop
