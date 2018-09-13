@@ -17,13 +17,8 @@
     @if ($searchable)
         @include('thrust::components.search')
     @endif
-    @if (count($resource->actions()) > 0)
-    <div class="pt4 pb1 text-right">
-        @foreach($resource->actions() as $action)
-            <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}}, "{{$action->confirmationMessage}}")'>{!! $action->getTitle() !!}</button>
-        @endforeach
-    </div>
-    @endif
+    @include('thrust::components.actions')
+
     <div id="all">
         {!! (new BadChoice\Thrust\Html\Index($resource))->show() !!}
     </div>

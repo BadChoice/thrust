@@ -7,5 +7,6 @@ return [
     'saveOrder' => 'Save Order',
     'add'   => 'Add',
     'delete' => 'Delete',
-    'noData' => 'No data'
+    'noData' => 'No data',
+    'actions' => 'Actions',
 ];

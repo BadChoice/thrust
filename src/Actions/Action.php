@@ -11,6 +11,7 @@ abstract class Action
     public $confirmationMessage = "Are you sure?";
     public $title = null;
     public $icon = null;
+    public $main = false;
 
     public abstract function handle(Collection $objects);
 
@@ -21,10 +22,9 @@ abstract class Action
 
     public function getTitle()
     {
+        $title = $this->title ?? collect(explode("\\", get_class($this)))->last();
         if ($this->icon)
-            return icon($this->icon);
-        if ($this->title)
-            return $this->title;
-        return collect(explode("\\", get_class($this)))->last();
+            return icon($this->icon) . " " . $title ;
+        return $title;
     }
 }

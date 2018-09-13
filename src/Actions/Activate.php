@@ -4,15 +4,16 @@ namespace BadChoice\Thrust\Actions;
 
 use Illuminate\Support\Collection;
 
-class Delete extends Action
+class Activate extends Action
 {
     public $needsConfirmation = true;
-    public $icon = "trash";
-    public $main = true;
+    public $icon = 'check';
+    public $title = 'Activate';
+    public $field = 'active';
 
     public function handle(Collection $objects){
         $objects->each(function($object){
-            $this->resource->delete($object);
+            $object->update([$this->field => true]);
         });
     }
 

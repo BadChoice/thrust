@@ -7,5 +7,6 @@ return [
     'saveOrder' => 'Guardar ordre',
     'add'   => 'Afegir',
     'delete' => 'Eliminar',
-    'noData' => 'No hi ha registres'
+    'noData' => 'No hi ha registres',
+    'actions' => 'Accions',
 ];

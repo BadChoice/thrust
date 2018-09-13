@@ -8,4 +8,5 @@ return [
     'add'   => 'Añadir',
     'delete' => 'Eliminar',
     'noData' => 'No hay registros',
+    'actions' => 'Acciones',
 ];
