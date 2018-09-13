@@ -5,7 +5,13 @@
         </div>
         <ul class="dropdown-container" style="right:100px">
             @foreach(collect($resource->actions())->where('main', false) as $action)
-                <li class="text-left"><a class='pointer' onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}}, "{{$action->confirmationMessage}}")'>{!! $action->getTitle() !!}</a></li>
+                <li class="text-left">
+                    @if( count($action->fields()) == 0)
+                        <a class='pointer' onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}}, "{{$action->confirmationMessage}}")'>{!! $action->getTitle() !!}</a>
+                    @else
+                        <a class='pointer actionPopup' href="{{route('thrust.actions.create',[$resourceName])}}?action={{get_class($action)}}">{!! $action->getTitle() !!}</a>
+                    @endif
+                </li>
             @endforeach
         </ul>
         @foreach( collect($resource->actions())->where('main', true) as $action)

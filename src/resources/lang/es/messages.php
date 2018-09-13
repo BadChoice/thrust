@@ -9,4 +9,6 @@ return [
     'delete' => 'Eliminar',
     'noData' => 'No hay registros',
     'actions' => 'Acciones',
+    'perform' => 'Ejecutar',
+    'noRowsSelected' => 'No hay ninguna fila selecionada',
 ];

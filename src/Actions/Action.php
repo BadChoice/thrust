@@ -15,6 +15,14 @@ abstract class Action
 
     public abstract function handle(Collection $objects);
 
+    /**
+     * Should return the fields required for the action so they will be asked
+     * @return array
+     */
+    public function fields(){
+        return [];
+    }
+
     public function getClassForJs()
     {
         return str_replace("\\", "\\\\", get_class($this));

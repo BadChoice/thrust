@@ -1,10 +1,23 @@
 <script>
+
+    $(".actionPopup").on('click',function(e) {
+        e.preventDefault();
+        var selected = getSelectedRowsIds();
+        if (selected.length == 0){
+            return alert("{{ __("thrust::messages.noRowsSelected") }}");
+        }
+
+        $(this).attr('href', $(this).attr('href') + "&ids=" + selected);
+        showPopup($(this).attr('href'));
+    });
+
+
     function runAction(actionClass, needsConfirmation, confirmationMessage){
         var selected = getSelectedRowsIds();
         console.log(actionClass, selected, needsConfirmation);
 
         if (selected.length == 0){
-           return alert("No rows selected");
+            return alert("{{ __("thrust::messages.noRowsSelected") }}");
         }
 
         if (!needsConfirmation || confirm(confirmationMessage)){

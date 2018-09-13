@@ -16,12 +16,37 @@ class ThrustActionsController extends Controller
         return back();
     }
 
+    public function create($resourceName)
+    {
+        $action      = $this->findActionForResource($resourceName, request('action'));
+        if  (! $action) abort(404);
+
+        return view('thrust::actions.create',[
+            "action"        => $action,
+            "resourceName"  => $resourceName,
+            "ids"           => request('ids')
+        ]);
+    }
+
     public function perform($resourceName)
     {
-        $actionClass        = request('action');
-        $action             = new $actionClass;
-        $action->resource   = app(ResourceManager::class)->make($resourceName);
-        $response           = $action->handle($action->resource->find(request('ids')));
-        return response()->json(["ok" => true, "message" => $response ?? "done"]);
+        $action     = $this->findActionForResource($resourceName, request('action'));
+        $ids        = is_string(request('ids')) ? explode(',', request('ids')) : request('ids');
+        $response   = $action->handle($action->resource->find($ids));
+
+        if  (request()->ajax())
+            return response()->json(["ok" => true, "message" => $response ?? "done"]);
+
+        return back()->withMessage($response);
+    }
+
+    private function findActionForResource($resourceName, $actionClass)
+    {
+        $resource   = app(ResourceManager::class)->make($resourceName);
+        $action =  collect($resource->actions())->first(function($action) use($actionClass){
+            return $action instanceof $actionClass;
+        });
+        $action->resource = $resource;
+        return $action;
     }
 }

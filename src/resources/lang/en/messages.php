@@ -9,4 +9,6 @@ return [
     'delete' => 'Delete',
     'noData' => 'No data',
     'actions' => 'Actions',
+    'perform' => 'Perform',
+    'noRowsSelected' => 'There is no row selected',
 ];

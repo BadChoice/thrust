@@ -127,16 +127,19 @@ abstract class Resource{
     public function delete($id)
     {
         $object = is_numeric($id) ? $this->find($id) : $id;
+        if (! $this->canDelete($object)) {
+            return false;
+        }
         $this->prune($object);
         return $object->delete();
     }
 
-    public function canEdit($row)
+    public function canEdit($object)
     {
         return true;
     }
 
-    public function canDelete($row)
+    public function canDelete($object)
     {
         return true;
     }
