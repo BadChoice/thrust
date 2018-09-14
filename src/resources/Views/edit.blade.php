@@ -28,7 +28,9 @@
 
 
 @push('edit-scripts')
-    @include('thrust::components.js.saveAndContinue')
+    @if (! $fullPage)
+        @include('thrust::components.js.saveAndContinue')
+    @endif
     <script>
         // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
         $('.searchable').select2({

@@ -11,7 +11,10 @@ class ThrustController extends Controller
 
     public function index($resourceName)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        if ($resource::$singleResource){
+            return $this->singleResourceIndex($resourceName, $resource);
+        }
         return view('thrust::mainIndex',[
             'resourceName' => $resourceName,
             'resource' => $resource,
@@ -54,5 +57,14 @@ class ThrustController extends Controller
         app(ResourceManager::class)->make($resourceName)
                                    ->delete($id);
         return back()->withMessage(__('deleted'));
+    }
+
+    private function singleResourceIndex($resourceName, $resource)
+    {
+        return view('thrust::singleResourceIndex',[
+            "resourceName" => $resourceName,
+            "resource" => $resource,
+            "object" => $resource->first()
+        ]);
     }
 }

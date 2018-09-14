@@ -30,6 +30,12 @@ abstract class Resource{
     protected $pagination = 25;
 
     /**
+     * Set this to true when the resource is a simple one like business
+     * @var bool
+     */
+    public static $singleResource = false;
+
+    /**
      * Defines the searchable fields
      */
     public static $search = [];
@@ -112,6 +118,11 @@ abstract class Resource{
     public function find($id)
     {
         return (static::$model)::find($id);
+    }
+
+    public function first()
+    {
+        return (static::$model)::first();
     }
 
     public function count()
