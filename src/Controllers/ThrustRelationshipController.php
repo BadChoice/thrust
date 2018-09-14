@@ -9,17 +9,11 @@ class ThrustRelationshipController extends Controller
 {
     public function search($resourceName, $id, $relationship)
     {
-        $resource   = app(ResourceManager::class)->make($resourceName);
-        $object     = $resource->find($id);
-        $query      = $object->{$relationship}()->getRelated()->query()
-                        ->where('name','like','%'.request('search').'%')
-                        ->select('id','name')->limit(10);
-
-        if (! request('allowDuplicates', true)){
-            $query->whereNotIn('id', $object->{$relationship}->pluck('id')->toArray());
-        }
-
-        $results = $query->get();
+        $resource       = app(ResourceManager::class)->make($resourceName);
+        $relationField = $resource->fieldFor($relationship);
+        $object         = $resource->find($id);
+        $query          = $relationField->searchRelatedQuery($object, request('search'), request('allowDuplicates', true));
+        $results        = $query->get();
 
         if (request('allowNull', false)){
            return $results->prepend(["id" => "", "name" => "--"]);

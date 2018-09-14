@@ -64,9 +64,7 @@ class BelongsToMany extends Relationship
 
     public function getOptions($object)
     {
-        $relatedQuery = $this->getRelation($object)->getRelated();
-        if ($this->allowDuplicates) return $relatedQuery->all();
-        return $relatedQuery->query()->whereNotIn('id', $object->{$this->field}->pluck('id'))->get();
+        return $this->relatedQuery($object, $this->allowDuplicates)->get();
     }
 
     public function displayInEdit($object, $inline = false)

@@ -14,10 +14,11 @@
  * [x] Prunable files, should be deleted when deleting resource
  * [x] Update saveOrder function to use a thrust one instead of the retail/xef yet
  * [x] Update saveOrder function to use the plural version of the resource name (the one we use on whole thrust) instead of the singular one
+ * [x] ThrustRelationshipController to use the $relationDisplayName instead of `name`
+ * [] Add save and continue editing functionality
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
  * [] Employee, photo upload...
- * [] ThrustRelationshipController to use the $relationDisplayName instead of `name`
  * [] Make the resource found in app service provider recursive into thrust directory
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  * [] Add latlang to algolia places search?
