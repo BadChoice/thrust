@@ -12,9 +12,9 @@ class Activate extends Action
     public $field = 'active';
 
     public function handle(Collection $objects){
-        $objects->each(function($object){
-            $object->update([$this->field => true]);
-        });
+        $this->getAllObjectsQuery($objects)->update([
+            $this->field => true
+        ]);
     }
 
 }

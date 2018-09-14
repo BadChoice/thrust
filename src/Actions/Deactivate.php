@@ -12,9 +12,12 @@ class Deactivate extends Action
     public $field = 'active';
 
     public function handle(Collection $objects){
-        $objects->each(function($object){
+        $this->getAllObjectsQuery($objects)->update([
+            $this->field => false
+        ]);
+        /*$objects->each(function($object){
             $object->update([$this->field => false]);
-        });
+        });*/
     }
 
 }

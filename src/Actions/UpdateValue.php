@@ -26,9 +26,9 @@ class UpdateValue extends Action
     }
 
     public function handle(Collection $objects){
-        $objects->each(function($object){
-            $object->update([$this->field => request($this->field)]);
-        });
+        $this->getAllObjectsQuery($objects)->update([
+            $this->field => request($this->field)
+        ]);
     }
 
 }

@@ -2,9 +2,12 @@
     <select id="{{$field}}" name="{{$field}}">
         <option value="{{$value}}" selected>{{$name}}</option>
     </select>
-    <script>
-        new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $id, $relationship]) }}?allowNull={{$allowNull}}',{
-            dropdownParent: $('#popup'),
-        }).show('#{{$field}}');
-    </script>
+
+    @push('edit-scripts')
+        <script>
+            new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $id, $relationship]) }}?allowNull={{$allowNull}}',{
+                dropdownParent: $('#popup'),
+            }).show('#{{$field}}');
+        </script>
+    @endpush
 @endcomponent

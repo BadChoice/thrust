@@ -37,4 +37,14 @@ abstract class Action
             return icon($this->icon) . " " . $title ;
         return $title;
     }
+
+    /**
+     * If the action needs to perform an update to all objects, this query can be used to do it
+     * with just one query
+     * @param $objects
+     * @return mixed
+     */
+    public function getAllObjectsQuery($objects){
+        return $objects->first()->query()->whereIn('id', $objects->pluck('id')->toArray());
+    }
 }

@@ -26,14 +26,20 @@
     @endif
 </form>
 
-@include('thrust::components.js.saveAndContinue')
 
-<script>
-    // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
-    $('.searchable').select2({
-        width: '300px',
-        dropdownAutoWidth : true,
-        dropdownParent: $('#popup')
-    });
-    setupVisibility({!! json_encode($visibility)  !!});
-</script>
+@push('edit-scripts')
+    @include('thrust::components.js.saveAndContinue')
+    <script>
+        // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
+        $('.searchable').select2({
+            width: '300px',
+            dropdownAutoWidth : true,
+            dropdownParent: $('#popup')
+        });
+        setupVisibility({!! json_encode($visibility)  !!});
+    </script>
+@endpush
+
+@if(!$fullPage)
+    @stack('edit-scripts')
+@endif
