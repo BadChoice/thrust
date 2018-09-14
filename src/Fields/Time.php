@@ -17,7 +17,7 @@ class Time extends Text{
 
     protected function getFieldAttributes()
     {
-        return $this->withSeconds ? " step='1' " : '';
+        return $this->withSeconds ? " step=1 " : '';
     }
 
 }
