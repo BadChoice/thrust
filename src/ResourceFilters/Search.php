@@ -12,4 +12,12 @@ class Search
             }, $query);
         });
     }
+
+    /** //TODO: improved search by words, fer-ho per el primer fields nomes?
+    collect(explode(' ', $text))->each(function ($word) use (&$query) {
+            $query->where(function ($subQuery) use ($word) {
+                $subQuery->where('products.name', 'like', "%{$word}%");
+            });
+        });
+     */
 }

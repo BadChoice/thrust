@@ -36,7 +36,7 @@ class Edit
         });
     }
 
-    public function show($id)
+    public function show($id, $fullPage = false)
     {
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
         return view('thrust::edit', [
@@ -45,6 +45,7 @@ class Edit
             'fields'        => $this->getEditFields(),
             'object'        => $object,
             'visibility'    => $this->getVisiblityJson(),
+            'fullPage'      => $fullPage
         ])->render();
     }
 

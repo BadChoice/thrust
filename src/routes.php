@@ -15,13 +15,14 @@
  * [x] Update saveOrder function to use a thrust one instead of the retail/xef yet
  * [x] Update saveOrder function to use the plural version of the resource name (the one we use on whole thrust) instead of the singular one
  * [x] ThrustRelationshipController to use the $relationDisplayName instead of `name`
- * [] Add save and continue editing functionality
+ * [x] Employee, photo upload...
+ * [x] Add save and continue editing functionality
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
- * [] Employee, photo upload...
  * [] Make the resource found in app service provider recursive into thrust directory
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  * [] Add latlang to algolia places search?
+ * [] Improved ResourceFilters\Search by words, fer-ho per el primer fields nomes?
  */
 
 Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){

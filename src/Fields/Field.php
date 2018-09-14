@@ -87,8 +87,8 @@ abstract class Field{
         return $this;
     }
 
-    public function hideInEdit(){
-        $this->showInEdit = false;
+    public function hideInEdit($hideInEdit = true){
+        $this->showInEdit = ! $hideInEdit;
         return $this;
     }
 

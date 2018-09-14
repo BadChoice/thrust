@@ -1,9 +1,8 @@
 <div>
     @if ($imageField->displayPath($object))
-        <img src="{{ url($imageField->displayPath($object)) }}" style="max-height:200px; max-width:400px;">
+        <img class='br1' src="{{ url($imageField->displayPath($object)) }}" style="max-height:200px; max-width:400px;">
     @endif
 </div>
-
 
 <div class="inline mt4">
     <form action="{{ route('thrust.image.store', [$resourceName, $object->id, $imageField->field]) }}" method="POST" enctype="multipart/form-data">

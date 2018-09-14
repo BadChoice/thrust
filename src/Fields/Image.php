@@ -17,6 +17,10 @@ class Image extends Field implements Prunable
     protected $resizedPrefix    = 'resized_';
     protected $gravatarField;
     public    $prunable         = true;
+    public    $showInEdit       = false;
+    public    $editClasses      = "br1";
+    public    $indexStyle       = 'height:30px; width:30px; object-fit: cover;';
+    public    $editStyle        = 'height:150px; width:300px; object-fit: cover;';
 
     protected $maxHeight = 400;
     protected $maxWidth = 400;
@@ -67,18 +71,33 @@ class Image extends Field implements Prunable
     public function displayInIndex($object)
     {
         return view('thrust::fields.image',[
+            'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object, $this->resizedPrefix),
             'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->getImageTag($object) : null,
             'classes'       => $this->classes,
+            'style'         => $this->indexStyle,
             'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
             'id'            => $object->id,
             'field'         => $this->field,
+            'inline'        => true,
+            'description'   => $this->getDescription(),
         ])->render();
     }
 
     public function displayInEdit($object, $inline = false)
     {
-
+        return view('thrust::fields.image',[
+            'title'         => $this->getTitle(),
+            'path'          => $this->displayPath($object),
+            'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->getImageTag($object) : null,
+            'classes'       => $this->editClasses,
+            'style'         => $this->editStyle,
+            'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
+            'id'            => $object->id,
+            'field'         => $this->field,
+            'inline'        => $inline,
+            'description'   => $this->getDescription(),
+        ])->render();
     }
 
     public function displayPath($object, $prefix = '')

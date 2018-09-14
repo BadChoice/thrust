@@ -3,6 +3,7 @@
 return [
     'search' => 'Buscar',
     'save'   => 'Guardar',
+    'saveAndContinueEditing' => 'Guardar y continuar editando',
     'new'    => 'Nuevo',
     'saveOrder' => 'Guardar Orden',
     'add'   => 'Añadir',

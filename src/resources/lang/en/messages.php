@@ -3,6 +3,7 @@
 return [
     'search' => 'Search',
     'save'   => 'Save',
+    'saveAndContinueEditing' => 'Save and continue editing',
     'new'    => 'New',
     'saveOrder' => 'Save Order',
     'add'   => 'Add',
