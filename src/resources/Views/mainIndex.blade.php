@@ -12,12 +12,11 @@
             @endforeach
         </div>
         {{ trans_choice( config('thrust.translationsDescriptionsPrefix') . str_singular($resourceName), 1) }}
-    </div>
 
-    @if ($searchable)
         @include('thrust::components.search')
-    @endif
-    @include('thrust::components.actions')
+        @include('thrust::components.actions')
+
+    </div>
 
     <div id="all">
         {!! (new BadChoice\Thrust\Html\Index($resource))->show() !!}
