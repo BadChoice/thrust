@@ -7,20 +7,12 @@ use BadChoice\Thrust\ResourceManager;
 class HasMany extends Relationship
 {
     public $showInEdit = false;
-    public $withLink   = false;
     public $link       = null;
     public $useTitle;
 
     public function useTitle($useTitle = true)
     {
         $this->useTitle = $useTitle;
-        return $this;
-    }
-
-    public function withLink($withLink = true, $link = null)
-    {
-        $this->withLink = $withLink;
-        $this->link     = $link;
         return $this;
     }
 

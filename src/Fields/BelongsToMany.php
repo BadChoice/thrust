@@ -2,17 +2,11 @@
 
 namespace BadChoice\Thrust\Fields;
 
-
-use BadChoice\Thrust\Fields\Traits\Searchable;
 use BadChoice\Thrust\ResourceManager;
 
 class BelongsToMany extends Relationship
 {
-    use Searchable;
-
-    public $withLink        = false;
     public $allowDuplicates = false;
-
     public $indexTextCallback = null;
     public $pivotFields = [];
 
@@ -25,12 +19,6 @@ class BelongsToMany extends Relationship
             "id"            => $object->id,
             "resourceName"  => app(ResourceManager::class)->resourceNameFromModel($object),
         ]);
-    }
-
-    public function withLink($withLink = true)
-    {
-        $this->withLink = $withLink;
-        return $this;
     }
 
     public function pivotFields($pivotFields){

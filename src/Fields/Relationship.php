@@ -3,13 +3,22 @@
 namespace BadChoice\Thrust\Fields;
 
 
+use BadChoice\Thrust\Fields\Traits\Searchable;
 use BadChoice\Thrust\ResourceFilters\Search;
 
 abstract class Relationship extends Field
 {
+    use Searchable;
+
     public $relationDisplayField = 'name';
     public $relatedScope          = null;
-    public $searchFields          = null;
+    public $withLink              = false;
+
+    public function withLink($withLink = true)
+    {
+        $this->withLink = $withLink;
+        return $this;
+    }
 
     public function getRelation($object){
         return $object->{$this->field}();
@@ -56,7 +65,7 @@ abstract class Relationship extends Field
         $query = $this->relatedQuery($object, $allowDuplicates);
 
         Search::apply($query, $searchText, $this->searchFields ?? [$this->relationDisplayField]);
-       $query->select('id', $this->relationDisplayField)->limit(10);
+        $query->select('id', $this->relationDisplayField)->limit(10);
 
         return $query;
     }
