@@ -7,7 +7,7 @@ trait Searchable
 {
     public $searchable = false;
     public $ajaxSearch = false;
-    public $searchFields = [];
+    public $searchFields = null;
 
     public function searchable($searchable = true, $usingAjax = false)
     {
@@ -16,7 +16,7 @@ trait Searchable
         return $this;
     }
 
-    public function ajaxSearch($searchFields = [])
+    public function ajaxSearch($searchFields = null)
     {
         $this->searchable = true;
         $this->ajaxSearch = true;
