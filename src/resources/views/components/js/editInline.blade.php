@@ -1,5 +1,6 @@
 <script>
     $("tr").on("dblclick", function(element){
+        if ($(this).find("a.edit").length == 0) return;
         editInline($(this).attr('id').replace("sort_", ""));
     });
 
