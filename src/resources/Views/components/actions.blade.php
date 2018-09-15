@@ -1,5 +1,5 @@
 @if (count($resource->actions()) > 0)
-    <div class="pb1 text-right" style="margin-top:-29px">
+    <div class="pb1 text-right" style="margin-top:-29px; margin-right: -8px;">
         @if (collect($resource->actions())->where('main', false)->count() > 0)
 
             <div class="dropdown inline">

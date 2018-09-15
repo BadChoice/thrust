@@ -20,7 +20,9 @@
                     </div>
                 </th>
             @endforeach
-            <th class="action" colspan="2"></th>
+            <th class="action text-right" colspan="2" >
+                @include('thrust::components.tableDensity')
+            </th>
         </thead>
 
         <tbody class="@if($sortable) sortable @endif">
