@@ -24,6 +24,11 @@ class Edit
         return $fields;
     }
 
+    public function getIndexFields()
+    {
+        return $this->resource->fieldsFlattened()->where('showInIndex', true);
+    }
+
     public function getVisiblityJson()
     {
         return $this->resource->panels()->filter(function($panel){
@@ -46,6 +51,18 @@ class Edit
             'object'        => $object,
             'visibility'    => $this->getVisiblityJson(),
             'fullPage'      => $fullPage
+        ])->render();
+    }
+
+    public function showInline($id)
+    {
+        $object = is_numeric($id) ? $this->resource->find($id) : $id;
+        return view('thrust::editInline', [
+            'nameField'     => $this->resource->nameField,
+            'resourceName'  => $this->resource->name(),
+            'fields'        => $this->getIndexFields(),
+            'sortable'      => $this->resource::$sortable,
+            'object'        => $object,
         ])->render();
     }
 

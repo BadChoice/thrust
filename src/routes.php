@@ -36,6 +36,7 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
     Route::post('{resourceName}', 'ThrustController@store')->name('thrust.store');
     Route::get('{resourceName}/create', 'ThrustController@create')->name('thrust.create');
     Route::get('{resourceName}/{id}/edit', 'ThrustController@edit')->name('thrust.edit');
+    Route::get('{resourceName}/{id}/editInline', 'ThrustController@editInline')->name('thrust.editInline');
     Route::put('{resourceName}/{id}', 'ThrustController@update')->name('thrust.update');
     Route::delete('{resourceName}/{id}', 'ThrustController@delete')->name('thrust.delete');
     Route::get('{resourceName}/search/{search}', 'ThrustSearchController@index')->name('thrust.search');

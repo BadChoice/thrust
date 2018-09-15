@@ -1,5 +1,5 @@
 @if (isset($inline) && $inline)
-    <div style="display:inline-block; width:70px">
+    <div style="display:inline-block;">
         {{ $slot }}
     </div>
 @else

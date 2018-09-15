@@ -61,6 +61,7 @@ class BelongsToMany extends Relationship
         return view('thrust::fields.info',[
             "title" => $this->getTitle(),
             "value" => $this->displayInIndex($object),
+            "inline" => $inline,
         ]);
     }
 

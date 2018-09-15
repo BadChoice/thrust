@@ -7,7 +7,7 @@
     @endif
 
     @if (isset($object->id) )
-        <form action="{{route('thrust.update', [$resourceName, $object->id] )}}" id='thrust-edit-form' method="POST">
+        <form action="{{route('thrust.update', [$resourceName, $object->id] )}}" id='thrust-form-{{$object->id}}' method="POST">
         {{ method_field('PUT') }}
     @else
         <form action="{{route('thrust.store', [$resourceName] )}}" method="POST">
@@ -22,7 +22,7 @@
     <button> {{ __("thrust::messages.save") }} </button>
 
     @if (isset($object->id) )
-        <a class="secondary button hidden" id="thrust-save-and-continue" onclick="submitAjaxForm('thrust-edit-form')">{{ __("thrust::messages.saveAndContinueEditing") }}</a>
+        <a class="secondary button hidden" id="thrust-save-and-continue" onclick="submitAjaxForm('thrust-form-{{$object->id}}')">{{ __("thrust::messages.saveAndContinueEditing") }}</a>
     @endif
 </form>
 

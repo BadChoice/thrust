@@ -35,6 +35,12 @@ class ThrustController extends Controller
         return (new Edit($resource))->show($id);
     }
 
+    public function editInline($resourceName, $id)
+    {
+        $resource = app(ResourceManager::class)->make($resourceName);
+        return (new Edit($resource))->showInline($id);
+    }
+
     public function store($resourceName)
     {
         $resource = app(ResourceManager::class)->make($resourceName);
@@ -46,9 +52,11 @@ class ThrustController extends Controller
     public function update($resourceName, $id)
     {
         $resource = app(ResourceManager::class)->make($resourceName);
-        request()->validate($resource->getValidationRules($id));
+        if (! request()->has('inline')){
+            request()->validate($resource->getValidationRules($id));
+        }
 
-        $resource->update($id, request()->all());
+        $resource->update($id, request()->except('inline'));
         return back()->withMessage(__('updated'));
     }
 
