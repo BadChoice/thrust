@@ -122,12 +122,12 @@ abstract class Resource{
 
     public function first()
     {
-        return (static::$model)::first();
+        return $this->getBaseQuery()->first();
     }
 
     public function count()
     {
-        return (static::$model)::count();
+        return $this->getBaseQuery()->count();
     }
 
     public function update($id, $newData)
@@ -163,7 +163,7 @@ abstract class Resource{
         }
 
         if (static::$sortable) {
-            $object->{static::$sortField} = static::$model::count();
+            $object->{static::$sortField} = $this->count();
         }
         return $object;
     }

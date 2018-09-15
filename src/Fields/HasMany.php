@@ -8,11 +8,18 @@ class HasMany extends Relationship
 {
     public $showInEdit = false;
     public $link       = null;
+    public $resourceName   = null;
     public $useTitle;
 
     public function useTitle($useTitle = true)
     {
         $this->useTitle = $useTitle;
+        return $this;
+    }
+
+    public function resourceName($resourceName)
+    {
+        $this->resourceName = $resourceName;
         return $this;
     }
 

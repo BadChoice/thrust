@@ -2,13 +2,17 @@
 @section('content')
     <div class="description">
         <span class="title">
-            {{ trans_choice( config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
+            @if (isset($parent_id) )
+                @php $parent = $resource->parent($parent_id) @endphp
+                <a href="{{route('thrust.index', [app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent) ]) }}">{{ $parent->name }} </a> /
+            @endif
+            {{ trans_choice(config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
             ({{ $resource->count() }})
         </span>
         <br><br>
         <div class="actions">
             @foreach($resource->mainActions() as $action)
-                {!! $action->display($resourceName) !!}
+                {!! $action->display($resourceName, $parent_id ?? null) !!}
             @endforeach
         </div>
         {{ trans_choice( config('thrust.translationsDescriptionsPrefix') . str_singular($resourceName), 1) }}

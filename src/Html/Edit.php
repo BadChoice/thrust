@@ -2,7 +2,9 @@
 
 namespace BadChoice\Thrust\Html;
 
+use BadChoice\Thrust\ChildResource;
 use BadChoice\Thrust\Fields\Hidden;
+use BadChoice\Thrust\Fields\ParentId;
 use BadChoice\Thrust\Resource;
 
 class Edit
@@ -20,6 +22,9 @@ class Edit
         $fields = collect($this->resource->fields())->where('showInEdit', true);
         if ($this->resource::$sortable) {
             $fields->prepend(Hidden::make($this->resource::$sortField));
+        }
+        if ($this->resource instanceof ChildResource){
+            $fields->prepend(ParentId::make($this->resource->parentForeignKey()));
         }
         return $fields;
     }
