@@ -5,18 +5,30 @@ namespace BadChoice\Thrust\Fields;
 class Text extends Field{
 
     protected $displayInIndexCallback = null;
+    protected $editableHint           = false;
 
-    public function displayInIndex($object){
-        if ($this->displayInIndexCallback){
-            return call_user_func($this->displayInIndexCallback, $object);
-        }
-        return $this->getValue($object);
+    public function editableHint($editableHint = true)
+    {
+        $this->editableHint = $editableHint;
+        return $this;
+    }
+
+    public function getIndexClass()
+    {
+        return $this->editableHint ? "editableHint" : "";
     }
 
     public function displayWith($callback)
     {
         $this->displayInIndexCallback = $callback;
         return $this;
+    }
+
+    public function displayInIndex($object){
+        if ($this->displayInIndexCallback){
+            return call_user_func($this->displayInIndexCallback, $object);
+        }
+        return "<span class='{$this->getIndexClass()}'>{$this->getValue($object)}</span>";
     }
 
     public function displayInEdit($object, $inline = false){
