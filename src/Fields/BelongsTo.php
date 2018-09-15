@@ -20,9 +20,9 @@ class BelongsTo extends Relationship
         $relation = $object->{$this->field};
         $relationName = $this->getRelationName($object);
         if (! $this->withLink) return $relationName;
-        if (!$relation) return "--";
+        if (! $relation) return "--";
         return view('thrust::fields.link',[
-            'url' => route('thrust.edit', [app(ResourceManager::class)->resourceNameFromModel($relation), $object->id]),
+            'url' => route('thrust.edit', [app(ResourceManager::class)->resourceNameFromModel($relation), $this->getValue($object)->id]),
             'value' => $relationName,
             'class' => 'showPopup'
         ]);

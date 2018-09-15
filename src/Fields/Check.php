@@ -36,7 +36,6 @@ class Check extends Text
     public function displayInEdit($object, $inline = false)
     {
         return view('thrust::fields.check',[
-            'id'    => $object->id,
             'title' => $this->getTitle(),
             'field' => $this->field,
             'value' => $this->getValue($object),
