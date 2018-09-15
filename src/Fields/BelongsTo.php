@@ -46,7 +46,8 @@ class BelongsTo extends Relationship
                 'value' => $object->{$this->field}->id ?? null,
                 'name' => $this->getRelationName($object),
                 'id' => $object->id,
-                'allowNull' => $this->allowNull
+                'allowNull' => $this->allowNull,
+                'inline' => $inline,
             ]);
         }
         return view('thrust::fields.select',[
@@ -55,6 +56,7 @@ class BelongsTo extends Relationship
             'searchable' => $this->searchable,
             'value' => $object->{$this->field}->id ?? null,
             'options' => $this->getOptions($object),
+            'inline' => $inline,
         ]);
     }
 

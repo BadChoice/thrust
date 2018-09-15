@@ -42,6 +42,7 @@ class Select extends Field{
     {
         return view('thrust::fields.select',[
             'title' => $this->getTitle(),
+            'inline' => $inline,
             'field' => $this->field,
             'searchable' => $this->searchable,
             'value' => $this->getValue($object),

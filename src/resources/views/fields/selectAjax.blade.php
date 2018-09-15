@@ -1,4 +1,4 @@
-@component('thrust::components.formField', ["field" => $field, "title" => $title, "description" => $description ?? null])
+@component('thrust::components.formField', ["field" => $field, "title" => $title, "description" => $description ?? null, "inline" => $inline])
     <select id="{{$field}}" name="{{$field}}">
         <option value="{{$value}}" selected>{{$name}}</option>
     </select>
