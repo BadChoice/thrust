@@ -1,5 +1,5 @@
+<td class="action"><input class='actionCheckbox' type="checkbox" name="selected[{{$object->id}}]" meta:id="{{$object->id}}"></td>
     @if ($sortable)
-    <td class="action"><input class='actionCheckbox' type="checkbox" name="selected[{{$object->id}}]" meta:id="{{$object->id}}"></td>
         <td class="sort action hide-mobile"></td>
     @endif
 <form action="{{route('thrust.update', [$resourceName, $object->id] )}}" id='thrust-form-{{$object->id}}' method="POST">
