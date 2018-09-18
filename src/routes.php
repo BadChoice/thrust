@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * As local repository
+ *
+ *
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../packages/thrust",
+            "options" : {
+            "symlink" : true
+        }
+    }
+],
+ */
+/**
  * TODO:
  * [x] Migrate to select2 4.0
  * [x] Make check fields to be toggable from the index
