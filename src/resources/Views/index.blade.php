@@ -46,7 +46,7 @@
                     <td></td>
                 @endif
 
-                @if ($resource->canEdit($row))
+                @if ($resource->canDelete($row))
                     <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.delete', [$resource->name(), $row->id])}}"></a></td>
                 @else
                     <td></td>

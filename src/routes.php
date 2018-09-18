@@ -19,6 +19,7 @@
  * [x] Add save and continue editing functionality
  * [x] Inline editing!
  * [x] Table density
+ * [] Quan sortable, afegir x defecte la main acction save order
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
  * [] Make the resource found in app service provider recursive into thrust directory
