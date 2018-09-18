@@ -26,6 +26,7 @@
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  * [] Add latlang to algolia places search?
  * [] Improved ResourceFilters\Search by words, fer-ho per el primer fields nomes?
+ * [] Search limitar-lo a 100 (configurable) sense pagination
  */
 
 Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){
