@@ -6,7 +6,7 @@
                 <button class="secondary"> {{ __("thrust::messages.actions") }} @icon(caret-down) </button>
             </div>
 
-            <ul class="dropdown-container" style="right:100px">
+            <ul class="dropdown-container" style="right:10px">
                 @foreach(collect($resource->actions())->where('main', false) as $action)
                     <li class="text-left">
                         @if (count($action->fields()) == 0)
