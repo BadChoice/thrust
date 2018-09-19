@@ -43,7 +43,7 @@
  * [] Search limitar-lo a 100 (configurable) sense pagination
  */
 
-Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => ['web' , 'auth']], function(){
+Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 'BadChoice\Thrust\Controllers', "middleware" => config('thrust.routeMiddleware', ['web','auth'])], function(){
     Route::post('{resourceName}/actions', 'ThrustActionsController@perform')->name('thrust.actions.perform');
     Route::get('{resourceName}/actions', 'ThrustActionsController@create')->name('thrust.actions.create');
 
