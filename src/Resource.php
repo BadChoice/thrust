@@ -47,6 +47,8 @@ abstract class Resource{
     public static $sortField = 'order';
     public static $defaultSort = 'id';
 
+    public static $gate;
+
     /**
      * @var array Set the default eager loading relationships
      */
