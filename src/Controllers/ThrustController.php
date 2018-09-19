@@ -31,7 +31,7 @@ class ThrustController extends Controller
 
     public function create($resourceName)
     {
-        $resource = $this->getAndAuthorizeResource($resourceName);
+        $resource = app(ResourceManager::class)->make($resourceName);
         app(ResourceGate::class)->check($resource, 'create');
         $object = $resource->makeNew();
         return (new Edit($resource))->show($object);
@@ -85,13 +85,5 @@ class ThrustController extends Controller
             "resource"      => $resource,
             "object"        => $resource->first()
         ]);
-    }
-
-    private function getAndAuthorizeResource($resourceName){
-        $resource = app(ResourceManager::class)->make($resourceName);
-        if ($resource::$gate){
-            $this->authorize($resource::$gate);
-        }
-        return $resource;
     }
 }
