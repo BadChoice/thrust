@@ -19,7 +19,7 @@ class ResourceGate
 
     public function can($resource, $ability, $object = null){
         $valid = true;
-        if (is_string($resource)) $resource = app(ResourceManager::class)->make($resource);
+        $resource = app(ResourceManager::class)->make($resource);
         if ($resource::$gate){
             $valid = auth()->user()->can($resource::$gate);
         }

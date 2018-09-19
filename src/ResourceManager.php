@@ -29,7 +29,8 @@ class ResourceManager
      */
     public function make($resourceName)
     {
-        $type = strtolower($resourceName);
+        if ($resourceName instanceof Resource) return $resourceName;
+        $type = strtolower(str_plural($resourceName));
         $class = $this->resources[$type];
         return new $class;
     }

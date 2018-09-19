@@ -15,7 +15,7 @@ class ThrustController extends Controller
 
     public function index($resourceName)
     {
-        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        $resource = app(ResourceManager::class)->make($resourceName);
         app(ResourceGate::class)->check($resource, 'index');
 
         if ($resource::$singleResource){
@@ -39,7 +39,7 @@ class ThrustController extends Controller
 
     public function edit($resourceName, $id)
     {
-        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        $resource = app(ResourceManager::class)->make($resourceName);
         $object = $resource->find($id);
         app(ResourceGate::class)->check($resource, 'update', $object);
         return (new Edit($resource))->show($object);
@@ -47,13 +47,13 @@ class ThrustController extends Controller
 
     public function editInline($resourceName, $id)
     {
-        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        $resource = app(ResourceManager::class)->make($resourceName);
         return (new Edit($resource))->showInline($id);
     }
 
     public function store($resourceName)
     {
-        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        $resource = app(ResourceManager::class)->make($resourceName);
         app(ResourceGate::class)->check($resource, 'create');
         request()->validate($resource->getValidationRules(null));
         $object = $resource::$model::create(request()->all());
@@ -62,7 +62,7 @@ class ThrustController extends Controller
 
     public function update($resourceName, $id)
     {
-        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        $resource = app(ResourceManager::class)->make($resourceName);
         if (! request()->has('inline')){
             request()->validate($resource->getValidationRules($id));
         }
@@ -73,7 +73,7 @@ class ThrustController extends Controller
 
     public function delete($resourceName, $id)
     {
-        app(ResourceManager::class)->make(str_plural($resourceName))
+        app(ResourceManager::class)->make($resourceName)
                                    ->delete($id);
         return back()->withMessage(__('deleted'));
     }
@@ -88,7 +88,7 @@ class ThrustController extends Controller
     }
 
     private function getAndAuthorizeResource($resourceName){
-        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        $resource = app(ResourceManager::class)->make($resourceName);
         if ($resource::$gate){
             $this->authorize($resource::$gate);
         }
