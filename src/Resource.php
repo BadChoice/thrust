@@ -134,27 +134,27 @@ abstract class Resource{
 
     public function update($id, $newData)
     {
-        return $this->find($id)->update($newData);
+        $object = $this->find($id);
+        app(ResourceGate::class)->check($this, 'update', $object);
+        return $object->update($newData);
     }
 
     public function delete($id)
     {
         $object = is_numeric($id) ? $this->find($id) : $id;
-        if (! $this->canDelete($object)) {
-            return false;
-        }
+        app(ResourceGate::class)->check($this, 'delete', $object);
         $this->prune($object);
         return $object->delete();
     }
 
     public function canEdit($object)
     {
-        return true;
+        return app(ResourceGate::class)->can($this, 'update', $object);
     }
 
     public function canDelete($object)
     {
-        return true;
+        return app(ResourceGate::class)->can($this, 'delete', $object);
     }
 
     public function makeNew()

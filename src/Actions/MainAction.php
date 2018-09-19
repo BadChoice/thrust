@@ -2,6 +2,8 @@
 
 namespace BadChoice\Thrust\Actions;
 
+use BadChoice\Thrust\ResourceGate;
+
 class MainAction
 {
     public $title;
@@ -15,6 +17,9 @@ class MainAction
 
     public function display($resourceName, $parent_id = null)
     {
+        if (! app(ResourceGate::class)->can($resourceName, 'create'))
+            return "";
+
         $title = __('thrust::messages.'.$this->title);
         $link = route('thrust.create', $resourceName);
         if ($parent_id){

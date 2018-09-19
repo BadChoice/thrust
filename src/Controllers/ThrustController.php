@@ -4,6 +4,7 @@ namespace BadChoice\Thrust\Controllers;
 
 use BadChoice\Thrust\Html\Edit;
 use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\ResourceGate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
 
@@ -14,11 +15,13 @@ class ThrustController extends Controller
 
     public function index($resourceName)
     {
-        $resource = $this->getAndAuthorizeResource($resourceName);
+        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        app(ResourceGate::class)->check($resource, 'index');
 
         if ($resource::$singleResource){
             return $this->singleResourceIndex($resourceName, $resource);
         }
+
         return view('thrust::mainIndex',[
             'resourceName' => $resourceName,
             'resource' => $resource,
@@ -29,25 +32,29 @@ class ThrustController extends Controller
     public function create($resourceName)
     {
         $resource = $this->getAndAuthorizeResource($resourceName);
+        app(ResourceGate::class)->check($resource, 'create');
         $object = $resource->makeNew();
         return (new Edit($resource))->show($object);
     }
 
     public function edit($resourceName, $id)
     {
-        $resource = $this->getAndAuthorizeResource($resourceName);
-        return (new Edit($resource))->show($id);
+        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        $object = $resource->find($id);
+        app(ResourceGate::class)->check($resource, 'update', $object);
+        return (new Edit($resource))->show($object);
     }
 
     public function editInline($resourceName, $id)
     {
-        $resource = $this->getAndAuthorizeResource($resourceName);
+        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
         return (new Edit($resource))->showInline($id);
     }
 
     public function store($resourceName)
     {
-        $resource = $this->getAndAuthorizeResource($resourceName);
+        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
+        app(ResourceGate::class)->check($resource, 'create');
         request()->validate($resource->getValidationRules(null));
         $object = $resource::$model::create(request()->all());
         return back()->withMessage(__('created'));
@@ -55,7 +62,7 @@ class ThrustController extends Controller
 
     public function update($resourceName, $id)
     {
-        $resource = $this->getAndAuthorizeResource($resourceName);
+        $resource = app(ResourceManager::class)->make(str_plural($resourceName));
         if (! request()->has('inline')){
             request()->validate($resource->getValidationRules($id));
         }
@@ -66,7 +73,7 @@ class ThrustController extends Controller
 
     public function delete($resourceName, $id)
     {
-        $this->getAndAuthorizeResource($resourceName)
+        app(ResourceManager::class)->make(str_plural($resourceName))
                                    ->delete($id);
         return back()->withMessage(__('deleted'));
     }
@@ -74,9 +81,9 @@ class ThrustController extends Controller
     private function singleResourceIndex($resourceName, $resource)
     {
         return view('thrust::singleResourceIndex',[
-            "resourceName" => $resourceName,
-            "resource" => $resource,
-            "object" => $resource->first()
+            "resourceName"  => $resourceName,
+            "resource"      => $resource,
+            "object"        => $resource->first()
         ]);
     }
 
