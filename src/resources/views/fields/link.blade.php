@@ -1,5 +1,5 @@
 <a href="{{$url}}" class="{{$class}}">
-    @if($icon)
+    @if(isset($icon) && $icon)
         <i class="fa fa-{{$icon}}" style="color:black; font-size:15px"></i>
     @else
         {{$value}}
