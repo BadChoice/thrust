@@ -57,7 +57,7 @@ class ThrustController extends Controller
         app(ResourceGate::class)->check($resource, 'create');
         request()->validate($resource->getValidationRules(null));
         $object = $resource::$model::create(request()->all());
-        return back()->withMessage(__('created'));
+        return back()->withMessage(__('thrust::messages.created'));
     }
 
     public function update($resourceName, $id)
@@ -68,14 +68,14 @@ class ThrustController extends Controller
         }
 
         $resource->update($id, request()->except('inline'));
-        return back()->withMessage(__('updated'));
+        return back()->withMessage(__('thrust::messages.updated'));
     }
 
     public function delete($resourceName, $id)
     {
         app(ResourceManager::class)->make($resourceName)
                                    ->delete($id);
-        return back()->withMessage(__('deleted'));
+        return back()->withMessage(__('thrust::messages.deleted'));
     }
 
     private function singleResourceIndex($resourceName, $resource)

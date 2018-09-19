@@ -12,4 +12,7 @@ return [
     'actions' => 'Actions',
     'perform' => 'Perform',
     'noRowsSelected' => 'There is no row selected',
+    'created' => 'Created',
+    'updated' => 'Updated',
+    'deleted' => 'Deleted',
 ];

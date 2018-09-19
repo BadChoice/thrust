@@ -12,4 +12,7 @@ return [
     'actions' => 'Acciones',
     'perform' => 'Ejecutar',
     'noRowsSelected' => 'No hay ninguna fila selecionada',
+    'created' => 'Creado',
+    'updated' => 'Actualizado',
+    'deleted' => 'Eliminado',
 ];
