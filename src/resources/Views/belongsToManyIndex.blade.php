@@ -1,17 +1,11 @@
 <h2> {{$title}} </h2>
-<table>
-    @foreach ($children as $row)
-        <tr>
-            <td> {{ $row->{$relationshipDisplayName} }}</td>
-            @foreach($belongsToManyField->pivotFields as $field)
-                <td>{!! $field->displayInIndex($row)  !!}</td>
-            @endforeach
 
-            <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.belongsToMany.delete', [$resourceName, $object->id, $belongsToManyField->field, $row->id])}}"></a></td>
+@include('thrust::components.searchPopup')
 
-        </tr>
-    @endforeach
-</table>
+<div id="popup-all">
+    @include('thrust::belongsToManyTable')
+</div>
+<div id="popup-results"></div>
 
 <div class="mt4">
     <form action="{{route('thrust.belongsToMany.store', [$resourceName, $object->id, $belongsToManyField->field]) }}" method="POST">
@@ -40,6 +34,14 @@
             dropdownParent: $('#popup')
         });
     @endif
+
+    $('#popup-searcher').searcher('/thrust/{{$resourceName}}/{{$object->id}}/belongsToMany/{{$belongsToManyField->field}}/search/', {
+        'resultsDiv' : 'popup-results',
+        'allDiv' : 'popup-all',
+        'onFound' : function(){
+            addListeners();
+        }
+    });
 
     @if ($ajaxSearch)
         new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $object->id, $belongsToManyField->field]) }}?allowNull=0&allowDuplicates={{$allowDuplicates}}',{

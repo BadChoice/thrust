@@ -22,7 +22,7 @@ class ThrustController extends Controller
             return $this->singleResourceIndex($resourceName, $resource);
         }
 
-        return view('thrust::mainIndex',[
+        return view('thrust::index',[
             'resourceName' => $resourceName,
             'resource' => $resource,
             'searchable' => count($resource::$search) > 0

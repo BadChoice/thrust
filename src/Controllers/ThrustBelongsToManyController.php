@@ -41,4 +41,20 @@ class ThrustBelongsToManyController extends Controller
         $object->{$relationship}()->detach($detachId);
         return back()->withMessage('deleted');
     }
+
+    public function search($resourceName, $id, $relationship, $searchText)
+    {
+        request()->merge(["search" => $searchText]);
+        $resource           = app(ResourceManager::class)->make($resourceName);
+        $object             = $resource->find($id);
+        $belongsToManyField = $resource->fieldFor($relationship);
+        $children           = $belongsToManyField->search($object, $searchText)->get();
+        return view('thrust::belongsToManyTable',[
+            'resourceName'       => $resourceName,
+            'object'             => $object,
+            'belongsToManyField' => $belongsToManyField,
+            'children'           => $children,
+        ]);
+
+    }
 }

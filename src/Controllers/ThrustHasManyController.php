@@ -15,7 +15,7 @@ class ThrustHasManyController extends Controller
         $hasManyField       = $resource->fieldFor($relationship);
         $childResource      = app(ResourceManager::class)->make($hasManyField->resourceName)->parentId($id);
 
-        return view('thrust::mainIndex',[
+        return view('thrust::index',[
             "resourceName"            => $hasManyField->resourceName,
             'searchable'              => count($resource::$search) > 0,
             "resource"                => $childResource,

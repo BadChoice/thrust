@@ -2,15 +2,14 @@
 
 namespace BadChoice\Thrust;
 
-use BadChoice\Thrust\Actions\MainAction;
 use BadChoice\Thrust\Actions\Delete;
+use BadChoice\Thrust\Actions\MainAction;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\Fields\Relationship;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
-use Illuminate\Database\Query\Builder;
 
 abstract class Resource{
 
@@ -18,6 +17,12 @@ abstract class Resource{
      * @var string defines the underlying model class
      */
     public static $model;
+
+    /**
+     * Set this to true when the resource is a simple one like business
+     * @var bool
+     */
+    public static $singleResource = false;
 
     /**
      * @var string The field that will be used to display the resource main name
@@ -30,31 +35,29 @@ abstract class Resource{
     protected $pagination = 25;
 
     /**
-     * Set this to true when the resource is a simple one like business
-     * @var bool
-     */
-    public static $singleResource = false;
-
-    /**
      * Defines the searchable fields
      */
     public static $search = [];
 
+
+    /**
+     * @var Defines the global gate ability for the actions to be performed,
+     * It goes along with the default Laravel resource Policy if any
+     */
+    public static $gate;
+
+
     /**
      * @var bool define if the resource is sortable and can be arranged in the index view
      */
-    public static $sortable = false;
-    public static $sortField = 'order';
-    public static $defaultSort = 'id';
-
-    public static $gate;
+    public static $sortable     = false;
+    public static $sortField    = 'order';
+    public static $defaultSort  = 'id';
 
     /**
      * @var array Set the default eager loading relationships
      */
     protected $with = [];
-
-    protected $query = null;
 
     /**
      * @return array array of fields
@@ -79,37 +82,6 @@ abstract class Resource{
         return collect($this->fields())->filter(function($field){
             return ($field instanceof Panel);
         });
-    }
-
-    public function setQuery($query)
-    {
-        $this->query = $query;
-        return $this;
-    }
-
-
-    /**
-     * @return Builder
-     */
-    public function query()
-    {
-        $query = $this->getBaseQuery();
-        if (request('search')){
-            Search::apply($query, request('search'), static::$search);
-        }
-        if (static::$sortable){
-            Sort::apply($query, static::$sortField, 'ASC');
-        } else if (request('sort')){
-            Sort::apply($query, request('sort'), request('sort_order'));
-        }
-        else{
-            Sort::apply($query, static::$defaultSort, 'ASC');
-        }
-        return $query;
-    }
-
-    public function rows() {
-        return $this->query()->paginate($this->pagination);
     }
 
     public function name()
@@ -216,9 +188,39 @@ abstract class Resource{
         });
     }
 
+    public function setQuery($query)
+    {
+        $this->query = $query;
+        return $this;
+    }
+
     protected function getBaseQuery()
     {
         return $this->query ?? static::$model::query()->with($this->getWithFields());
+    }
+
+    /**
+     * @return Builder
+     */
+    public function query()
+    {
+        $query = $this->getBaseQuery();
+        if (request('search')){
+            Search::apply($query, request('search'), static::$search);
+        }
+        if (static::$sortable){
+            Sort::apply($query, static::$sortField, 'ASC');
+        } else if (request('sort')){
+            Sort::apply($query, request('sort'), request('sort_order'));
+        }
+        else{
+            Sort::apply($query, static::$defaultSort, 'ASC');
+        }
+        return $query;
+    }
+
+    public function rows() {
+        return $this->query()->paginate($this->pagination);
     }
 
 }

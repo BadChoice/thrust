@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceManager;
 
 class BelongsToMany extends Relationship
@@ -9,6 +10,8 @@ class BelongsToMany extends Relationship
     public $allowDuplicates = false;
     public $indexTextCallback = null;
     public $pivotFields = [];
+    public $objectFields = [];
+    public $hideName;
 
     public function displayInIndex($object)
     {
@@ -21,6 +24,11 @@ class BelongsToMany extends Relationship
         ]);
     }
 
+    public function objectFields($objectFields){
+        $this->objectFields = $objectFields;
+        return $this;
+    }
+
     public function pivotFields($pivotFields){
         $this->pivotFields = $pivotFields;
         return $this;
@@ -29,6 +37,12 @@ class BelongsToMany extends Relationship
     public function allowDuplicates($allowDuplicates = true)
     {
         $this->allowDuplicates = $allowDuplicates;
+        return $this;
+    }
+
+    public function hideName($hideName = true)
+    {
+        $this->hideName = $hideName;
         return $this;
     }
 
@@ -53,6 +67,11 @@ class BelongsToMany extends Relationship
     public function getOptions($object)
     {
         return $this->relatedQuery($object, $this->allowDuplicates)->get();
+    }
+
+    public function search($object, $search)
+    {
+        return Search::apply($this->getRelation($object), $search, [$this->relationDisplayField]);
     }
 
     public function displayInEdit($object, $inline = false)

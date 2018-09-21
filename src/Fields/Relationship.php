@@ -70,4 +70,9 @@ abstract class Relationship extends Field
         return $query;
     }
 
+    public function searchQuery($object, $search)
+    {
+        return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
+    }
+
 }
