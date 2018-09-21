@@ -11,6 +11,7 @@ class BelongsToMany extends Relationship
     public $indexTextCallback = null;
     public $pivotFields = [];
     public $objectFields = [];
+    public $icon = null;
     public $hideName;
 
     public function displayInIndex($object)
@@ -20,8 +21,15 @@ class BelongsToMany extends Relationship
             "withLink"      => $this->withLink,
             "relationship"  => $this->field,
             "id"            => $object->id,
+            "icon"          => $this->icon,
             "resourceName"  => app(ResourceManager::class)->resourceNameFromModel($object),
         ]);
+    }
+
+    public function icon($icon)
+    {
+        $this->icon = $icon;
+        return $this;
     }
 
     public function objectFields($objectFields){

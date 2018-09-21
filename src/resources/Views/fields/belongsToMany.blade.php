@@ -1,6 +1,8 @@
 @if ($withLink)
     <a href="{{route('thrust.belongsToMany', [$resourceName, $id , $relationship])}}" class="showPopup">
-        @if( strlen($value) == 0)
+        @if($icon)
+            <i class="fa fa-{{$icon}}" style="color:black; font-size:15px"></i>
+        @elseif( strlen($value) == 0)
             --
         @else
             {{ $value }}
