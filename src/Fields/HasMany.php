@@ -11,6 +11,14 @@ class HasMany extends Relationship
     public $resourceName   = null;
     public $useTitle;
 
+    public static function make($dbField, $title = null)
+    {
+        $field = parent::make($dbField, $title);
+        $field->resourceName($dbField);
+        return $field;
+    }
+
+
     public function useTitle($useTitle = true)
     {
         $this->useTitle = $useTitle;
