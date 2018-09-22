@@ -4,7 +4,9 @@
     @else
         <a href="{{route('thrust.hasMany', [$resourceName, $id , $relationship])}}" class="">
     @endif
-        @if( strlen($value) == 0)
+        @if($icon)
+            <i class="fa fa-{{$icon}}" style="color:black; font-size:15px"></i>
+        @elseif( strlen($value) == 0)
             --
         @else
             {{ $value }}

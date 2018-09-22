@@ -9,6 +9,7 @@ class HasMany extends Relationship
     public $showInEdit = false;
     public $link       = null;
     public $resourceName   = null;
+    public $icon = null;
     public $useTitle;
 
     public static function make($dbField, $title = null)
@@ -18,6 +19,11 @@ class HasMany extends Relationship
         return $field;
     }
 
+    public function icon($icon)
+    {
+        $this->icon = $icon;
+        return $this;
+    }
 
     public function useTitle($useTitle = true)
     {
@@ -39,6 +45,7 @@ class HasMany extends Relationship
             "link"          => $this->link ? str_replace("{id}", $object->id, $this->link) : null,
             "relationship"  => $this->field,
             "id"            => $object->id,
+            "icon"          => $this->icon,
             "resourceName"  => app(ResourceManager::class)->resourceNameFromModel($object),
         ]);
     }
