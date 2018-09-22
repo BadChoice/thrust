@@ -19,10 +19,18 @@
 
         placesAutocomplete.on('change', function resultSelected(e) {
             document.querySelector('#{{$field}}').value = e.suggestion.name || '';
-            document.querySelector('#{{$relatedFields["city"]}}').value = e.suggestion.city || '';
-            document.querySelector('#{{$relatedFields["postalCode"]}}').value = e.suggestion.postcode || '';
-            document.querySelector('#{{$relatedFields["state"]}}').value = e.suggestion.administrative || '';
-            document.querySelector('#{{$relatedFields["country"]}}').value = e.suggestion.country || '';
+            @if($relatedFields["city"])
+                document.querySelector('#{{$relatedFields["city"]}}').value = e.suggestion.city || '';
+            @endif
+            @if($relatedFields["postalCode"])
+                document.querySelector('#{{$relatedFields["postalCode"]}}').value = e.suggestion.postcode || '';
+            @endif
+            @if($relatedFields["state"])
+                document.querySelector('#{{$relatedFields["state"]}}').value = e.suggestion.administrative || '';
+            @endif
+            @if($relatedFields["country"])
+                document.querySelector('#{{$relatedFields["country"]}}').value = e.suggestion.country || '';
+            @endif
         });
     </script>
     @endpush
