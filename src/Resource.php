@@ -181,7 +181,7 @@ abstract class Resource{
     {
         $this->fieldsFlattened()->filter(function ($field) {
             return $field instanceof Prunable;
-        })->each()->prune($object);
+        })->each->prune($object);
     }
 
     public function setQuery($query)

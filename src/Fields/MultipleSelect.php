@@ -7,7 +7,7 @@ class MultipleSelect extends Select{
     protected $options = [];
     protected $allowNull = false;
     protected $searchable = false;
-
+    protected $isMultiple = true;
 
     public function displayInIndex($object)
     {
@@ -16,9 +16,17 @@ class MultipleSelect extends Select{
         })->implode(', ');
     }
 
-    protected function getAttributes()
+    public function displayInEdit($object, $inline = false)
     {
-        return "multiple";
+        return view('thrust::fields.multipleSelect',[
+            'title' => $this->getTitle(),
+            'inline' => $inline,
+            'field' => $this->field,
+            'searchable' => $this->searchable,
+            'value' => $this->getValue($object),
+            'options' => $this->getOptions(),
+            'description' => $this->getDescription(),
+        ]);
     }
 
 
