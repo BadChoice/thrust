@@ -179,13 +179,9 @@ abstract class Resource{
 
     public function prune($object)
     {
-        $prunableFields = $this->fieldsFlattened()->filter(function ($field) {
+        $this->fieldsFlattened()->filter(function ($field) {
             return $field instanceof Prunable;
-        });
-        if ($prunableFields->count() == 0) return;
-        $prunableFields->each(function (Prunable $field) use ($object) {
-            $field->prune($object);
-        });
+        })->each()->prune($object);
     }
 
     public function setQuery($query)

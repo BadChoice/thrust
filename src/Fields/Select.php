@@ -47,6 +47,7 @@ class Select extends Field{
             'searchable' => $this->searchable,
             'value' => $this->getValue($object),
             'options' => $this->getOptions(),
+            'description' => $this->getDescription(),
         ]);
     }
 
