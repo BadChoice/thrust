@@ -55,7 +55,7 @@ class Text extends Field{
     protected function getValue($object)
     {
         if (! $object) return null;
-        return strip_tags($object->{$this->field});
+        return strip_tags(data_get($object, $this->field));
     }
 
 }

@@ -21,6 +21,7 @@ class Image extends Field implements Prunable
     public    $editClasses      = "br1";
     public    $indexStyle       = 'height:30px; width:30px; object-fit: cover;';
     public    $editStyle        = 'height:150px; width:300px; object-fit: cover;';
+    public    $withLink         = true;
 
     protected $maxHeight = 400;
     protected $maxWidth = 400;
@@ -34,6 +35,12 @@ class Image extends Field implements Prunable
     public function classes($classes)
     {
         $this->classes = $classes;
+        return $this;
+    }
+
+    public function withLink($withLink = true)
+    {
+        $this->withLink = $withLink;
         return $this;
     }
 
@@ -81,6 +88,7 @@ class Image extends Field implements Prunable
             'field'         => $this->field,
             'inline'        => true,
             'description'   => $this->getDescription(),
+            'withLink'      => $this->withLink
         ])->render();
     }
 
@@ -91,16 +99,17 @@ class Image extends Field implements Prunable
             'path'          => $this->displayPath($object),
             'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->getImageTag($object) : null,
             'classes'       => $this->editClasses,
-            'style'         => $this->editStyle,
+            'style'         => $inline ? $this->indexStyle : $this->editStyle,
             'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
             'id'            => $object->id,
             'field'         => $this->field,
             'inline'        => $inline,
             'description'   => $this->getDescription(),
+            'withLink'      => false
         ])->render();
     }
 
-    public function displayPath($object, $prefix = '')
+    protected function displayPath($object, $prefix = '')
     {
         if (! $this->getValue($object)) return null;
         if ($this->displayCallback){
