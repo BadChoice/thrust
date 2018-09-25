@@ -33,6 +33,7 @@
  * [x] Add save and continue editing functionality
  * [x] Inline editing!
  * [x] Table density
+ * [] Custom events to be different than the standard ones?
  * [] Quan sortable, afegir x defecte la main acction save order
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
