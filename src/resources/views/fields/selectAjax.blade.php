@@ -5,7 +5,7 @@
 
     @push('edit-scripts')
         <script>
-            new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $id, $relationship]) }}?allowNull={{$allowNull}}',{
+            new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $id ?? 0, $relationship]) }}?allowNull={{$allowNull}}',{
                 dropdownParent: $('#popup'),
             }).show('#{{$field}}');
         </script>
