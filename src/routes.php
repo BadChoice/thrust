@@ -33,11 +33,12 @@
  * [x] Add save and continue editing functionality
  * [x] Inline editing!
  * [x] Table density
- * [] Custom events to be different than the standard ones?
- * [] Quan sortable, afegir x defecte la main acction save order
+ * [x] Custom events to be different than the standard ones?
+ * [] Relationship rules, apply to field, and should apply to foreing_key when saving
+ * [] Quan sortable, afegir x defecte la main action save order
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
- * [] Make the resource found in app service provider recursive into thrust directory
+ * [] Make the resource found in app service provider recursive into thrust directory ?
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  * [] Add latlang to algolia places search?
  * [] Improved ResourceFilters\Search by words, fer-ho per el primer fields nomes?

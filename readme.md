@@ -49,3 +49,12 @@
 - Inline Edit
 - Save and continue
 - Table density
+
+## Events
+It uses the standard Laravel events, but if you want to add some events only on Thrust pages you can do it like this in you `AppServiceProvider`
+```
+    Thrust::serving(function () {
+        User::observe(UserObserver::class);
+    });
+```
+This way the observers will only be registered when using a thrust function
