@@ -7,9 +7,18 @@ class ResourceManager
 {
     protected $resourcesFolder = 'Thrust';
     protected $resources;
+    static protected $servingCallback;
 
     public function __construct(){
         $this->findResources();
+        if (static::$servingCallback) {
+            call_user_func(static::$servingCallback);
+        }
+    }
+
+    public static function serving($servingCallback)
+    {
+        static::$servingCallback = $servingCallback;
     }
 
     private function findResources()
