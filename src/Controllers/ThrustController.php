@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Controllers;
 
+use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\Html\Edit;
-use BadChoice\Thrust\ResourceManager;
 use BadChoice\Thrust\ResourceGate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
@@ -15,7 +15,7 @@ class ThrustController extends Controller
 
     public function index($resourceName)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         app(ResourceGate::class)->check($resource, 'index');
 
         if ($resource::$singleResource){
@@ -31,7 +31,7 @@ class ThrustController extends Controller
 
     public function create($resourceName)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         app(ResourceGate::class)->check($resource, 'create');
         $object = $resource->makeNew();
         return (new Edit($resource))->show($object);
@@ -39,7 +39,7 @@ class ThrustController extends Controller
 
     public function edit($resourceName, $id)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         $object = $resource->find($id);
         app(ResourceGate::class)->check($resource, 'update', $object);
         return (new Edit($resource))->show($object);
@@ -47,13 +47,13 @@ class ThrustController extends Controller
 
     public function editInline($resourceName, $id)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         return (new Edit($resource))->showInline($id);
     }
 
     public function store($resourceName)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         app(ResourceGate::class)->check($resource, 'create');
         request()->validate($resource->getValidationRules(null));
         $object = $resource::$model::create(request()->all());
@@ -62,7 +62,7 @@ class ThrustController extends Controller
 
     public function update($resourceName, $id)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         if (! request()->has('inline')){
             request()->validate($resource->getValidationRules($id));
         }
@@ -73,7 +73,7 @@ class ThrustController extends Controller
 
     public function delete($resourceName, $id)
     {
-        app(ResourceManager::class)->make($resourceName)
+        Thrust::make($resourceName)
                                    ->delete($id);
         return back()->withMessage(__('thrust::messages.deleted'));
     }

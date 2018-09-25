@@ -3,17 +3,16 @@
 namespace BadChoice\Thrust\Controllers;
 
 
-use BadChoice\Thrust\Html\Index;
-use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
 
 class ThrustHasManyController extends Controller
 {
     public function index($resourceName, $id, $relationship){
-        $resource           = app(ResourceManager::class)->make($resourceName);
+        $resource           = Thrust::make($resourceName);
         $object             = $resource->find($id);
         $hasManyField       = $resource->fieldFor($relationship);
-        $childResource      = app(ResourceManager::class)->make($hasManyField->resourceName)->parentId($id);
+        $childResource      = Thrust::make($hasManyField->resourceName)->parentId($id);
 
         return view('thrust::index',[
             "resourceName"            => $hasManyField->resourceName,

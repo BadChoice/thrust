@@ -2,14 +2,14 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
 
 class ThrustRelationshipController extends Controller
 {
     public function search($resourceName, $id, $relationship)
     {
-        $resource       = app(ResourceManager::class)->make($resourceName);
+        $resource       = Thrust::make($resourceName);
         $relationField  = $resource->fieldFor($relationship);
         $object         = $resource->find($id) ?? new $resource::$model;
         $query          = $relationField->searchRelatedQuery($object, request('search'), request('allowDuplicates', true));

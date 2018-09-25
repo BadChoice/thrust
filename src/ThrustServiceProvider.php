@@ -27,7 +27,7 @@ class ThrustServiceProvider extends ServiceProvider
 
     public function provides()
     {
-        return [ResourceManager::class];
+        return ResourceManager::class;
     }
 
 }

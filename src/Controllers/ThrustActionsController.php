@@ -3,14 +3,14 @@
 namespace BadChoice\Thrust\Controllers;
 
 
-use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
 
 class ThrustActionsController extends Controller
 {
     public function toggle($resourceName, $id, $field)
     {
-        $resource  = app(ResourceManager::class)->make($resourceName);
+        $resource  = Thrust::make($resourceName);
         $object = $resource->find($id);
         $object->update([$field => !$object->{$field}]);
         return back();
@@ -42,7 +42,7 @@ class ThrustActionsController extends Controller
 
     private function findActionForResource($resourceName, $actionClass)
     {
-        $resource   = app(ResourceManager::class)->make($resourceName);
+        $resource   = Thrust::make($resourceName);
         $action =  collect($resource->actions())->first(function($action) use($actionClass){
             return $action instanceof $actionClass;
         });

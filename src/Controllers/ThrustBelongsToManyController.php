@@ -3,14 +3,13 @@
 namespace BadChoice\Thrust\Controllers;
 
 
-use BadChoice\Thrust\Html\Index;
-use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
 
 class ThrustBelongsToManyController extends Controller
 {
     public function index($resourceName, $id, $relationship){
-        $resource           = app(ResourceManager::class)->make($resourceName);
+        $resource           = Thrust::make($resourceName);
         $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
         return view('thrust::belongsToManyIndex',[
@@ -28,7 +27,7 @@ class ThrustBelongsToManyController extends Controller
 
     public function store($resourceName, $id, $relationship)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         $object = $resource->find($id);
         $object->{$relationship}()->attach(request('id'), request()->except(['id', '_token']));
         return back()->withMessage('added');
@@ -36,7 +35,7 @@ class ThrustBelongsToManyController extends Controller
 
     public function delete($resourceName, $id, $relationship, $detachId)
     {
-        $resource = app(ResourceManager::class)->make($resourceName);
+        $resource = Thrust::make($resourceName);
         $object = $resource->find($id);
         $object->{$relationship}()->detach($detachId);
         return back()->withMessage('deleted');
@@ -45,7 +44,7 @@ class ThrustBelongsToManyController extends Controller
     public function search($resourceName, $id, $relationship, $searchText)
     {
         request()->merge(["search" => $searchText]);
-        $resource           = app(ResourceManager::class)->make($resourceName);
+        $resource           = Thrust::make($resourceName);
         $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
         $children           = $belongsToManyField->search($object, $searchText)->get();
