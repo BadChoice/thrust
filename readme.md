@@ -43,6 +43,7 @@
 - Search
 - Pagination
 - Single resource
+- Single resource search
 - Automatic with
 - Main Actions
 - Row Actions

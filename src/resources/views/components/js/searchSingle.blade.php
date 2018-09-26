@@ -8,7 +8,6 @@
 
     $('#searchSingle').on('keyup', function(e){
         var searchText = $(this).val();
-        console.log(searchText, searchText.length);
         if (searchText.length == 0){
             $(".formPanel h4").show();
             $(".label").parent().show();
