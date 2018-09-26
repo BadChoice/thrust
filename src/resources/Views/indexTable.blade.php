@@ -1,4 +1,4 @@
-@include('thrust::components.paginator',["data" => $rows])
+@include('thrust::components.paginator', ["data" => $rows])
 @if (count($rows) > 0)
     <table class="list striped">
         <thead>
