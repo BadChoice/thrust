@@ -109,7 +109,7 @@ class Image extends Field implements Prunable
         ])->render();
     }
 
-    protected function displayPath($object, $prefix = '')
+    public function displayPath($object, $prefix = '')
     {
         if (! $this->getValue($object)) return null;
         if ($this->displayCallback){
