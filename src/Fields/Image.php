@@ -105,7 +105,7 @@ class Image extends Field implements Prunable
             'field'         => $this->field,
             'inline'        => $inline,
             'description'   => $this->getDescription(),
-            'withLink'      => false
+            'withLink'      => !$inline && $this->withLink
         ])->render();
     }
 
