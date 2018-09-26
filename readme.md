@@ -50,6 +50,7 @@
 - Inline Edit
 - Save and continue
 - Table density
+- Uses laravel policies for the crud related actions
 
 ## Events
 It uses the standard Laravel events, but if you want to add some events only on Thrust pages you can do it like this in you `AppServiceProvider`
