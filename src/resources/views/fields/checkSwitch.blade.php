@@ -1,5 +1,5 @@
 @component('thrust::components.formField', ["field" => $field, "title" => $title, "description" => $description ?? null, 'inline' => $inline])
-    <input id="{{$field}}Switch" type="hidden" value="{{$value}}" name="{{$field}}">
+    <input id="{{$field}}Switch" type="hidden" value="{{$value?$value:'0'}}" name="{{$field}}">
     <i id="{{$field}}" class="fa @if($value) fa-toggle-on green @else fa-toggle-off red o20 @endif" style="font-size:24px"></i>
 
     @push('edit-scripts')
