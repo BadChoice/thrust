@@ -1,10 +1,10 @@
 <script>
-    $.extend($.expr[':'], {
+    /*$.extend($.expr[':'], {
         'containsi': function(elem, i, match, array) {
             return (elem.textContent || elem.innerText || '').toLowerCase()
                 .indexOf((match[3] || "").toLowerCase()) >= 0;
         }
-    });
+    });*/
 
     $('#searchSingle').on('keyup', function(e){
         var searchText = $(this).val();

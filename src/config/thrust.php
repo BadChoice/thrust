@@ -4,6 +4,6 @@ return [
     'translationsPrefix' => 'admin.',
     'translationsDescriptionsPrefix' => 'pageDescription.',
     'routePrefix' => 'thrust',
-    'routeMiddleware' => ['auth' , 'web'],
+    'routeMiddleware' => ['web', 'auth'],
     'indexLayout'      => 'layout.app'
 ];
