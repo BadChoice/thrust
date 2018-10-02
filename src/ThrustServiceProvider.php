@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class ThrustServiceProvider extends ServiceProvider
 {
-    protected $defer = true;
+    //protected $defer = true;
 
     public function boot()
     {
