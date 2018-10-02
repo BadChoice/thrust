@@ -6,6 +6,7 @@ class Text extends Field{
 
     protected $displayInIndexCallback = null;
     protected $editableHint           = false;
+    protected $attributes             = '';
 
     public function editableHint($editableHint = true)
     {
@@ -48,8 +49,14 @@ class Text extends Field{
         return 'text';
     }
 
+    public function attributes($attributes)
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
     protected function getFieldAttributes(){
-        return '';
+        return $this->attributes;
     }
 
     protected function getValue($object)
