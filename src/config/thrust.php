@@ -5,5 +5,6 @@ return [
     'translationsDescriptionsPrefix' => 'pageDescription.',
     'routePrefix' => 'thrust',
     'routeMiddleware' => ['web', 'auth'],
-    'indexLayout'      => 'layout.app'
+    'indexLayout'      => 'layout.app',
+    'popupId'    => '#popup',
 ];

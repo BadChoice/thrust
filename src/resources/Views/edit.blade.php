@@ -36,7 +36,7 @@
         $('.searchable').select2({
             width: '300px',
             dropdownAutoWidth : true,
-            dropdownParent: $('#popup')
+            dropdownParent: $('{{config('thrust.popupId', '#popup')}}')
         });
         setupVisibility({!! json_encode($visibility)  !!});
     </script>

@@ -31,7 +31,7 @@
         $('.searchable').select2({
             width: '300px',
             dropdownAutoWidth : true,
-            dropdownParent: $('#popup')
+            dropdownParent: $('{{config('thrust.popupId', '#popup')}}')
         });
     @endif
 
@@ -45,7 +45,7 @@
 
     @if ($ajaxSearch)
         new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $object->id, $belongsToManyField->field]) }}?allowNull=0&allowDuplicates={{$allowDuplicates}}',{
-            dropdownParent: $('#popup'),
+            dropdownParent: $('{{config('thrust.popupId', '#popup')}}')
         }).show('#id');
     @endif
 </script>
