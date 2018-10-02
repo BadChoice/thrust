@@ -17,7 +17,7 @@ class Range extends Text
         return $this;
     }
 
-    public function attributes($min, $max, $step){
+    public function rangeAttributes($min, $max, $step){
         $this->min = $min;
         $this->max = $max;
         $this->step = $step;
@@ -40,6 +40,6 @@ class Range extends Text
 
     protected function getFieldAttributes()
     {
-        return " min={$this->min} max={$this->max} step={$this->step} ";
+        return "{$this->attributes} min={$this->min} max={$this->max} step={$this->step} ";
     }
 }
