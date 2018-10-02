@@ -25,7 +25,8 @@ class ThrustController extends Controller
         return view('thrust::index',[
             'resourceName' => $resourceName,
             'resource' => $resource,
-            'searchable' => count($resource::$search) > 0
+            'searchable' => count($resource::$search) > 0,
+            'description' => $resource->getDescription(),
         ]);
     }
 

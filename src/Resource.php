@@ -219,4 +219,13 @@ abstract class Resource{
         return $this->query()->paginate($this->pagination);
     }
 
+    public function getDescription()
+    {
+        $description = trans_choice( config('thrust.translationsDescriptionsPrefix') . str_singular($this->name()), 1);
+        if (! str_contains($description, config('thrust.translationsDescriptionsPrefix'))){
+            return $description;
+        }
+        return "";
+    }
+
 }

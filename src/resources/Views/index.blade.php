@@ -15,7 +15,7 @@
                 {!! $action->display($resourceName, $parent_id ?? null) !!}
             @endforeach
         </div>
-        {{ trans_choice( config('thrust.translationsDescriptionsPrefix') . str_singular($resourceName), 1) }}
+        {{ $description }}
 
         @include('thrust::components.search')
         @include('thrust::components.actions')
