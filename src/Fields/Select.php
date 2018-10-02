@@ -23,7 +23,7 @@ class Select extends Field{
 
     protected function getOptions()
     {
-        if ($this->allowNull) return array_merge(["" => "--"], $this->options);
+        if ($this->allowNull) return ["" => "--"] + $this->options;
         return $this->options;
     }
 
