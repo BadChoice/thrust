@@ -13,6 +13,7 @@ class CheckSwitch extends Check
             'field' => $this->field,
             'value' => $this->getValue($object),
             'inline' => $inline,
+            "description" => $this->getDescription(),
         ]);
     }
 }

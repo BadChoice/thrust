@@ -34,6 +34,7 @@
  * [x] Inline editing!
  * [x] Table density
  * [x] Custom events to be different than the standard ones?
+ * [] Save image in thrust to use the same route as display
  * [] Relationship rules, apply to field, and should apply to foreing_key when saving
  * [] Quan sortable, afegir x defecte la main action save order
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter

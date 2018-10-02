@@ -127,6 +127,7 @@ class Image extends Field implements Prunable
     protected function getPath()
     {
         if (! $this->basePath) return storage_path('thrust');
+        // TODO: Use the bindings!
         return str_replace("{user}", auth()->user()->username, $this->basePath);
     }
 

@@ -29,7 +29,8 @@ class Check extends Text
             "id" => $object->id,
             "field" => $this->field,
             "withLinks" => $this->withLink,
-            "asSwitch" => $this->asSwitch
+            "asSwitch" => $this->asSwitch,
+            "description" => $this->getDescription()
         ]);
     }
 
