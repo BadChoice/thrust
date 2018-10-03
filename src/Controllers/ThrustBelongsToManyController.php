@@ -52,6 +52,7 @@ class ThrustBelongsToManyController extends Controller
             'resourceName'       => $resourceName,
             'object'             => $object,
             'belongsToManyField' => $belongsToManyField,
+            "relationshipDisplayName" => $belongsToManyField->relationDisplayField,
             'children'           => $children,
         ]);
 
