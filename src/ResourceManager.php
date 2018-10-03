@@ -28,7 +28,7 @@ class ResourceManager
             return str_contains($filename, ".php");
         })->mapWithKeys(function ($filename) {
             $resource = substr($filename, 0, -4);
-            return [str_plural(strtolower(substr($filename, 0, -4))) => "\\App\\Thrust\\" . $resource];
+            return [str_plural(lcfirst(substr($filename, 0, -4))) => "\\App\\Thrust\\" . $resource];
         });
     }
 
@@ -39,7 +39,7 @@ class ResourceManager
     public function make($resourceName)
     {
         if ($resourceName instanceof Resource) return $resourceName;
-        $type = strtolower(str_plural($resourceName));
+        $type = lcfirst(str_plural($resourceName));
         $class = $this->resources[$type];
         return new $class;
     }
@@ -55,7 +55,7 @@ class ResourceManager
         }
         $path = explode('\\', $class);
         $name = array_pop($path);
-        return strtolower(str_plural($name)) ;
+        return lcfirst(str_plural($name)) ;
     }
 
 }
