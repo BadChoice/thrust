@@ -45,15 +45,21 @@
 
     @if ($ajaxSearch)
     new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $object->id, $belongsToManyField->field]) }}?allowNull=0&allowDuplicates={{$allowDuplicates}}',{
-        dropdownParent: $('#popup'),
+        dropdownParent: $('{{config('thrust.popupId', '#popup')}}'),
     }).show('#id');
     @endif
 
+        popupUrl = "{{route('thrust.belongsToMany', [$resourceName, $object->id, $belongsToManyField->field]) }}";
     $('#belongsToManyForm').on('submit', function(e){
         e.preventDefault();
         $.post($(this).attr('action'), $(this).serialize()).done(function(){
-            console.log("Done");
-            loadPopup("{{route('thrust.belongsToMany', [$resourceName, $object->id, $belongsToManyField->field]) }}")
+            loadPopup(popupUrl)
         });
     });
+
+    $("{{config('thrust.popupId', '#popup')}} .delete-resource").each(function(index, el){
+        $(el).attr({
+            'data-delete' : $(el).attr('data-delete') + ' ajax '
+        });
+    })
 </script>
