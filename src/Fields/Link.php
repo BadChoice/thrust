@@ -43,6 +43,7 @@ class Link extends Field
     public function icon($icon)
     {
         $this->icon = $icon;
+        $this->rowClass = $this->rowClass . " action";
         return $this;
     }
 

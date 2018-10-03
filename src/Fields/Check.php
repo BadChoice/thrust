@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Fields;
 
-
 use BadChoice\Thrust\ResourceManager;
 
 class Check extends Text
