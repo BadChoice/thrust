@@ -49,7 +49,7 @@
     }).show('#id');
     @endif
 
-        popupUrl = "{{route('thrust.belongsToMany', [$resourceName, $object->id, $belongsToManyField->field]) }}";
+    popupUrl = "{{route('thrust.belongsToMany', [$resourceName, $object->id, $belongsToManyField->field]) }}";
     $('#belongsToManyForm').on('submit', function(e){
         e.preventDefault();
         $.post($(this).attr('action'), $(this).serialize()).done(function(){
