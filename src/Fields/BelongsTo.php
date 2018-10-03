@@ -30,7 +30,7 @@ class BelongsTo extends Relationship
 
     public function getOptions($object)
     {
-        $possibleRelations = $this->getRelation($object)->getRelated()->pluck($this->relationDisplayField, 'id');
+        $possibleRelations = $this->relatedQuery($object, true)->pluck($this->relationDisplayField, 'id');
         if ($this->allowNull) return $possibleRelations->prepend("--", "")->toArray();
         return $possibleRelations;
     }
