@@ -48,6 +48,7 @@ class Edit
 
     public function show($id, $fullPage = false)
     {
+        view()->share('fullPage', $fullPage);
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
         return view('thrust::edit', [
             'nameField'     => $this->resource->nameField,
