@@ -7,7 +7,7 @@ use BadChoice\Thrust\ResourceManager;
 
 class Check extends Text
 {
-    protected $withLink = false;
+    protected $withLink = true;
     protected $asSwitch = false;
     public $rowClass = 'action';
 
