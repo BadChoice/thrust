@@ -8,7 +8,7 @@
 <div id="popup-results"></div>
 
 <div class="mt4">
-    <form action="{{route('thrust.belongsToMany.store', [$resourceName, $object->id, $belongsToManyField->field]) }}" method="POST">
+    <form id='belongsToManyForm' action="{{route('thrust.belongsToMany.store', [$resourceName, $object->id, $belongsToManyField->field]) }}" method="POST">
         {{ csrf_field() }}
         <select id="id" name="id" @if($belongsToManyField->searchable) class="searchable" @endif >
             @if (!$ajaxSearch)
@@ -28,11 +28,11 @@
     addListeners();
     // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
     @if ($searchable && !$ajaxSearch)
-        $('.searchable').select2({
-            width: '300px',
-            dropdownAutoWidth : true,
-            dropdownParent: $('{{config('thrust.popupId', '#popup')}}')
-        });
+    $('.searchable').select2({
+        width: '300px',
+        dropdownAutoWidth : true,
+        dropdownParent: $('#popup')
+    });
     @endif
 
     $('#popup-searcher').searcher('/thrust/{{$resourceName}}/{{$object->id}}/belongsToMany/{{$belongsToManyField->field}}/search/', {
@@ -44,8 +44,16 @@
     });
 
     @if ($ajaxSearch)
-        new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $object->id, $belongsToManyField->field]) }}?allowNull=0&allowDuplicates={{$allowDuplicates}}',{
-            dropdownParent: $('{{config('thrust.popupId', '#popup')}}')
-        }).show('#id');
+    new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $object->id, $belongsToManyField->field]) }}?allowNull=0&allowDuplicates={{$allowDuplicates}}',{
+        dropdownParent: $('#popup'),
+    }).show('#id');
     @endif
+
+    $('#belongsToManyForm').on('submit', function(e){
+        e.preventDefault();
+        $.post($(this).attr('action'), $(this).serialize()).done(function(){
+            console.log("Done");
+            loadPopup("{{route('thrust.belongsToMany', [$resourceName, $object->id, $belongsToManyField->field]) }}")
+        });
+    });
 </script>
