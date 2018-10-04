@@ -16,6 +16,7 @@ class Image extends Field implements Prunable
     protected $classes          = 'gravatar';
     protected $resizedPrefix    = 'resized_';
     protected $gravatarField;
+    protected $gravatarDefault;
     public    $prunable         = true;
     public    $showInEdit       = false;
     public    $editClasses      = "br1";
@@ -26,9 +27,10 @@ class Image extends Field implements Prunable
     protected $maxHeight = 400;
     protected $maxWidth = 400;
 
-    public function gravatar($field = 'email')
+    public function gravatar($field = 'email', $default = null)
     {
         $this->gravatarField = $field;
+        $this->gravatarDefault = $default;
         return $this;
     }
 
@@ -80,7 +82,7 @@ class Image extends Field implements Prunable
         return view('thrust::fields.image',[
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object, $this->resizedPrefix),
-            'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->getImageTag($object) : null,
+            'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->withDefault($this->gravatarDefault)->getImageTag($object) : null,
             'classes'       => $this->classes,
             'style'         => $this->indexStyle,
             'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
