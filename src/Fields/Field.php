@@ -82,6 +82,18 @@ abstract class Field{
         return $this;
     }
 
+    public function hide($hide = true){
+        $this->showInIndex = $hide;
+        $this->showInEdit = $hide;
+        return $this;
+    }
+
+    public function show($show = true){
+        $this->showInIndex = !$show;
+        $this->showInEdit = !$show;
+        return $this;
+    }
+
     public function hideInIndex(){
         $this->showInIndex = false;
         return $this;
