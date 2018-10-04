@@ -1,6 +1,9 @@
-<table>
+<table class="list striped">
     <thead>
     @if (! $belongsToManyField->hideName)
+        @if ($sortable)
+            <th></th>
+        @endif
         <th>
             {{ trans_choice(config('thrust.translationsPrefix') . str_singular($belongsToManyField->field), 1) }}
         </th>
@@ -13,8 +16,12 @@
     @endforeach
     <th></th>
     </thead>
+    <tbody class="@if($sortable) sortable @endif">
     @foreach ($children as $row)
-        <tr>
+        <tr id="belongsToManySort_{{$row->pivot->id}}">
+            @if ($sortable)
+                <td class="sort action hide-mobile"></td>
+            @endif
             @if (! $belongsToManyField->hideName)
                 <td>
                     {{ $row->{$relationshipDisplayName} }}
@@ -26,9 +33,8 @@
             @foreach($belongsToManyField->pivotFields as $field)
                 <td>{!! $field->displayInIndex($row->pivot)  !!}</td>
             @endforeach
-
             <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.belongsToMany.delete', [$resourceName, $object->id, $belongsToManyField->field, $row->pivot->id])}}"></a></td>
-
         </tr>
     @endforeach
+    </tbody>
 </table>

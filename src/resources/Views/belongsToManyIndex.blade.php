@@ -61,5 +61,10 @@
         $(el).attr({
             'data-delete' : $(el).attr('data-delete') + ' ajax '
         });
-    })
+    });
+
+    $("{{config('thrust.popupId', '#popup')}} .sortable" ).sortable({
+        axis: "y",
+    });
+
 </script>

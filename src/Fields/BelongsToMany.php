@@ -14,6 +14,9 @@ class BelongsToMany extends Relationship
     public $icon = null;
     public $hideName;
 
+    public $sortable     = false;
+    public $sortField    = 'order';
+
     public function displayInIndex($object)
     {
         return view('thrust::fields.belongsToMany',[
@@ -24,6 +27,13 @@ class BelongsToMany extends Relationship
             "icon"          => $this->icon,
             "resourceName"  => app(ResourceManager::class)->resourceNameFromModel($object),
         ]);
+    }
+
+    public function sortable($sortable = true, $sortField = 'order')
+    {
+        $this->sortable = $sortable;
+        $this->sortField = 'order';
+        return $this;
     }
 
     public function icon($icon)

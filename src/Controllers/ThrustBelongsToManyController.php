@@ -22,6 +22,7 @@ class ThrustBelongsToManyController extends Controller
             "searchable"              => $belongsToManyField->searchable,
             "ajaxSearch"              => $belongsToManyField->ajaxSearch,
             "allowDuplicates"         => $belongsToManyField->allowDuplicates ? "1" : "0",
+            "sortable"                => $belongsToManyField->sortable,
         ]);
     }
 

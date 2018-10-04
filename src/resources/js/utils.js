@@ -11,7 +11,7 @@ $(document).ready(function(){
         transition:'all 0.3s',
     });
 
-    $( ".sortable" ).sortable({
+    $(".sortable" ).sortable({
         axis: "y",
     });
     // $(".sortable td").each(function () {
