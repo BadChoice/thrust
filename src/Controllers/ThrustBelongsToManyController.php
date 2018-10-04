@@ -37,7 +37,10 @@ class ThrustBelongsToManyController extends Controller
     {
         $resource = Thrust::make($resourceName);
         $object = $resource->find($id);
-        $object->{$relationship}()->detach($detachId);
+        //$object->{$relationship}()->detach($detachId);
+        //dd($object->{$relationship}()->wherePivot('id', $detachId)->first());
+        $relationObject = $object->{$relationship}()->wherePivot('id', $detachId)->first();
+        $relationObject->pivot->delete();
         return back()->withMessage('deleted');
     }
 
