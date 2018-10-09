@@ -15,6 +15,7 @@
             allDiv       : 'all',
             minChars     : 3,
             onFound      : null,
+            updateAddressBar : true
         }, options);
 
         let timeout = null;
@@ -23,11 +24,18 @@
             let self = $(this);
             timeout = setTimeout(function () {
                 let searchString = (self.val());
-                if(searchString.length >= settings.minChars) {
+
+                if (searchString.length >= settings.minChars) {
+                    if (settings.updateAddressBar) {
+                        window.history.pushState("", "", '?search=' + searchString);
+                    }
                     $('#' + settings.resultsDiv).show();
                     $('#' + settings.allDiv).hide();
                     $('#' + settings.resultsDiv).load(callbackUrl + self.val().replace(new RegExp(' ', 'g'), '%20'), settings.onFound);
                 } else {
+                    if (settings.updateAddressBar) {
+                        window.history.pushState("", "", "?");
+                    }
                     $('#' + settings.resultsDiv).hide();
                     $('#' + settings.allDiv).show();
                 }

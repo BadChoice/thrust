@@ -8,6 +8,7 @@ use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\Fields\Relationship;
+use BadChoice\Thrust\ResourceFilters\Filters;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
 
@@ -166,6 +167,11 @@ abstract class Resource{
         ];
     }
 
+    public function filters()
+    {
+        return null;
+    }
+
     public function getWithFields()
     {
         return count($this->with) ? $this->with : $this->getRelationshipsFields()->toArray();
@@ -209,8 +215,8 @@ abstract class Resource{
         } else if (request('sort')){
             Sort::apply($query, request('sort'), request('sort_order'));
         }
-        else{
-            Sort::apply($query, static::$defaultSort, 'ASC');
+        if (request('filters')){
+            Filters::applyFromRequest($query, request('filters'));
         }
         return $query;
     }
@@ -226,6 +232,12 @@ abstract class Resource{
             return $description;
         }
         return "";
+    }
+
+    public function filtersApplied()
+    {
+        if (!request()->has('filters')) return collect();
+        return Filters::decodeFilters(request('filters'));
     }
 
 }

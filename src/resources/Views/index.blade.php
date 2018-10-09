@@ -18,7 +18,10 @@
         {{ $description }}
 
         @include('thrust::components.search')
-        @include('thrust::components.actions')
+        <div class="pb1 text-right" style="margin-top:-29px; margin-right: -8px;">
+            @include('thrust::components.filters')
+            @include('thrust::components.actions')
+        </div>
 
     </div>
 
@@ -34,6 +37,7 @@
         @include('thrust::components.searchScript', ['resourceName' => $resourceName])
     @endif
     @include('thrust::components.js.actions', ['resourceName' => $resourceName]);
+    @include('thrust::components.js.filters', ['resourceName' => $resourceName]);
     @include('thrust::components.js.editInline', ['resourceName' => $resourceName]);
 
 @stop

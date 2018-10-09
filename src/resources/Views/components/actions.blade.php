@@ -1,5 +1,4 @@
 @if (count($resource->actions()) > 0)
-    <div class="pb1 text-right" style="margin-top:-29px; margin-right: -8px;">
         @if (collect($resource->actions())->where('main', false)->count() > 0)
 
             <div class="dropdown inline">
@@ -22,5 +21,4 @@
         @foreach( collect($resource->actions())->where('main', true) as $action)
             <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}}, "{{$action->confirmationMessage}}")'> {!! icon($action->icon) !!} </button>
         @endforeach
-    </div>
 @endif

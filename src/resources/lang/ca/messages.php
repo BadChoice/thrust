@@ -15,4 +15,5 @@ return [
     'created' => 'Creat',
     'updated' => 'Actualitzat',
     'deleted' => 'Eliminat',
+    'apply'   => 'Aplicar',
 ];
