@@ -54,6 +54,7 @@ abstract class Resource{
     public static $sortable     = false;
     public static $sortField    = 'order';
     public static $defaultSort  = 'id';
+    public static $defaultOrder  = 'ASC';
 
     /**
      * @var array Set the default eager loading relationships
@@ -224,11 +225,16 @@ abstract class Resource{
         if (request('search')){
             Search::apply($query, request('search'), static::$search);
         }
+
         if (static::$sortable){
             Sort::apply($query, static::$sortField, 'ASC');
         } else if (request('sort')){
             Sort::apply($query, request('sort'), request('sort_order'));
         }
+        else{
+            Sort::apply($query, static::$defaultSort, static::$defaultOrder);
+        }
+
         if (request('filters')){
             Filters::applyFromRequest($query, request('filters'));
         }
