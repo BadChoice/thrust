@@ -10,11 +10,7 @@
             ({{ $resource->count() }})
         </span>
         <br><br>
-        <div class="actions">
-            @foreach($resource->mainActions() as $action)
-                {!! $action->display($resourceName, $parent_id ?? null) !!}
-            @endforeach
-        </div>
+        @include('thrust::components.mainActions')
         {{ $description }}
 
         @include('thrust::components.search')

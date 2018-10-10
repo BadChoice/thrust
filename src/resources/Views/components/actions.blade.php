@@ -1,12 +1,15 @@
-@if (count($resource->actions()) > 0)
-        @if (collect($resource->actions())->where('main', false)->count() > 0)
+<?php
+$actions = collect($resource->actions());
+?>
 
+@if (count($actions) > 0)
+        @if ($actions->where('main', false)->count() > 0)
             <div class="dropdown inline">
                 <button class="secondary"> {{ __("thrust::messages.actions") }} @icon(caret-down) </button>
             </div>
 
             <ul class="dropdown-container" style="right:10px">
-                @foreach(collect($resource->actions())->where('main', false) as $action)
+                @foreach($actions->where('main', false) as $action)
                     <li class="text-left">
                         @if (count($action->fields()) == 0)
                             <a class='pointer' onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}}, "{{$action->confirmationMessage}}")'>{!! $action->getTitle() !!}</a>
@@ -18,7 +21,7 @@
             </ul>
         @endif
 
-        @foreach( collect($resource->actions())->where('main', true) as $action)
+        @foreach( $actions->where('main', true) as $action)
             <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}}, "{{$action->confirmationMessage}}")'> {!! icon($action->icon) !!} </button>
         @endforeach
 @endif
