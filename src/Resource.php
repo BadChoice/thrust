@@ -119,8 +119,9 @@ abstract class Resource{
     }
 
     private function mapData($data){
-        return collect($this->fieldsFlattened())->mapWithKeys(function($field) use ($data){
-            if (! isset($data[$field->field])) return null;
+        return collect($this->fieldsFlattened())->filter(function($field) {
+            return isset($data[$field->field]);
+        })->mapWithKeys(function($field) use ($data){
             return [$field->field => $field->mapAttributeFromRequest($data[$field->field])];
         })->toArray();
     }
