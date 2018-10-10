@@ -108,22 +108,14 @@ abstract class Resource{
     public function create($data)
     {
         app(ResourceGate::class)->check($this, 'create');
-        return static::$model::create($this->mapData($data));
+        return static::$model::create($this->mapRequest($data));
     }
 
     public function update($id, $newData)
     {
         $object = $this->find($id);
         app(ResourceGate::class)->check($this, 'update', $object);
-        return $object->update($this->mapData($newData));
-    }
-
-    private function mapData($data){
-        return collect($this->fieldsFlattened())->filter(function($field) {
-            return isset($data[$field->field]);
-        })->mapWithKeys(function($field) use ($data){
-            return [$field->field => $field->mapAttributeFromRequest($data[$field->field])];
-        })->toArray();
+        return $object->update($this->mapRequest($newData));
     }
 
     public function delete($id)
@@ -164,6 +156,14 @@ abstract class Resource{
            return [$field->field => str_replace("{id}", $objectId, $field->validationRules)];
         })->filter(function($value){
             return $value != null;
+        })->toArray();
+    }
+
+    private function mapRequest($data){
+        return collect($this->fieldsFlattened())->filter(function($field) {
+            return isset($data[$field->field]);
+        })->mapWithKeys(function($field) use ($data){
+            return [$field->field => $field->mapAttributeFromRequest($data[$field->field])];
         })->toArray();
     }
 
