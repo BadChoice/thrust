@@ -160,7 +160,7 @@ abstract class Resource{
     }
 
     private function mapRequest($data){
-        return collect($this->fieldsFlattened())->filter(function($field) use($data) {
+        return $this->fieldsFlattened()->filter(function($field) use($data) {
             return isset($data[$field->field]);
         })->mapWithKeys(function($field) use ($data){
             return [$field->field => $field->mapAttributeFromRequest($data[$field->field])];
