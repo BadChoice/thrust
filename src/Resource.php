@@ -161,11 +161,12 @@ abstract class Resource{
     }
 
     private function mapRequest($data){
-        return $this->fieldsFlattened()->filter(function($field) use($data) {
+        $this->fieldsFlattened()->filter(function($field) use($data) {
             return isset($data[$field->field]);
-        })->mapWithKeys(function($field) use ($data){
-            return [$field->field => $field->mapAttributeFromRequest($data[$field->field])];
-        })->toArray();
+        })->each(function($field) use (&$data){
+            $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
+        });
+        return $data;
     }
 
     public function mainActions()

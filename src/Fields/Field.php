@@ -115,4 +115,8 @@ abstract class Field{
         return $value;
     }
 
+    public function getDatabaseField(){
+        return $this->field;
+    }
+
 }

@@ -20,7 +20,7 @@ class Decimal extends Text {
     }
 
 
-    public function asInteger($asInteger)
+    public function asInteger($asInteger = true)
     {
         $this->asInteger = $asInteger;
         return $this;

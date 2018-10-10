@@ -17,8 +17,8 @@ class BelongsTo extends Relationship
 
     public function displayInIndex($object)
     {
-        $relation = $object->{$this->field};
-        $relationName = $this->getRelationName($object);
+        $relation       = $this->getValue($object);
+        $relationName   = $this->getRelationName($object);
         if (! $this->withLink) return $relationName;
         if (! $relation) return "--";
         return view('thrust::fields.link',[
@@ -39,24 +39,24 @@ class BelongsTo extends Relationship
     {
         if ($this->ajaxSearch){
             return view('thrust::fields.selectAjax',[
-                'resourceName' => app(ResourceManager::class)->resourceNameFromModel(get_class($object)),
-                'title' => $this->getTitle(),
-                'field' => $this->getRelation($object)->getForeignKey(),
-                'relationship' => $this->field,
-                'value' => $object->{$this->field}->id ?? null,
-                'name' => $this->getRelationName($object),
-                'id' => $object->id,
-                'allowNull' => $this->allowNull,
-                'inline' => $inline,
+                'resourceName'  => app(ResourceManager::class)->resourceNameFromModel(get_class($object)),
+                'title'         => $this->getTitle(),
+                'field'         => $this->getRelation($object)->getForeignKey(),
+                'relationship'  => $this->field,
+                'value'         => $object->{$this->field}->id ?? null,
+                'name'          => $this->getRelationName($object),
+                'id'            => $object->id,
+                'allowNull'     => $this->allowNull,
+                'inline'        => $inline,
             ]);
         }
         return view('thrust::fields.select',[
-            'title' => $this->getTitle(),
-            'field' => $this->getRelation($object)->getForeignKey(),
-            'searchable' => $this->searchable,
-            'value' => $object->{$this->field}->id ?? null,
-            'options' => $this->getOptions($object),
-            'inline' => $inline,
+            'title'         => $this->getTitle(),
+            'field'         => $this->getRelation($object)->getForeignKey(),
+            'searchable'    => $this->searchable,
+            'value'         => $object->{$this->field}->id ?? null,
+            'options'       => $this->getOptions($object),
+            'inline'        => $inline,
         ]);
     }
 
