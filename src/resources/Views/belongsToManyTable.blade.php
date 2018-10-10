@@ -16,9 +16,9 @@
     @endforeach
     <th></th>
     </thead>
-    <tbody class="@if($sortable) sortable @endif">
+    <tbody class="@if ($sortable) sortableChild @endif">
     @foreach ($children as $row)
-        <tr id="belongsToManySort_{{$row->pivot->id}}">
+        <tr id="sort_{{$row->pivot->id}}">
             @if ($sortable)
                 <td class="sort action hide-mobile"></td>
             @endif

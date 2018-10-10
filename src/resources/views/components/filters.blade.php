@@ -1,11 +1,12 @@
-@if (count($resource->filters()) > 0)
+<?php $filters = $resource->filters() ?>
+@if ($filters && count($filters) > 0)
     <div class="dropdown inline">
         <button class="secondary"> @icon(filter) @icon(caret-down)</button>
     </div>
     <?php $filtersApplied = $resource->filtersApplied(); ?>
     <ul class="dropdown-container filters" style="right:70px; margin-top:0px">
         <form id="filtersForm">
-        @foreach (collect($resource->filters()) as $filter)
+        @foreach (collect($filters) as $filter)
             <li>{{ $filter->title() }}</li>
             <li class="text-left">
                 <select name="{{ $filter->class() }}" title="{{$filter->title()}}">

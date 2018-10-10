@@ -87,6 +87,15 @@ class BelongsToMany extends Relationship
         return $this->relatedQuery($object, $this->allowDuplicates)->get();
     }
 
+    public function relatedQuery($object, $allowDuplicates = true)
+    {
+        $query = parent::relatedQuery($object);
+        if ($this->sortable){
+            return $query->orderBy($this->sortField);
+        }
+        return $query;
+    }
+
     public function search($object, $search)
     {
         return Search::apply($this->getRelation($object), $search, [$this->relationDisplayField]);

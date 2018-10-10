@@ -10,6 +10,8 @@ class Link extends Field
     protected $route;
     protected $classes = '';
     protected $icon = '';
+    protected $displayCount = false;
+    protected $displayCallback;
 
     public function link($link)
     {
@@ -30,12 +32,23 @@ class Link extends Field
         return $this;
     }
 
+    public function displayCallback($displayCallback)
+    {
+        $this->displayCallback = $displayCallback;
+        return $this;
+    }
+
     public function displayInIndex($object)
     {
+        if ($this->displayCallback){
+            $value = call_user_func($this->displayCallback, $object);
+            return "<a href='{$this->getUrl($object)}'>{$value}</a>";
+        }
         return view('thrust::fields.link',[
             'class' => $this->classes,
             'icon' => $this->icon,
             'value' => $this->getTitle(),
+            'displayCount' => $this->displayCount,
             'url' => $this->getUrl($object)
         ]);
     }

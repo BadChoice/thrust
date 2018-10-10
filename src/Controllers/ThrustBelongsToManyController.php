@@ -59,6 +59,18 @@ class ThrustBelongsToManyController extends Controller
             "relationshipDisplayName" => $belongsToManyField->relationDisplayField,
             'children'           => $children,
         ]);
+    }
 
+    public function updateOrder($resourceName, $id, $relationship)
+    {
+        $resource  = Thrust::make($resourceName);
+        $idsSorted = request('sort');
+        $objects   = $resource->find($id)->{$relationship};
+//        dd($objects->toArray());
+        $idsSorted = array_flip($idsSorted);
+        $objects->each(function ($object) use ($idsSorted) {
+            $object->pivot->update(['order' => $idsSorted[$object->pivot->id]]);
+        });
+        return response()->json("OK", 200);
     }
 }

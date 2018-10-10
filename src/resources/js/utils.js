@@ -11,7 +11,7 @@ $(document).ready(function(){
         transition:'all 0.3s',
     });
 
-    $(".sortable" ).sortable({
+    $(".sortable").sortable({
         axis: "y",
     });
     // $(".sortable td").each(function () {
@@ -142,13 +142,21 @@ function callAjax(url, data){
 //========================================
 function saveOrder(model){
     $(".loadingImage").show();
-    let serialized  =  $('.sortable').sortable('serialize');
-    console.log("Model:"        + model);
-    console.log("Serialized:"   + serialized);
+    postSaveOrder(window.location.origin + '/thrust/' + model + '/updateOrder',
+                 ".sortable");
+}
 
+function saveChildOrder(model, id, field){
+    $(".loadingImage").show();
+    postSaveOrder(window.location.origin + '/thrust/' + model + '/' + id + '/belongsToMany/' + field + '/updateOrder',
+                 '.sortableChild');
+}
+
+function postSaveOrder(url, classToSerialize){
+    let serialized  =  $(classToSerialize).sortable('serialize');
     serialized = serialized + "&_token="+csrf_token;
-
-    url = window.location.origin + '/thrust/' + model + '/updateOrder';
+    console.log("Url:"   + url);
+    console.log("Serialized:"   + serialized);
 
     $.post(url, serialized, function(){})
         .done(function(data) {

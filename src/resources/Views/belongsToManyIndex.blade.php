@@ -2,6 +2,11 @@
 
 @include('thrust::components.searchPopup')
 
+@if($sortable)
+    <div class="actions">
+        <button class="secondary" onclick="saveChildOrder('{{$resourceName}}','{{$object->id}}', '{{$belongsToManyField->field}}')">@icon(sort) {{__('thrust::messages.saveOrder')}}</button>
+    </div>
+@endif
 <div id="popup-all">
     @include('thrust::belongsToManyTable')
 </div>
@@ -63,7 +68,7 @@
         });
     });
 
-    $("{{config('thrust.popupId', '#popup')}} .sortable" ).sortable({
+    $("{{config('thrust.popupId', '#popup')}} .sortableChild" ).sortable({
         axis: "y",
     });
 
