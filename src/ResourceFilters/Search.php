@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\ResourceFilters;
 
-
 class Search
 {
     public static function apply($query, $searchText, $searchFields) {

@@ -65,7 +65,7 @@ abstract class Relationship extends Field
         $query = $this->relatedQuery($object, $allowDuplicates);
 
         Search::apply($query, $searchText, $this->searchFields ?? [$this->relationDisplayField]);
-        $query->select('id', $this->relationDisplayField)->limit(10);
+        $query->select('id', $this->relationDisplayField)->limit(25);
 
         return $query;
     }
