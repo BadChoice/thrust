@@ -4,6 +4,28 @@ namespace BadChoice\Thrust\Fields;
 
 class Decimal extends Text {
 
+    protected $asInteger = false;
+
+    protected function getValue($object)
+    {
+        $value = parent::getValue($object);
+        if ($value && $this->asInteger) return number_format($value / 100.0, 2);
+        return $value;
+    }
+
+    public function mapAttributeFromRequest($value)
+    {
+        if ($this->asInteger) return $value * 100.0;
+        return $value;
+    }
+
+
+    public function asInteger($asInteger)
+    {
+        $this->asInteger = $asInteger;
+        return $this;
+    }
+
     protected function getFieldType()
     {
         return 'number';
@@ -12,6 +34,7 @@ class Decimal extends Text {
     protected function getFieldAttributes(){
         return 'step=any';
     }
+
 
 
 }

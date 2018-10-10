@@ -41,13 +41,13 @@
                 @endforeach
 
                 @if ($resource->canEdit($row))
-                    <td class="action"> <a class='showPopup edit' href="{{route('thrust.edit', [$resource->name(), $row->id]) }}"> </a> </td>
+                    <td class="action"> <a class='showPopup edit' href="{{route('thrust.edit', [$resource->name(), $row->id]) }}"> @icon(edit)</a> </td>
                 @else
                     <td></td>
                 @endif
 
                 @if ($resource->canDelete($row))
-                    <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.delete', [$resource->name(), $row->id])}}"></a></td>
+                    <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.delete', [$resource->name(), $row->id])}}">@icon(trash)</a></td>
                 @else
                     <td></td>
                 @endif

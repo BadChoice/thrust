@@ -3,7 +3,7 @@
         {{ $slot }}
     </div>
 @else
-    <div id="{{$field}}_div">
+    <div class='formField' id="{{$field}}_div">
         <div class="label">{{ $title }}</div>
         <div class="field">
             {{ $slot }}

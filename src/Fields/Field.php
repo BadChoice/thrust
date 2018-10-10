@@ -110,4 +110,9 @@ abstract class Field{
         return $this;
     }
 
+    public function mapAttributeFromRequest($value)
+    {
+        return $value;
+    }
+
 }

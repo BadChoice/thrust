@@ -105,11 +105,24 @@ abstract class Resource{
         return $this->getBaseQuery()->count();
     }
 
+    public function create($data)
+    {
+        app(ResourceGate::class)->check($this, 'create');
+        return static::$model::create($this->mapData($data));
+    }
+
     public function update($id, $newData)
     {
         $object = $this->find($id);
         app(ResourceGate::class)->check($this, 'update', $object);
-        return $object->update($newData);
+        return $object->update($this->mapData($newData));
+    }
+
+    private function mapData($data){
+        return collect($this->fieldsFlattened())->mapWithKeys(function($field) use ($data){
+            if (! isset($data[$field->field])) return null;
+            return [$field->field => $field->mapAttributeFromRequest($data[$field->field])];
+        })->toArray();
     }
 
     public function delete($id)

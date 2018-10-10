@@ -55,9 +55,8 @@ class ThrustController extends Controller
     public function store($resourceName)
     {
         $resource = Thrust::make($resourceName);
-        app(ResourceGate::class)->check($resource, 'create');
         request()->validate($resource->getValidationRules(null));
-        $object = $resource::$model::create(request()->all());
+        $resource->create(request()->all());
         return back()->withMessage(__('thrust::messages.created'));
     }
 
