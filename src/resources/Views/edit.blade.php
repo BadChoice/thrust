@@ -19,7 +19,12 @@
         @endforeach
     </div>
 
-    <button> {{ __("thrust::messages.save") }} </button>
+    <button class="button-with-loading">
+        <span class="loadingImage">
+            <i class="fa fa-circle-o-notch fa-spin"></i>
+        </span>
+        {{ __("thrust::messages.save") }}
+    </button>
 
     @if (isset($object->id) )
         <a class="secondary button hidden" id="thrust-save-and-continue" onclick="submitAjaxForm('thrust-form-{{$object->id}}')">{{ __("thrust::messages.saveAndContinueEditing") }}</a>
