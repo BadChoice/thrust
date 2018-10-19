@@ -14,7 +14,6 @@ abstract class SelectFilter extends Filter
         return view('thrust::filters.select',[
             "filter" => $this,
             "value" => $this->filterValue($filtersApplied),
-            "filtersApplied" => $filtersApplied,
         ]);
     }
 }

@@ -8,7 +8,6 @@ abstract class TextFilter extends Filter
         return view('thrust::filters.text',[
             "filter" => $this,
             "value" => $this->filterValue($filtersApplied),
-            "filtersApplied" => $filtersApplied
         ]);
     }
 }
