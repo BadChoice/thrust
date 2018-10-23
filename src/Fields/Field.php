@@ -69,7 +69,9 @@ abstract class Field{
     protected function getValue($object)
     {
         if (! $object) return null;
-        return data_get($object, $this->field);
+        if (str_contains('.', $this->field))
+            return data_get($object, $this->field);
+        return $object->{$this->field};
     }
 
     public function getHtmlValidation($object, $type) {
