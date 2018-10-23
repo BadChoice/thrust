@@ -66,7 +66,7 @@ abstract class Field{
     }
 
 
-    protected function getValue($object)
+    public function getValue($object)
     {
         if (! $object) return null;
         if (str_contains('.', $this->field))

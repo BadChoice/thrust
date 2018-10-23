@@ -6,7 +6,7 @@ class Decimal extends Text {
 
     protected $asInteger = false;
 
-    protected function getValue($object)
+    public function getValue($object)
     {
         $value = parent::getValue($object);
         if ($value && $this->asInteger) return number_format($value / 100.0, 2);

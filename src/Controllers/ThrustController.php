@@ -10,7 +10,6 @@ use Illuminate\Routing\Controller;
 
 class ThrustController extends Controller
 {
-
     use AuthorizesRequests;
 
     public function index($resourceName)
