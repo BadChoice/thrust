@@ -86,6 +86,7 @@ class File extends Field implements Prunable
         return view('thrust::fields.file',[
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object),
+            'exists'        => $this->exists($object),
             'classes'       => $this->editClasses,
             'style'         => $inline ? $this->indexStyle : $this->editStyle,
             'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
@@ -142,6 +143,10 @@ class File extends Field implements Prunable
         if ($this->onlyUpload)
             return;
         $object->update([$this->field => $value]);
+    }
+
+    public function exists($object) {
+        return Storage::exists($this->getPath(). ($this->filename ?? $object->{$this->field}));
     }
 
     public function delete($object, $updateObject = false)
