@@ -7,25 +7,17 @@ use BadChoice\Thrust\ResourceManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
 
-class Image extends Field implements Prunable
+class Image extends File implements Prunable
 {
-    public $rowClass = 'fw3';
-    protected $basePath;
-    protected $basePathBindings = [];
-    protected $displayCallback;
     protected $classes          = 'gravatar';
     protected $resizedPrefix    = 'resized_';
     protected $gravatarField;
     protected $gravatarDefault;
-    public    $prunable         = true;
-    public    $showInEdit       = false;
-    public    $editClasses      = "br1";
-    public    $indexStyle       = 'height:30px; width:30px; object-fit: cover;';
-    public    $editStyle        = 'height:150px; width:300px; object-fit: cover;';
-    public    $withLink         = true;
 
     protected $maxHeight = 400;
     protected $maxWidth = 400;
+
+    protected $maxFileSize = 1024; // 1 MB
 
     public function gravatar($field = 'email', $default = null)
     {
@@ -34,46 +26,9 @@ class Image extends Field implements Prunable
         return $this;
     }
 
-    public function classes($classes)
-    {
-        $this->classes = $classes;
-        return $this;
-    }
-
-    public function withLink($withLink = true)
-    {
-        $this->withLink = $withLink;
-        return $this;
-    }
-
-    public function path($path, $bindings = [])
-    {
-        $this->basePath         = $path . '/';
-        $this->basePathBindings = $bindings;
-        return $this;
-    }
-
     public function maxSize($width, $height){
         $this->maxWidth = $width;
         $this->maxHeight = $height;
-        return $this;
-    }
-
-    public function prunable($prunable = true)
-    {
-        $this->prunable = $prunable;
-        return $this;
-    }
-
-    /**
-     * Set a callback that will be used to convert the filename to a full url
-     * The callback can also be a class with the __invoke so it can be reused without wiring anything into the resource
-     * @param $displayCallback
-     * @return $this
-     */
-    public function display($displayCallback)
-    {
-        $this->displayCallback = $displayCallback;
         return $this;
     }
 
@@ -111,28 +66,6 @@ class Image extends Field implements Prunable
         ])->render();
     }
 
-    public function displayPath($object, $prefix = '')
-    {
-        if (! $this->getValue($object)) return null;
-        if ($this->displayCallback){
-            return call_user_func($this->displayCallback, $object, $prefix);
-        }
-        return $this->filePath($object, $prefix);
-    }
-
-    protected function filePath($object, $namePrefix = '')
-    {
-        if (! $this->getValue($object)) return null;
-        return $this->getPath() . $namePrefix . $this->getValue($object);
-    }
-
-    protected function getPath()
-    {
-        if (! $this->basePath) return storage_path('thrust');
-        // TODO: Use the bindings!
-        return str_replace("{user}", auth()->user()->username, $this->basePath);
-    }
-
     public function store($object, $file)
     {
         $this->delete($object, false);
@@ -149,17 +82,13 @@ class Image extends Field implements Prunable
             $constraint->aspectRatio();
             $constraint->upsize();
         })->encode('png'));
-        $object->update([$this->field => $filename]);
+        $this->updateField($object,$filename);
     }
 
-    public function delete($object, $updateObject = false)
+    protected function deleteFile($object)
     {
-        if (! $this->getValue($object)) return;
+        parent::deleteFile($object);
         Storage::delete($this->filePath($object, $this->resizedPrefix));
-        Storage::delete($this->filePath($object));
-        if ($updateObject) {
-            $object->update([$this->field => null]);
-        }
     }
 
     public function prune($object)
