@@ -5,7 +5,7 @@
         @if ($path && $exists)
             <img src='{{ asset($path) }}' class='{{$classes}}' style='{{$style}}'>
         @elseif($path)
-            <span class="button secondary">@icon(warning)</span>
+            <span class="button secondary"> @icon(warning) </span>
         @elseif($gravatar)
             {!! $gravatar !!}
         @else
