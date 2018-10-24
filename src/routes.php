@@ -61,6 +61,7 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
     Route::put('{resourceName}/{id}', 'ThrustController@update')->name('thrust.update');
     Route::delete('{resourceName}/{id}', 'ThrustController@delete')->name('thrust.delete');
     Route::get('{resourceName}/search/{search}', 'ThrustSearchController@index')->name('thrust.search');
+    Route::get('{resourceName}/export', 'ThrustExportController@index')->name('thrust.export');
 
     Route::get('{resourceName}/{id}/image/{field}', 'ThrustImageController@edit')->name('thrust.image.edit');
     Route::post('{resourceName}/{id}/image/{field}', 'ThrustImageController@store')->name('thrust.image.store');
@@ -80,3 +81,11 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
 
     Route::get('{resourceName}/{id}/related/{relationship}', 'ThrustRelationshipController@search')->name('thrust.relationship.search');
 });
+
+//TODO: Move it somewhere else
+function niceTitle($str)
+{
+    $parts = explode(' ', $str);
+    $parts[0] = preg_replace('~([a-z])([A-Z])~', '\\1 \\2', $parts[0]);
+    return implode(' ', $parts);
+}

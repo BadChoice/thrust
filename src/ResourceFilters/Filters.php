@@ -7,7 +7,7 @@ class Filters
     public static function applyFromRequest($query, $filtersEncoded)
     {
         static::decodeFilters($filtersEncoded)->reject(function ($value){
-            return $value == "--";
+            return $value == null || $value == "--";
         })->each(function($value, $filterClass) use ($query){
             $filter = new $filterClass;
             $filter->apply(request(), $query, $value);

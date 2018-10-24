@@ -2,7 +2,7 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\Facades\Thrust;
 
 class Check extends Text
 {
@@ -23,7 +23,7 @@ class Check extends Text
     public function displayInIndex($object)
     {
         return view('thrust::fields.checkIndex',[
-            "resourceName" => app(ResourceManager::class)->resourceNameFromModel($object),
+            "resourceName" => Thrust::resourceNameFromModel($object),
             "value" => $object->{$this->field},
             "id" => $object->id,
             "field" => $this->field,

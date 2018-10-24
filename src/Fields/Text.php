@@ -59,10 +59,10 @@ class Text extends Field{
         return $this->attributes;
     }
 
-    protected function getValue($object)
+    public function getValue($object)
     {
         if (! $object) return null;
-        return strip_tags(data_get($object, $this->field));
+        return strip_tags(parent::getValue($object));
     }
 
 }

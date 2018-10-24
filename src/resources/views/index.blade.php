@@ -11,7 +11,7 @@
         </span>
         <br><br>
         @include('thrust::components.mainActions')
-        {{ $description }}
+        {{ $description ?? "" }}
 
         @include('thrust::components.search')
         <div class="pb1 text-right" style="margin-top:-29px; margin-right: -8px;">

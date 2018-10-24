@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Fields;
 
-
 use BadChoice\Thrust\Fields\Traits\Searchable;
 use BadChoice\Thrust\ResourceFilters\Search;
 

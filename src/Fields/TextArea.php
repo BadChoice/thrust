@@ -25,7 +25,7 @@ class TextArea extends Field{
     }
 
 
-    protected function getValue($object)
+    public function getValue($object)
     {
         return strip_tags($object->{$this->field});
     }

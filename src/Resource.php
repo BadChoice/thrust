@@ -54,6 +54,7 @@ abstract class Resource{
     public static $sortable     = false;
     public static $sortField    = 'order';
     public static $defaultSort  = 'id';
+    public static $defaultOrder  = 'ASC';
 
     /**
      * @var array Set the default eager loading relationships
@@ -105,11 +106,17 @@ abstract class Resource{
         return $this->getBaseQuery()->count();
     }
 
+    public function create($data)
+    {
+        app(ResourceGate::class)->check($this, 'create');
+        return static::$model::create($this->mapRequest($data));
+    }
+
     public function update($id, $newData)
     {
         $object = $this->find($id);
         app(ResourceGate::class)->check($this, 'update', $object);
-        return $object->update($newData);
+        return $object->update($this->mapRequest($newData));
     }
 
     public function delete($id)
@@ -151,6 +158,15 @@ abstract class Resource{
         })->filter(function($value){
             return $value != null;
         })->toArray();
+    }
+
+    private function mapRequest($data){
+        $this->fieldsFlattened()->filter(function($field) use($data) {
+            return isset($data[$field->field]);
+        })->each(function($field) use (&$data){
+            $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
+        });
+        return $data;
     }
 
     public function mainActions()
@@ -210,11 +226,16 @@ abstract class Resource{
         if (request('search')){
             Search::apply($query, request('search'), static::$search);
         }
+
         if (static::$sortable){
             Sort::apply($query, static::$sortField, 'ASC');
         } else if (request('sort')){
             Sort::apply($query, request('sort'), request('sort_order'));
         }
+        else{
+            Sort::apply($query, static::$defaultSort, static::$defaultOrder);
+        }
+
         if (request('filters')){
             Filters::applyFromRequest($query, request('filters'));
         }

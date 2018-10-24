@@ -32,11 +32,13 @@ abstract class Action
 
     public function getTitle()
     {
-        $title = $this->title ?? collect(explode("\\", get_class($this)))->last();
+        $title = $this->title ?? niceTitle(collect(explode("\\", get_class($this)))->last());
         if ($this->icon)
             return icon($this->icon) . " " . $title ;
         return $title;
     }
+
+
 
     /**
      * If the action needs to perform an update to all objects, this query can be used to do it

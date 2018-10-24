@@ -6,17 +6,6 @@ use Illuminate\Http\Request;
 
 abstract class Filter
 {
-
-    public function class()
-    {
-        return get_class($this);
-    }
-
-    public function title()
-    {
-        return collect(explode("\\", get_class($this)))->last();
-    }
-
     /**
      * @param Request $request
      * @param $query
@@ -25,8 +14,24 @@ abstract class Filter
      */
     public abstract function apply(Request $request, $query, $value);
 
-    /**
-     * @return array where the key is the human readable part and the value is the value that will be sent to the apply
-     */
-    public abstract function options();
+    public abstract function display($filtersApplied);
+
+    public function class()
+    {
+        return get_class($this);
+    }
+
+    public function title()
+    {
+        return niceTitle(collect(explode("\\", get_class($this)))->last());
+    }
+
+    public function filterValue($filtersApplied)
+    {
+        if (! $filtersApplied->keys()->contains($this->class())){
+            return null;
+        }
+        return $filtersApplied[$this->class()];
+    }
+
 }

@@ -41,7 +41,7 @@
                 @endforeach
 
                 @if ($resource->canEdit($row))
-                    <td class="action"> <a class='showPopup edit' href="{{route('thrust.edit', [$resource->name(), $row->id]) }}"> </a> </td>
+                    <td class="action"> <a class='showPopup edit' href="{{route('thrust.edit', [$resource->name(), $row->id]) }}"></a> </td>
                 @else
                     <td></td>
                 @endif
