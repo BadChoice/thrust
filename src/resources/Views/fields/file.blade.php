@@ -2,7 +2,7 @@
     @if($withLink)
     <a href="{{route('thrust.file.edit', [$resourceName, $id, $field]) }}" class="showPopup">
     @endif
-        @if ($path && File::exists($path))
+        @if ($path && $exists)
             <span>{{ basename($path) }} @icon(pencil)</span>
         @else
             <span class="button secondary"> @icon(file) </span>
@@ -10,9 +10,7 @@
     @if($withLink)
     </a>
     @endif
-
-    @if (File::exists($path))
+    @if ($exists)
         <a href="{{ url($path) }}" style="margin-left: 10px">@icon(download)</a>
     @endif
-
 @endcomponent

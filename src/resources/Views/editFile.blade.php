@@ -1,5 +1,5 @@
 <div>
-    @if ($fileField->displayPath($object) && File::exists($fileField->displayPath($object)))
+    @if ($fileField->displayPath($object) && $fileField->exists($object))
         @icon(file) <span class='br1'>{{ basename($fileField->displayPath($object)) }}</span>
     @endif
 </div>
