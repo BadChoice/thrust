@@ -90,11 +90,4 @@ class Image extends File implements Prunable
         parent::deleteFile($object);
         Storage::delete($this->filePath($object, $this->resizedPrefix));
     }
-
-    public function prune($object)
-    {
-        $this->delete($object);
-    }
-
-
 }
