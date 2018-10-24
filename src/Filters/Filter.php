@@ -23,7 +23,7 @@ abstract class Filter
 
     public function title()
     {
-        return collect(explode("\\", get_class($this)))->last();
+        return niceTitle(collect(explode("\\", get_class($this)))->last());
     }
 
     public function filterValue($filtersApplied)
