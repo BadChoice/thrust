@@ -5,18 +5,32 @@ namespace BadChoice\Thrust\ResourceFilters;
 class Search
 {
     public static function apply($query, $searchText, $searchFields) {
-        return $query->where(function ($query) use($searchText, $searchFields){
-            return collect($searchFields)->reduce(function($query, $searchField) use($searchText) {
+        $searchFields = collect($searchFields);
+        $firstField = $searchFields->shift();
+        static::applyField($query, $firstField, $searchText);
+
+        return $query->orWhere(function ($query) use($searchText, $searchFields){
+            return $searchFields->reduce(function($query, $searchField) use($searchText) {
                 return $query->orWhere($searchField, 'like', "%{$searchText}%");
             }, $query);
         });
     }
 
-    /** //TODO: improved search by words, fer-ho per el primer fields nomes?
-    collect(explode(' ', $text))->each(function ($word) use (&$query) {
-            $query->where(function ($subQuery) use ($word) {
-                $subQuery->where('products.name', 'like', "%{$word}%");
+
+    /**
+     * This does a super search by separating the word by spaces
+     * @param $query
+     * @param $field
+     * @param $text
+     * @return mixed
+     */
+    public static function applyField(&$query, $field, $text)
+    {
+        collect(explode(' ', $text))->each(function ($word) use ($field, &$query) {
+            $query->where(function ($subQuery) use ($word, $field) {
+                $subQuery->where($field, 'like', "%{$word}%");
             });
         });
-     */
+        return $query;
+    }
 }
