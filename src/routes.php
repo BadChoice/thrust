@@ -67,6 +67,10 @@ Route::group(['prefix' => config('thrust.routePrefix','thrust'), 'namespace' => 
     Route::post('{resourceName}/{id}/image/{field}', 'ThrustImageController@store')->name('thrust.image.store');
     Route::delete('{resourceName}/{id}/image/{field}', 'ThrustImageController@delete')->name('thrust.image.delete');
 
+    Route::get('{resourceName}/{id}/file/{field}', 'ThrustFileController@edit')->name('thrust.file.edit');
+    Route::post('{resourceName}/{id}/file/{field}', 'ThrustFileController@store')->name('thrust.file.store');
+    Route::delete('{resourceName}/{id}/file/{field}', 'ThrustFileController@delete')->name('thrust.file.delete');
+
     Route::get('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@index')->name('thrust.belongsToMany');
     Route::post('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@store')->name('thrust.belongsToMany.store');
     Route::get('{resourceName}/{id}/belongsToMany/{field}/search/{search}', 'ThrustBelongsToManyController@search')->name('thrust.belongsToMany.search');
