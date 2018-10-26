@@ -89,7 +89,7 @@ class BelongsToMany extends Relationship
 
     public function relatedQuery($object, $allowDuplicates = true)
     {
-        $query = parent::relatedQuery($object);
+        $query = parent::relatedQuery($object, $allowDuplicates);
         if ($this->sortable){
             return $query->orderBy($this->sortField);
         }

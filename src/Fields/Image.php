@@ -57,6 +57,7 @@ class Image extends File implements Prunable
             'path'          => $this->displayPath($object),
             'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->getImageTag($object) : null,
             'classes'       => $this->editClasses,
+            'exists'        => $this->exists($object),
             'style'         => $inline ? $this->indexStyle : $this->editStyle,
             'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
             'id'            => $object->id,
