@@ -6,7 +6,7 @@ class Datetime extends Text {
 
     protected function getFieldType()
     {
-        return 'datetime';
+        return 'datetime-local';
     }
     
 }
