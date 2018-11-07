@@ -2,8 +2,10 @@
     @if($withLink)
     <a href="{{route('thrust.image.edit', [$resourceName, $id, $field]) }}" class="showPopup">
     @endif
-        @if ($path)
+        @if ($path && $exists)
             <img src='{{ asset($path) }}' class='{{$classes}}' style='{{$style}}'>
+        @elseif($path)
+            <span class="button secondary"> @icon(warning) </span>
         @elseif($gravatar)
             {!! $gravatar !!}
         @else

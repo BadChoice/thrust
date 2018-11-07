@@ -1,7 +1,7 @@
 @include('thrust::components.paginator', ["data" => $rows])
 @if (count($rows) > 0)
     <table class="list striped">
-        <thead>
+        <thead class="sticky">
             <th class="hide-mobile">
                 <input type="checkbox" onclick="toggleSelectAll(this)">
             </th>

@@ -9,8 +9,8 @@ class Decimal extends Text {
     public function getValue($object)
     {
         $value = parent::getValue($object);
-        if ($value && $this->asInteger) return number_format($value / 100.0, 2);
-        return $value;
+        if ($value && $this->asInteger) return number_format(floatval($value) / 100.0, 2);
+        return floatval($value);
     }
 
     public function mapAttributeFromRequest($value)
