@@ -21,7 +21,7 @@ class TextArea extends Field{
             'value' => $this->getValue($object),
             'validationRules' => $this->getHtmlValidation($object, 'textarea'),
             'attributes' => $this->getFieldAttributes()
-        ]);
+        ])->render();
     }
 
 
