@@ -58,6 +58,7 @@ class ThrustBelongsToManyController extends Controller
             'belongsToManyField' => $belongsToManyField,
             "relationshipDisplayName" => $belongsToManyField->relationDisplayField,
             'children'           => $children,
+            'sortable'           => false,
         ]);
     }
 
