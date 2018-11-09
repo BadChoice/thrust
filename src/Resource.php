@@ -12,7 +12,8 @@ use BadChoice\Thrust\ResourceFilters\Filters;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
 
-abstract class Resource{
+abstract class Resource
+{
 
     /**
      * @var string defines the underlying model class
@@ -51,9 +52,9 @@ abstract class Resource{
     /**
      * @var bool define if the resource is sortable and can be arranged in the index view
      */
-    public static $sortable     = false;
-    public static $sortField    = 'order';
-    public static $defaultSort  = 'id';
+    public static $sortable      = false;
+    public static $sortField     = 'order';
+    public static $defaultSort   = 'id';
     public static $defaultOrder  = 'ASC';
 
     /**
@@ -68,8 +69,10 @@ abstract class Resource{
 
     public function fieldsFlattened()
     {
-        return collect($this->fields())->map(function($field){
-            if ($field instanceof Panel) return $field->fields;
+        return collect($this->fields())->map(function ($field) {
+            if ($field instanceof Panel) {
+                return $field->fields;
+            }
             return $field;
         })->flatten();
     }
@@ -81,7 +84,7 @@ abstract class Resource{
 
     public function panels()
     {
-        return collect($this->fields())->filter(function($field){
+        return collect($this->fields())->filter(function ($field) {
             return ($field instanceof Panel);
         });
     }
@@ -140,7 +143,7 @@ abstract class Resource{
     public function makeNew()
     {
         $object = new static::$model;
-        if (collect(class_implements($this))->contains(FormatsNewObject::class)){
+        if (collect(class_implements($this))->contains(FormatsNewObject::class)) {
             $this->formatNewObject($object);
         }
 
@@ -152,18 +155,19 @@ abstract class Resource{
 
     public function getValidationRules($objectId)
     {
-        $fields = $this->fieldsFlattened()->where('showInEdit',true);
-        return $fields->mapWithKeys(function($field) use($objectId){
-           return [$field->field => str_replace("{id}", $objectId, $field->validationRules)];
-        })->filter(function($value){
+        $fields = $this->fieldsFlattened()->where('showInEdit', true);
+        return $fields->mapWithKeys(function ($field) use ($objectId) {
+            return [$field->field => str_replace('{id}', $objectId, $field->validationRules)];
+        })->filter(function ($value) {
             return $value != null;
         })->toArray();
     }
 
-    private function mapRequest($data){
-        $this->fieldsFlattened()->filter(function($field) use($data) {
+    private function mapRequest($data)
+    {
+        $this->fieldsFlattened()->filter(function ($field) use ($data) {
             return isset($data[$field->field]);
-        })->each(function($field) use (&$data){
+        })->each(function ($field) use (&$data) {
             $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
         });
         return $data;
@@ -193,8 +197,9 @@ abstract class Resource{
         return count($this->with) ? $this->with : $this->getRelationshipsFields()->toArray();
     }
 
-    public function getRelationshipsFields(){
-        return $this->fieldsFlattened()->filter(function($field){
+    public function getRelationshipsFields()
+    {
+        return $this->fieldsFlattened()->filter(function ($field) {
             return $field instanceof Relationship;
         })->pluck('field');
     }
@@ -223,42 +228,43 @@ abstract class Resource{
     public function query()
     {
         $query = $this->getBaseQuery();
-        if (request('search')){
+        if (request('search')) {
             Search::apply($query, request('search'), static::$search);
         }
 
-        if (static::$sortable){
+        if (static::$sortable) {
             Sort::apply($query, static::$sortField, 'ASC');
-        } else if (request('sort')){
+        } elseif (request('sort')) {
             Sort::apply($query, request('sort'), request('sort_order'));
-        }
-        else{
+        } else {
             Sort::apply($query, static::$defaultSort, static::$defaultOrder);
         }
 
-        if (request('filters')){
+        if (request('filters')) {
             Filters::applyFromRequest($query, request('filters'));
         }
         return $query;
     }
 
-    public function rows() {
+    public function rows()
+    {
         return $this->query()->paginate($this->pagination);
     }
 
     public function getDescription()
     {
-        $description = trans_choice( config('thrust.translationsDescriptionsPrefix') . str_singular($this->name()), 1);
-        if (! str_contains($description, config('thrust.translationsDescriptionsPrefix'))){
+        $description = trans_choice(config('thrust.translationsDescriptionsPrefix') . str_singular($this->name()), 1);
+        if (! str_contains($description, config('thrust.translationsDescriptionsPrefix'))) {
             return $description;
         }
-        return "";
+        return '';
     }
 
     public function filtersApplied()
     {
-        if (!request()->has('filters')) return collect();
+        if (! request()->has('filters')) {
+            return collect();
+        }
         return Filters::decodeFilters(request('filters'));
     }
-
 }

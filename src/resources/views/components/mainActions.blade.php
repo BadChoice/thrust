@@ -1,8 +1,8 @@
 <div class="actions">
     <?php
         $mainActions = collect($resource->mainActions());
-        if ($resource::$sortable){
-            $mainActions->prepend(BadChoice\Thrust\Actions\SaveOrder::make("saveOrder"));
+        if ($resource::$sortable) {
+            $mainActions->prepend(BadChoice\Thrust\Actions\SaveOrder::make('saveOrder'));
         }
     ?>
     @foreach($mainActions as $action)

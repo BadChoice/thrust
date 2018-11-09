@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Fields;
 
-
 class HasOne extends Relationship
 {
     public $showInEdit = false;
@@ -14,8 +13,5 @@ class HasOne extends Relationship
 
     public function displayInEdit($object, $inline = false)
     {
-        return;
     }
-
-
 }

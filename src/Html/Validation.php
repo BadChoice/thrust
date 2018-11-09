@@ -7,9 +7,9 @@ class Validation
     protected $rules;
     protected $type;
 
-    public function __construct($rules, $type = "text")
+    public function __construct($rules, $type = 'text')
     {
-        $this->rules    = collect(explode("|", $rules));
+        $this->rules    = collect(explode('|', $rules));
         $this->type     = $type;
     }
 
@@ -27,7 +27,7 @@ class Validation
 
     public function appendRule(&$output, $rule)
     {
-        $params = collect(explode(":", $rule));
+        $params = collect(explode(':', $rule));
         $rule   = $params->first();
         if ($rule == 'required') {
             $this->appendRuleRequired($output);
@@ -46,12 +46,12 @@ class Validation
 
     public function appendRuleRequired(&$output)
     {
-        $output .= " required ";
+        $output .= ' required ';
     }
 
     public function appendRuleMin(&$output, $min)
     {
-        if ($this->type == "number") {
+        if ($this->type == 'number') {
             return $this->appendRuleNumberMin($output, $min);
         }
         $output .= " pattern='.{".$min.",}' title='Min ".$min." or more characters' ";
@@ -59,7 +59,7 @@ class Validation
 
     public function appendRuleMax(&$output, $max)
     {
-        if ($this->type == "number") {
+        if ($this->type == 'number') {
             return $this->appendRuleNumberMax($output, $max);
         }
         $output .= " pattern='.{0,".$max."}' title='Max ".$max." characters' ";
@@ -67,12 +67,12 @@ class Validation
 
     public function appendRuleDigits(&$output, $digits)
     {
-        $output .= "pattern='.{".$digits.",".$digits."}' title='Digits ".$digits." characters' ";
+        $output .= "pattern='.{".$digits.','.$digits."}' title='Digits ".$digits." characters' ";
     }
 
     public function appendRuleEmail(&$output)
     {
-        if ($this->type == "email"){
+        if ($this->type == 'email') {
             return;
         }
         $output .= " pattern='/^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$/' ";

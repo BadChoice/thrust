@@ -2,14 +2,14 @@
 
 namespace BadChoice\Thrust;
 
-
 class ResourceManager
 {
     protected $resourcesFolder = 'Thrust';
     protected $resources;
-    static protected $servingCallback;
+    protected static $servingCallback;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->findResources();
         if (static::$servingCallback) {
             call_user_func(static::$servingCallback);
@@ -23,12 +23,12 @@ class ResourceManager
 
     private function findResources()
     {
-        $folder = app_path() . '/' . $this->resourcesFolder;
+        $folder          = app_path() . '/' . $this->resourcesFolder;
         $this->resources = collect(scandir($folder))->filter(function ($filename) {
-            return str_contains($filename, ".php");
+            return str_contains($filename, '.php');
         })->mapWithKeys(function ($filename) {
             $resource = substr($filename, 0, -4);
-            return [str_plural(lcfirst(substr($filename, 0, -4))) => "\\App\\Thrust\\" . $resource];
+            return [str_plural(lcfirst(substr($filename, 0, -4))) => '\\App\\Thrust\\' . $resource];
         });
     }
 
@@ -38,8 +38,10 @@ class ResourceManager
      */
     public function make($resourceName)
     {
-        if ($resourceName instanceof Resource) return $resourceName;
-        $type = lcfirst(str_plural($resourceName));
+        if ($resourceName instanceof Resource) {
+            return $resourceName;
+        }
+        $type  = lcfirst(str_plural($resourceName));
         $class = $this->resources[$type];
         return new $class;
     }
@@ -57,5 +59,4 @@ class ResourceManager
         $name = array_pop($path);
         return lcfirst(str_plural($name)) ;
     }
-
 }

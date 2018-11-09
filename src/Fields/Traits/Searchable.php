@@ -2,11 +2,10 @@
 
 namespace BadChoice\Thrust\Fields\Traits;
 
-
 trait Searchable
 {
-    public $searchable = false;
-    public $ajaxSearch = false;
+    public $searchable   = false;
+    public $ajaxSearch   = false;
     public $searchFields = null;
 
     public function searchable($searchable = true, $usingAjax = false)
@@ -18,10 +17,9 @@ trait Searchable
 
     public function ajaxSearch($searchFields = null)
     {
-        $this->searchable = true;
-        $this->ajaxSearch = true;
+        $this->searchable   = true;
+        $this->ajaxSearch   = true;
         $this->searchFields = $searchFields;
         return $this;
     }
-
 }

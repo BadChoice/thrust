@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-
 use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
 
@@ -17,6 +16,6 @@ class ThrustSortController extends Controller
         $objects->each(function ($object) use ($idsSorted) {
             $object->update(['order' => $idsSorted[$object->id]]);
         });
-        return response()->json("OK", 200);
+        return response()->json('OK', 200);
     }
 }

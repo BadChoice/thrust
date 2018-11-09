@@ -6,10 +6,10 @@ use BadChoice\Thrust\ResourceManager;
 
 class HasMany extends Relationship
 {
-    public $showInEdit = false;
-    public $link       = null;
+    public $showInEdit     = false;
+    public $link           = null;
     public $resourceName   = null;
-    public $icon = null;
+    public $icon           = null;
     public $useTitle;
 
     public static function make($dbField, $title = null)
@@ -39,14 +39,14 @@ class HasMany extends Relationship
 
     public function displayInIndex($object)
     {
-        return view('thrust::fields.hasMany',[
-            "value"         => $this->getIndexText($object),
-            "withLink"      => $this->withLink,
-            "link"          => $this->link ? str_replace("{id}", $object->id, $this->link) : null,
-            "relationship"  => $this->field,
-            "id"            => $object->id,
-            "icon"          => $this->icon,
-            "resourceName"  => app(ResourceManager::class)->resourceNameFromModel($object),
+        return view('thrust::fields.hasMany', [
+            'value'         => $this->getIndexText($object),
+            'withLink'      => $this->withLink,
+            'link'          => $this->link ? str_replace('{id}', $object->id, $this->link) : null,
+            'relationship'  => $this->field,
+            'id'            => $object->id,
+            'icon'          => $this->icon,
+            'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
         ]);
     }
 
@@ -58,13 +58,13 @@ class HasMany extends Relationship
 
     public function getIndexText($object)
     {
-        if ($this->useTitle) return $this->getTitle() . " (" . $this->getRelation($object)->count() . ")";
+        if ($this->useTitle) {
+            return $this->getTitle() . ' (' . $this->getRelation($object)->count() . ')';
+        }
         return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
     }
 
     public function displayInEdit($object, $inline = false)
     {
-
     }
-
 }

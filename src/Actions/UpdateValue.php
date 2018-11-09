@@ -8,12 +8,12 @@ use Illuminate\Support\Collection;
 class UpdateValue extends Action
 {
     public $needsConfirmation = true;
-    public $icon = "pencil";
-    public $field = 'name';
+    public $icon              = 'pencil';
+    public $field             = 'name';
 
     public static function make($field = 'name')
     {
-        $action = new static;
+        $action        = new static;
         $action->field = $field;
         return $action;
     }
@@ -25,10 +25,10 @@ class UpdateValue extends Action
         ];
     }
 
-    public function handle(Collection $objects){
+    public function handle(Collection $objects)
+    {
         $this->getAllObjectsQuery($objects)->update([
             $this->field => request($this->field)
         ]);
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Fields;
 
-
 class Panel
 {
     public $fields;
@@ -13,40 +12,45 @@ class Panel
     public $hideWhenField;
     public $hideWhenValue;
 
-    public static function make($fields, $title = null){
-        $panel = new static;
+    public static function make($fields, $title = null)
+    {
+        $panel         = new static;
         $panel->fields = $fields;
-        $panel->title = $title;
+        $panel->title  = $title;
         return $panel;
     }
 
-    public function icon($icon){
+    public function icon($icon)
+    {
         $this->icon = $icon;
         return $this;
     }
 
-    public function displayInEdit($object, $inline = false){
+    public function displayInEdit($object, $inline = false)
+    {
         $html = '<div class="formPanel" id="panel_'.$this->title.'">';
         $html .= $this->getTitle();
-        return $html . collect($this->fields)->where('showInEdit',true)->reduce(function($carry, Field $field) use($object){
+        return $html . collect($this->fields)->where('showInEdit', true)->reduce(function ($carry, Field $field) use ($object) {
             return $carry .$field->displayInEdit($object);
         }) .'</div>';
     }
 
-    protected function getTitle(){
-        if (! $this->title && ! $this->icon) return "";
-        return implode("", ["<h4>", icon($this->icon ?? ''), ' ', $this->title, "</h4>"]);
+    protected function getTitle()
+    {
+        if (! $this->title && ! $this->icon) {
+            return '';
+        }
+        return implode('', ['<h4>', icon($this->icon ?? ''), ' ', $this->title, '</h4>']);
     }
 
     public function hideWhen($field, $value = true)
     {
         $this->hideWhenField = $field;
         $this->hideWhenValue = $value;
-        collect($this->fields)->each(function($field){
+        collect($this->fields)->each(function ($field) {
             $field->hideWhenField = $this->hideWhenField;
             $field->hideWhenValue = $this->hideWhenValue;
         });
         return $this;
     }
-
 }

@@ -2,11 +2,10 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Date extends Text {
-
+class Date extends Text
+{
     protected function getFieldType()
     {
         return 'date';
     }
-
 }

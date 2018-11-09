@@ -12,9 +12,9 @@ abstract class Filter
      * @param $value
      * @return QueryBuilder with the filter applied
      */
-    public abstract function apply(Request $request, $query, $value);
+    abstract public function apply(Request $request, $query, $value);
 
-    public abstract function display($filtersApplied);
+    abstract public function display($filtersApplied);
 
     public function class()
     {
@@ -23,15 +23,14 @@ abstract class Filter
 
     public function title()
     {
-        return niceTitle(collect(explode("\\", get_class($this)))->last());
+        return niceTitle(collect(explode('\\', get_class($this)))->last());
     }
 
     public function filterValue($filtersApplied)
     {
-        if (! $filtersApplied->keys()->contains($this->class())){
+        if (! $filtersApplied->keys()->contains($this->class())) {
             return null;
         }
         return $filtersApplied[$this->class()];
     }
-
 }

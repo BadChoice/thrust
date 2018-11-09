@@ -5,8 +5,8 @@ namespace BadChoice\Thrust\Fields;
 use BadChoice\Thrust\Fields\Traits\Visibility;
 use BadChoice\Thrust\Html\Validation;
 
-abstract class Field{
-
+abstract class Field
+{
     use Visibility;
 
     public $field;
@@ -15,30 +15,33 @@ abstract class Field{
     public $validationRules;
 
     public $showInIndex = true;
-    public $showInEdit = true;
+    public $showInEdit  = true;
 
-    public $withDesc = false;
+    public $withDesc    = false;
     public $description = false;
 
-    public $rowClass = "";
+    public $rowClass = '';
 
-    public abstract function displayInIndex($object);
-    public abstract function displayInEdit($object, $inline = false);
+    abstract public function displayInIndex($object);
+
+    abstract public function displayInEdit($object, $inline = false);
 
     public static function make($dbField, $title = null)
     {
-        $field = new static;
+        $field        = new static;
         $field->field = $dbField;
         $field->title = $title;
         return $field;
     }
 
-    public function rules($validationRules){
+    public function rules($validationRules)
+    {
         $this->validationRules = $validationRules;
         return $this;
     }
 
-    public function rowClass($class){
+    public function rowClass($class)
+    {
         $this->rowClass = $class;
         return $this;
     }
@@ -51,7 +54,7 @@ abstract class Field{
 
     public function withDesc($withDesc = true, $description = null)
     {
-        $this->withDesc = $withDesc;
+        $this->withDesc    = $withDesc;
         $this->description = $description;
         return $this;
     }
@@ -61,54 +64,64 @@ abstract class Field{
         return $this->title ?? trans_choice(config('thrust.translationsPrefix').$this->field, 1);
     }
 
-    public function getDescription(){
-        return ($this->withDesc && !$this->description) ? trans_choice(config('thrust.translationsPrefix').$this->field.'Desc', 1) : $this->description;
+    public function getDescription()
+    {
+        return ($this->withDesc && ! $this->description) ? trans_choice(config('thrust.translationsPrefix').$this->field.'Desc', 1) : $this->description;
     }
-
 
     public function getValue($object)
     {
-        if (! $object) return null;
-        if (str_contains('.', $this->field))
+        if (! $object) {
+            return null;
+        }
+        if (str_contains('.', $this->field)) {
             return data_get($object, $this->field);
+        }
         return $object->{$this->field};
     }
 
-    public function getHtmlValidation($object, $type) {
+    public function getHtmlValidation($object, $type)
+    {
         return Validation::make($this->validationRules, $type)->generate();
     }
 
-    public function onlyInIndex(){
+    public function onlyInIndex()
+    {
         $this->showInIndex = true;
-        $this->showInEdit = false;
+        $this->showInEdit  = false;
         return $this;
     }
 
-    public function hide($hide = true){
+    public function hide($hide = true)
+    {
         $this->showInIndex = $hide;
-        $this->showInEdit = $hide;
+        $this->showInEdit  = $hide;
         return $this;
     }
 
-    public function show($show = true){
-        $this->showInIndex = !$show;
-        $this->showInEdit = !$show;
+    public function show($show = true)
+    {
+        $this->showInIndex = ! $show;
+        $this->showInEdit  = ! $show;
         return $this;
     }
 
-    public function hideInIndex(){
+    public function hideInIndex()
+    {
         $this->showInIndex = false;
         return $this;
     }
 
-    public function hideInEdit($hideInEdit = true){
+    public function hideInEdit($hideInEdit = true)
+    {
         $this->showInEdit = ! $hideInEdit;
         return $this;
     }
 
-    public function onlyInEdit(){
+    public function onlyInEdit()
+    {
         $this->showInIndex = false;
-        $this->showInEdit = true;
+        $this->showInEdit  = true;
         return $this;
     }
 
@@ -117,8 +130,8 @@ abstract class Field{
         return $value;
     }
 
-    public function getDatabaseField(){
+    public function getDatabaseField()
+    {
         return $this->field;
     }
-
 }

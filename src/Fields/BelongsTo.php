@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Fields;
 
-
 use BadChoice\Thrust\ResourceManager;
 
 class BelongsTo extends Relationship
@@ -19,10 +18,14 @@ class BelongsTo extends Relationship
     {
         $relation       = $this->getValue($object);
         $relationName   = $this->getRelationName($object);
-        if (! $this->withLink) return $relationName;
-        if (! $relation) return "--";
-        return view('thrust::fields.link',[
-            'url' => route('thrust.edit', [app(ResourceManager::class)->resourceNameFromModel($relation), $this->getValue($object)->id]),
+        if (! $this->withLink) {
+            return $relationName;
+        }
+        if (! $relation) {
+            return '--';
+        }
+        return view('thrust::fields.link', [
+            'url'   => route('thrust.edit', [app(ResourceManager::class)->resourceNameFromModel($relation), $this->getValue($object)->id]),
             'value' => $relationName,
             'class' => 'showPopup'
         ]);
@@ -31,14 +34,16 @@ class BelongsTo extends Relationship
     public function getOptions($object)
     {
         $possibleRelations = $this->relatedQuery($object, true)->pluck($this->relationDisplayField, 'id');
-        if ($this->allowNull) return $possibleRelations->prepend("--", "")->toArray();
+        if ($this->allowNull) {
+            return $possibleRelations->prepend('--', '')->toArray();
+        }
         return $possibleRelations;
     }
 
     public function displayInEdit($object, $inline = false)
     {
-        if ($this->ajaxSearch){
-            return view('thrust::fields.selectAjax',[
+        if ($this->ajaxSearch) {
+            return view('thrust::fields.selectAjax', [
                 'resourceName'  => app(ResourceManager::class)->resourceNameFromModel(get_class($object)),
                 'title'         => $this->getTitle(),
                 'field'         => $this->getRelation($object)->getForeignKey(),
@@ -50,7 +55,7 @@ class BelongsTo extends Relationship
                 'inline'        => $inline,
             ]);
         }
-        return view('thrust::fields.select',[
+        return view('thrust::fields.select', [
             'title'         => $this->getTitle(),
             'field'         => $this->getRelation($object)->getForeignKey(),
             'searchable'    => $this->searchable,
@@ -59,5 +64,4 @@ class BelongsTo extends Relationship
             'inline'        => $inline,
         ]);
     }
-
 }
