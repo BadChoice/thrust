@@ -32,8 +32,8 @@
     @if ($searchable)
         @include('thrust::components.searchScript', ['resourceName' => $resourceName])
     @endif
-    @include('thrust::components.js.actions', ['resourceName' => $resourceName]);
-    @include('thrust::components.js.filters', ['resourceName' => $resourceName]);
-    @include('thrust::components.js.editInline', ['resourceName' => $resourceName]);
+    @include('thrust::components.js.actions', ['resourceName' => $resourceName])
+    @include('thrust::components.js.filters', ['resourceName' => $resourceName])
+    @include('thrust::components.js.editInline', ['resourceName' => $resourceName])
 
 @stop
