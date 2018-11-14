@@ -11,7 +11,7 @@ class Search
 
         return $query->orWhere(function ($query) use($searchText, $searchFields){
             return $searchFields->reduce(function($query, $searchField) use($searchText) {
-                return $query->orWhere($searchField, 'like', "%{$searchText}%");
+                return static::applyFieldSimple($query, $searchField, $searchText);
             }, $query);
         });
     }
@@ -32,5 +32,27 @@ class Search
             });
         });
         return $query;
+    }
+
+    public static function applyFieldSimple(&$query, $searchField, $searchText){
+        if (str_contains($searchField, '.')) {
+            return self::applyRelationshipField($query, $searchField, $searchText);
+        }
+        return $query->orWhere($searchField, 'like', "%{$searchText}%");
+    }
+
+    /**
+     * @param $query
+     * @param $searchField
+     * @param $searchText
+     * @return mixed
+     */
+    public static function applyRelationshipField(&$query, $searchField, $searchText)
+    {
+        [$relationship, $relationshipField] = explode('.', $searchField);
+
+        return $query->orWhereHas($relationship, function ($query) use ($relationshipField, $searchText) {
+            return $query->where($relationshipField, 'like', "%{$searchText}%");
+        });
     }
 }
