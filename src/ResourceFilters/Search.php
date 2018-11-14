@@ -10,8 +10,8 @@ class Search
         $firstField   = $searchFields->shift();
         static::applyField($query, $firstField, $searchText);
 
-        return $query->orWhere(function ($query) use ($searchText, $searchFields) {
-            return $searchFields->reduce(function ($query, $searchField) use ($searchText) {
+        return $query->orWhere(function ($query) use($searchText, $searchFields){
+            return $searchFields->reduce(function($query, $searchField) use($searchText) {
                 return static::applyFieldSimple($query, $searchField, $searchText);
             }, $query);
         });
@@ -34,26 +34,25 @@ class Search
         return $query;
     }
 
-    public static function applyFieldSimple($query, $field, $text)
-    {
-        if (str_contains($field, '.')) {
-            return static::applyRelationshipField($query, $field, $text);
+    public static function applyFieldSimple(&$query, $searchField, $searchText){
+        if (str_contains($searchField, '.')) {
+            return self::applyRelationshipField($query, $searchField, $searchText);
         }
-
-        return $query->orWhere($field, 'like', "%{$text}%");
+        return $query->orWhere($searchField, 'like', "%{$searchText}%");
     }
 
-    //TODO: need to work a bit more with this
-    public static function applyRelationshipField($query, $field, $text)
+    /**
+     * @param $query
+     * @param $searchField
+     * @param $searchText
+     * @return mixed
+     */
+    public static function applyRelationshipField(&$query, $searchField, $searchText)
     {
-        return $query;
-        [$relationShip, $field] = explode('.', $field);
-        $tableToJoin            = $query->getModel()->$relationShip()->getModel()->getTable();
+        [$relationship, $relationshipField] = explode('.', $searchField);
 
-        $q = $query->leftJoin($tableToJoin, function ($join) use ($relationShip, $field, $text, $tableToJoin, $query) {
-            $join->on($tableToJoin .'.'. $query->getModel()->$relationShip()->getOwnerKey(), '=', $query->getModel()->getTable().'.'.$query->getModel()->$relationShip()->getForeignKey())
-                ->where($tableToJoin.'.' . $field, 'like', "%$text%");
+        return $query->orWhereHas($relationship, function ($query) use ($relationshipField, $searchText) {
+            return $query->where($relationshipField, 'like', "%{$searchText}%");
         });
-        //dd($q->toSql() ,$q->getBindings());
     }
 }

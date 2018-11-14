@@ -52,12 +52,13 @@ class ThrustBelongsToManyController extends Controller
         $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
         $children           = $belongsToManyField->search($object, $searchText)->get();
-        return view('thrust::belongsToManyTable', [
-            'resourceName'            => $resourceName,
-            'object'                  => $object,
-            'belongsToManyField'      => $belongsToManyField,
-            'relationshipDisplayName' => $belongsToManyField->relationDisplayField,
-            'children'                => $children,
+        return view('thrust::belongsToManyTable',[
+            'resourceName'       => $resourceName,
+            'object'             => $object,
+            'belongsToManyField' => $belongsToManyField,
+            "relationshipDisplayName" => $belongsToManyField->relationDisplayField,
+            'children'           => $children,
+            'sortable'           => false,
         ]);
     }
 

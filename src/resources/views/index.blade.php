@@ -14,7 +14,7 @@
         {{ $description ?? "" }}
 
         @include('thrust::components.search')
-        <div class="pb1 text-right" style="margin-top:-29px; margin-right: -8px;">
+        <div class="pb1 text-right thrust-actions">
             @include('thrust::components.filters')
             @include('thrust::components.actions')
         </div>

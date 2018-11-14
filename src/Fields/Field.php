@@ -74,7 +74,7 @@ abstract class Field
         if (! $object) {
             return null;
         }
-        if (str_contains('.', $this->field)) {
+        if (str_contains($this->field, '.')) {
             return data_get($object, $this->field);
         }
         return $object->{$this->field};
