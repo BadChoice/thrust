@@ -41,7 +41,7 @@ class Link extends Field
     {
         if ($this->displayCallback) {
             $value = call_user_func($this->displayCallback, $object);
-            return "<a href='{$this->getUrl($object)}'>{$value}</a>";
+            return "<a href='{$this->getUrl($object)}' class='{$this->classes}'>{$value}</a>";
         }
         return view('thrust::fields.link', [
             'class'        => $this->classes,
