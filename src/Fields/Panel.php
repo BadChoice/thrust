@@ -8,6 +8,7 @@ class Panel
     public $showInEdit = true;
     public $title;
     public $icon;
+    public $panelId;
 
     public $hideWhenField;
     public $hideWhenValue;
@@ -26,9 +27,15 @@ class Panel
         return $this;
     }
 
+    public function panelId($id)
+    {
+        $this->panelId = $id;
+        return $this;
+    }
+
     public function displayInEdit($object, $inline = false)
     {
-        $html = '<div class="formPanel" id="panel_'.$this->title.'">';
+        $html = '<div class="formPanel" id="panel_'.$this->getId().'">';
         $html .= $this->getTitle();
         return $html . collect($this->fields)->where('showInEdit', true)->reduce(function ($carry, Field $field) use ($object) {
             return $carry .$field->displayInEdit($object);
@@ -53,4 +60,10 @@ class Panel
         });
         return $this;
     }
+
+    public function getId()
+    {
+        return $this->panelId ?? $this->title;
+    }
+
 }
