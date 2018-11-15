@@ -9,7 +9,6 @@ use BadChoice\Thrust\Resource;
 
 class Edit
 {
-
     protected $resource;
 
     public function __construct(Resource $resource)
@@ -23,7 +22,7 @@ class Edit
         if ($this->resource::$sortable) {
             $fields->prepend(Hidden::make($this->resource::$sortField));
         }
-        if ($this->resource instanceof ChildResource){
+        if ($this->resource instanceof ChildResource) {
             $fields->prepend(ParentId::make($this->resource->parentForeignKey()));
         }
         return $fields;
@@ -36,12 +35,12 @@ class Edit
 
     public function getVisiblityJson()
     {
-        return $this->resource->panels()->filter(function($panel){
+        return $this->resource->panels()->filter(function ($panel) {
             return $panel->hideWhenField != null;
-        })->mapWithKeys(function($panel){
-            return [$panel->title => [
-                "field" => $panel->hideWhenField,
-                "value" => $panel->hideWhenValue]
+        })->mapWithKeys(function ($panel) {
+            return [$panel->getId() => [
+                'field' => $panel->hideWhenField,
+                'value' => $panel->hideWhenValue]
             ];
         });
     }
@@ -71,5 +70,4 @@ class Edit
             'object'        => $object,
         ])->render();
     }
-
 }

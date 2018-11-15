@@ -8,12 +8,12 @@ class CheckSwitch extends Check
 
     public function displayInEdit($object, $inline = false)
     {
-        return view($inline ? 'thrust::fields.check' : 'thrust::fields.checkSwitch',[
-            'title' => $this->getTitle(),
-            'field' => $this->field,
-            'value' => $this->getValue($object),
-            'inline' => $inline,
-            "description" => $this->getDescription(),
+        return view($inline ? 'thrust::fields.check' : 'thrust::fields.checkSwitch', [
+            'title'       => $this->getTitle(),
+            'field'       => $this->field,
+            'value'       => $this->getValue($object),
+            'inline'      => $inline,
+            'description' => $this->getDescription(),
         ]);
     }
 }

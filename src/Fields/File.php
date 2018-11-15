@@ -12,14 +12,14 @@ class File extends Field implements Prunable
     protected $basePath;
     protected $basePathBindings = [];
     protected $displayCallback;
-    public    $prunable         = true;
-    public    $showInEdit       = false;
-    public    $editClasses      = "br1";
-    public    $indexStyle       = 'height:30px; width:30px; object-fit: cover;';
-    public    $editStyle        = 'height:150px; width:300px; object-fit: cover;';
-    public    $withLink         = true;
+    public $prunable            = true;
+    public $showInEdit          = false;
+    public $editClasses         = 'br1';
+    public $indexStyle          = 'height:30px; width:30px; object-fit: cover;';
+    public $editStyle           = 'height:150px; width:300px; object-fit: cover;';
+    public $withLink            = true;
     protected $filename         = null;
-    public    $onlyUpload       = false;
+    public $onlyUpload          = false;
 
     protected $maxFileSize = 10240; // 10 MB
 
@@ -42,7 +42,8 @@ class File extends Field implements Prunable
         return $this;
     }
 
-    public function maxFileSize($fileSize){
+    public function maxFileSize($fileSize)
+    {
         $this->maxFileSize = $fileSize;
         return $this;
     }
@@ -67,7 +68,7 @@ class File extends Field implements Prunable
 
     public function displayInIndex($object)
     {
-        return view('thrust::fields.file',[
+        return view('thrust::fields.file', [
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object),
             'classes'       => $this->classes,
@@ -83,7 +84,7 @@ class File extends Field implements Prunable
 
     public function displayInEdit($object, $inline = false)
     {
-        return view('thrust::fields.file',[
+        return view('thrust::fields.file', [
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object),
             'exists'        => $this->exists($object),
@@ -94,14 +95,16 @@ class File extends Field implements Prunable
             'field'         => $this->field,
             'inline'        => $inline,
             'description'   => $this->getDescription(),
-            'withLink'      => !$inline && $this->withLink
+            'withLink'      => ! $inline && $this->withLink
         ])->render();
     }
 
     public function displayPath($object, $prefix = '')
     {
-        if (!$this->onlyUpload && ! $this->getValue($object)) return null;
-        if ($this->displayCallback){
+        if (! $this->onlyUpload && ! $this->getValue($object)) {
+            return null;
+        }
+        if ($this->displayCallback) {
             return call_user_func($this->displayCallback, $object, $prefix);
         }
         return $this->filePath($object, $prefix);
@@ -115,19 +118,24 @@ class File extends Field implements Prunable
 
     protected function filePath($object, $namePrefix = '')
     {
-        if (!$this->onlyUpload && ! $this->getValue($object)) return null;
+        if (! $this->onlyUpload && ! $this->getValue($object)) {
+            return null;
+        }
 
-        if ($this->onlyUpload)
+        if ($this->onlyUpload) {
             return $this->getPath() . $this->filename;
+        }
 
         return $this->getPath() . $namePrefix . $this->getValue($object);
     }
 
     protected function getPath()
     {
-        if (! $this->basePath) return storage_path('thrust');
+        if (! $this->basePath) {
+            return storage_path('thrust');
+        }
         // TODO: Use the bindings!
-        return str_replace("{user}", auth()->user()->username, $this->basePath);
+        return str_replace('{user}', auth()->user()->username, $this->basePath);
     }
 
     public function store($object, $file)
@@ -135,30 +143,35 @@ class File extends Field implements Prunable
         $this->delete($object, false);
         $filename   = str_random(10) . $file->extension();
         Storage::putFileAs($this->getPath(), $file, $this->filename ?? $filename);
-        $this->updateField($object,$filename);
+        $this->updateField($object, $filename);
     }
 
-    protected function updateField($object,$value)
+    protected function updateField($object, $value)
     {
-        if ($this->onlyUpload)
+        if ($this->onlyUpload) {
             return;
+        }
         $object->update([$this->field => $value]);
     }
 
-    public function exists($object) {
+    public function exists($object)
+    {
         return Storage::exists($this->getPath(). ($this->filename ?? $object->{$this->field}));
     }
 
     public function delete($object, $updateObject = false)
     {
-        if (!$this->onlyUpload && ! $this->getValue($object)) return;
+        if (! $this->onlyUpload && ! $this->getValue($object)) {
+            return;
+        }
         $this->deleteFile($object);
         if ($updateObject) {
-            $this->updateField($object,null);
+            $this->updateField($object, null);
         }
     }
 
-    protected function deleteFile($object) {
+    protected function deleteFile($object)
+    {
         Storage::delete($this->filePath($object));
     }
 
@@ -166,6 +179,4 @@ class File extends Field implements Prunable
     {
         $this->delete($object);
     }
-
-
 }

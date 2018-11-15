@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Fields\Traits;
 
-trait Visibility{
-
+trait Visibility
+{
     public $hideWhenField;
     public $hideWhenValue;
 
@@ -16,8 +16,9 @@ trait Visibility{
 
     public function shouldHide($object)
     {
-        if ($this->hideWhenField == null) return false;
+        if ($this->hideWhenField == null) {
+            return false;
+        }
         return $object->{$this->hideWhenField} === $this->hideWhenValue;
     }
-
 }

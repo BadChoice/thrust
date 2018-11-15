@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Date extends Text {
-
+class Date extends Text
+{
     protected $timeAgo;
 
     protected function getFieldType()

@@ -10,11 +10,12 @@ class Export extends MainAction
 
     public function display($resourceName, $parent_id = null)
     {
-        if (! app(ResourceGate::class)->can($resourceName, 'index'))
-            return "";
+        if (! app(ResourceGate::class)->can($resourceName, 'index')) {
+            return '';
+        }
 
         $title = $this->getTitle();
-        $link = route('thrust.export', $resourceName);
+        $link  = route('thrust.export', $resourceName);
         return "<a class='button' href='{$link}'> <i class='fa fa-download'></i> {$title} </a>";
     }
 

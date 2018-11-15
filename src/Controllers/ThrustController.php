@@ -17,15 +17,15 @@ class ThrustController extends Controller
         $resource = Thrust::make($resourceName);
         app(ResourceGate::class)->check($resource, 'index');
 
-        if ($resource::$singleResource){
+        if ($resource::$singleResource) {
             return $this->singleResourceIndex($resourceName, $resource);
         }
 
-        return view('thrust::index',[
+        return view('thrust::index', [
             'resourceName' => $resourceName,
-            'resource' => $resource,
-            'searchable' => count($resource::$search) > 0,
-            'description' => $resource->getDescription(),
+            'resource'     => $resource,
+            'searchable'   => count($resource::$search) > 0,
+            'description'  => $resource->getDescription(),
         ]);
     }
 
@@ -40,7 +40,7 @@ class ThrustController extends Controller
     public function edit($resourceName, $id)
     {
         $resource = Thrust::make($resourceName);
-        $object = $resource->find($id);
+        $object   = $resource->find($id);
         app(ResourceGate::class)->check($resource, 'update', $object);
         return (new Edit($resource))->show($object);
     }
@@ -62,7 +62,7 @@ class ThrustController extends Controller
     public function update($resourceName, $id)
     {
         $resource = Thrust::make($resourceName);
-        if (! request()->has('inline')){
+        if (! request()->has('inline')) {
             request()->validate($resource->getValidationRules($id));
         }
 
@@ -79,10 +79,10 @@ class ThrustController extends Controller
 
     private function singleResourceIndex($resourceName, $resource)
     {
-        return view('thrust::singleResourceIndex',[
-            "resourceName"  => $resourceName,
-            "resource"      => $resource,
-            "object"        => $resource->first()
+        return view('thrust::singleResourceIndex', [
+            'resourceName'  => $resourceName,
+            'resource'      => $resource,
+            'object'        => $resource->first()
         ]);
     }
 }

@@ -19,8 +19,9 @@ class ThrustServiceProvider extends ServiceProvider
         ], 'config');
     }
 
-    public function register() {
-        app()->singleton(ResourceManager::class , function(){
+    public function register()
+    {
+        app()->singleton(ResourceManager::class, function () {
             return new ResourceManager();
         });
     }
@@ -29,5 +30,4 @@ class ThrustServiceProvider extends ServiceProvider
     {
         return ResourceManager::class;
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Hidden extends Text {
-
+class Hidden extends Text
+{
     public $showInIndex = false;
 
     protected function getFieldType()

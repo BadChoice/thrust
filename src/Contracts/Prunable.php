@@ -7,6 +7,7 @@ namespace BadChoice\Thrust\Contracts;
  * Interface Prunable
  * @package BadChoice\Thrust\Contracts
  */
-interface Prunable{
+interface Prunable
+{
     public function prune($object);
 }

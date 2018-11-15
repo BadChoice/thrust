@@ -10,19 +10,20 @@ class MainAction
 
     public static function make($title)
     {
-        $action = new static;
+        $action        = new static;
         $action->title = $title;
         return $action;
     }
 
     public function display($resourceName, $parent_id = null)
     {
-        if (! app(ResourceGate::class)->can($resourceName, 'create'))
-            return "";
+        if (! app(ResourceGate::class)->can($resourceName, 'create')) {
+            return '';
+        }
 
         $title = $this->getTitle();
-        $link = route('thrust.create', $resourceName);
-        if ($parent_id){
+        $link  = route('thrust.create', $resourceName);
+        if ($parent_id) {
             $link .= "?parent_id={$parent_id}";
         }
         return "<a class='button showPopup' href='{$link}'> <i class='fa fa-plus'></i> {$title} </a>";
@@ -32,5 +33,4 @@ class MainAction
     {
         return __('thrust::messages.' . $this->title);
     }
-
 }

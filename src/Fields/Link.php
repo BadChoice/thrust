@@ -2,14 +2,13 @@
 
 namespace BadChoice\Thrust\Fields;
 
-
 class Link extends Field
 {
     public $showInEdit = false;
-    protected $link = '';
+    protected $link    = '';
     protected $route;
-    protected $classes = '';
-    protected $icon = '';
+    protected $classes      = '';
+    protected $icon         = '';
     protected $displayCount = false;
     protected $displayCallback;
 
@@ -40,38 +39,36 @@ class Link extends Field
 
     public function displayInIndex($object)
     {
-        if ($this->displayCallback){
+        if ($this->displayCallback) {
             $value = call_user_func($this->displayCallback, $object);
-            return "<a href='{$this->getUrl($object)}'>{$value}</a>";
+            return "<a href='{$this->getUrl($object)}' class='{$this->classes}'>{$value}</a>";
         }
-        return view('thrust::fields.link',[
-            'class' => $this->classes,
-            'icon' => $this->icon,
-            'value' => $this->getTitle(),
+        return view('thrust::fields.link', [
+            'class'        => $this->classes,
+            'icon'         => $this->icon,
+            'value'        => $this->getTitle(),
             'displayCount' => $this->displayCount,
-            'url' => $this->getUrl($object)
+            'url'          => $this->getUrl($object)
         ]);
     }
 
     public function icon($icon)
     {
-        $this->icon = $icon;
-        $this->rowClass = $this->rowClass . " action";
+        $this->icon     = $icon;
+        $this->rowClass = $this->rowClass . ' action';
         return $this;
     }
 
     public function getUrl($object)
     {
-        if ($this->route){
+        if ($this->route) {
             return route($this->route, [$object]);
         }
-        return str_replace("{field}", $this->getValue($object), $this->link);
+        return str_replace('{field}', $this->getValue($object), $this->link);
     }
 
     public function displayInEdit($object, $inline = false)
     {
         return $this->displayInIndex($object);
     }
-
-
 }

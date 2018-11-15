@@ -7,11 +7,12 @@ use Illuminate\Support\Collection;
 class Deactivate extends Action
 {
     public $needsConfirmation = true;
-    public $title = 'Deactivate';
-    public $icon = 'times';
-    public $field = 'active';
+    public $title             = 'Deactivate';
+    public $icon              = 'times';
+    public $field             = 'active';
 
-    public function handle(Collection $objects){
+    public function handle(Collection $objects)
+    {
         $this->getAllObjectsQuery($objects)->update([
             $this->field => false
         ]);
@@ -19,5 +20,4 @@ class Deactivate extends Action
             $object->update([$this->field => false]);
         });*/
     }
-
 }

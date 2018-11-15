@@ -2,7 +2,6 @@
 
 namespace BadChoice\Thrust\Html;
 
-use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\Resource;
 
 class Index
@@ -28,6 +27,4 @@ class Index
             'rows'      => $this->resource->rows()
         ])->render();
     }
-
-
 }
