@@ -38,7 +38,7 @@ class Edit
         return $this->resource->panels()->filter(function ($panel) {
             return $panel->hideWhenField != null;
         })->mapWithKeys(function ($panel) {
-            return [$panel->title => [
+            return [$panel->getId() => [
                 'field' => $panel->hideWhenField,
                 'value' => $panel->hideWhenValue]
             ];
