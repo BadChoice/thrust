@@ -15,26 +15,27 @@ class Image extends File implements Prunable
     protected $gravatarDefault;
 
     protected $maxHeight = 400;
-    protected $maxWidth = 400;
+    protected $maxWidth  = 400;
 
     protected $maxFileSize = 1024; // 1 MB
 
     public function gravatar($field = 'email', $default = null)
     {
-        $this->gravatarField = $field;
+        $this->gravatarField   = $field;
         $this->gravatarDefault = $default;
         return $this;
     }
 
-    public function maxSize($width, $height){
-        $this->maxWidth = $width;
+    public function maxSize($width, $height)
+    {
+        $this->maxWidth  = $width;
         $this->maxHeight = $height;
         return $this;
     }
 
     public function displayInIndex($object)
     {
-        return view('thrust::fields.image',[
+        return view('thrust::fields.image', [
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object, $this->resizedPrefix),
             'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->withDefault($this->gravatarDefault)->getImageTag($object) : null,
@@ -52,7 +53,7 @@ class Image extends File implements Prunable
 
     public function displayInEdit($object, $inline = false)
     {
-        return view('thrust::fields.image',[
+        return view('thrust::fields.image', [
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object),
             'gravatar'      => $this->gravatarField ? Gravatar::make($this->gravatarField)->getImageTag($object) : null,
@@ -64,7 +65,7 @@ class Image extends File implements Prunable
             'field'         => $this->field,
             'inline'        => $inline,
             'description'   => $this->getDescription(),
-            'withLink'      => !$inline && $this->withLink
+            'withLink'      => ! $inline && $this->withLink
         ])->render();
     }
 
@@ -79,12 +80,12 @@ class Image extends File implements Prunable
         });
 
         $filename   = str_random(10) . '.png';
-        Storage::put($this->getPath() . $filename,                           (string)$image->encode('png'));
+        Storage::put($this->getPath() . $filename, (string)$image->encode('png'));
         Storage::put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         })->encode('png'));
-        $this->updateField($object,$filename);
+        $this->updateField($object, $filename);
     }
 
     protected function deleteFile($object)

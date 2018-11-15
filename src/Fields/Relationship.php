@@ -9,7 +9,7 @@ abstract class Relationship extends Field
 {
     use Searchable;
 
-    public $relationDisplayField = 'name';
+    public $relationDisplayField  = 'name';
     public $relatedScope          = null;
     public $withLink              = false;
 
@@ -19,7 +19,8 @@ abstract class Relationship extends Field
         return $this;
     }
 
-    public function getRelation($object){
+    public function getRelation($object)
+    {
         return $object->{$this->field}();
     }
 
@@ -41,14 +42,17 @@ abstract class Relationship extends Field
         return $this;
     }
 
-    public function relatedQuery($object, $allowDuplicates = true){
+    public function relatedQuery($object, $allowDuplicates = true)
+    {
         $query = $this->getRelation($object)->getRelated()->query();
 
-        if ($this->relatedScope)
+        if ($this->relatedScope) {
             $query = call_user_func($this->relatedScope, $query);
+        }
 
-        if (! $allowDuplicates)
+        if (! $allowDuplicates) {
             $query->whereNotIn('id', $this->getValue($object)->pluck('id')->toArray());
+        }
 
         return $query;
     }
@@ -73,5 +77,4 @@ abstract class Relationship extends Field
     {
         return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
-
 }

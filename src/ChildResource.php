@@ -2,18 +2,8 @@
 
 namespace BadChoice\Thrust;
 
-use BadChoice\Thrust\Actions\MainAction;
-use BadChoice\Thrust\Actions\Delete;
-use BadChoice\Thrust\Contracts\FormatsNewObject;
-use BadChoice\Thrust\Contracts\Prunable;
-use BadChoice\Thrust\Fields\Panel;
-use BadChoice\Thrust\Fields\Relationship;
-use BadChoice\Thrust\ResourceFilters\Search;
-use BadChoice\Thrust\ResourceFilters\Sort;
-use Illuminate\Database\Query\Builder;
-
-abstract class ChildResource extends Resource{
-
+abstract class ChildResource extends Resource
+{
     public static $parentRelation;
     protected $parentId;
 
@@ -34,16 +24,16 @@ abstract class ChildResource extends Resource{
         return $query->where($this->parentForeignKey(), $this->parentId);
     }
 
-    public function parentForeignKey(){
+    public function parentForeignKey()
+    {
         return (new static::$model)->{static::$parentRelation}()->getForeignKey();
     }
 
     public function parent($object)
     {
-        if (is_numeric($object)){
-           return  (new static::$model)->{static::$parentRelation}()->getRelated()->query()->find($object);
+        if (is_numeric($object)) {
+            return  (new static::$model)->{static::$parentRelation}()->getRelated()->query()->find($object);
         }
         return $object->{static::$parentRelation};
     }
-
 }

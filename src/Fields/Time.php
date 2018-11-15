@@ -2,22 +2,23 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Time extends Text{
-
+class Time extends Text
+{
     protected $withSeconds;
     
-    public function withSeconds($withSeconds = true) {
+    public function withSeconds($withSeconds = true)
+    {
         $this->withSeconds = $withSeconds;
         return $this;
     }
 
-    protected function getFieldType(){
+    protected function getFieldType()
+    {
         return 'time';
     }
 
     protected function getFieldAttributes()
     {
-        return $this->withSeconds ? " step=1 " : '';
+        return $this->withSeconds ? ' step=1 ' : '';
     }
-
 }

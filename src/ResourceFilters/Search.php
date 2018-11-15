@@ -4,9 +4,10 @@ namespace BadChoice\Thrust\ResourceFilters;
 
 class Search
 {
-    public static function apply($query, $searchText, $searchFields) {
+    public static function apply($query, $searchText, $searchFields)
+    {
         $searchFields = collect($searchFields);
-        $firstField = $searchFields->shift();
+        $firstField   = $searchFields->shift();
         static::applyField($query, $firstField, $searchText);
 
         return $query->orWhere(function ($query) use($searchText, $searchFields){
@@ -15,7 +16,6 @@ class Search
             }, $query);
         });
     }
-
 
     /**
      * This does a super search by separating the word by spaces

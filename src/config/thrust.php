@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'translationsPrefix' => 'admin.',
+    'translationsPrefix'             => 'admin.',
     'translationsDescriptionsPrefix' => 'pageDescription.',
-    'routePrefix' => 'thrust',
-    'routeMiddleware' => ['web', 'auth'],
-    'indexLayout'      => 'layout.app',
-    'popupId'    => '#popup',
+    'routePrefix'                    => 'thrust',
+    'routeMiddleware'                => ['web', 'auth'],
+    'indexLayout'                    => 'layout.app',
+    'popupId'                        => '#popup',
 ];

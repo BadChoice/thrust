@@ -15,11 +15,10 @@ class ThrustRelationshipController extends Controller
         $query          = $relationField->searchRelatedQuery($object, request('search'), request('allowDuplicates', true));
         $results        = $query->get();
 
-        if (request('allowNull', false)){
-           return $results->prepend(["id" => "", "name" => "--"]);
+        if (request('allowNull', false)) {
+            return $results->prepend(['id' => '', 'name' => '--']);
         }
 
         return $results;
     }
-
 }

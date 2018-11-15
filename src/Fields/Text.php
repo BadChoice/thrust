@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Text extends Field{
-
+class Text extends Field
+{
     protected $displayInIndexCallback = null;
     protected $editableHint           = false;
     protected $attributes             = '';
@@ -16,7 +16,7 @@ class Text extends Field{
 
     public function getIndexClass()
     {
-        return $this->editableHint ? "editableHint" : "";
+        return $this->editableHint ? 'editableHint' : '';
     }
 
     public function displayWith($callback)
@@ -25,27 +25,30 @@ class Text extends Field{
         return $this;
     }
 
-    public function displayInIndex($object){
-        if ($this->displayInIndexCallback){
+    public function displayInIndex($object)
+    {
+        if ($this->displayInIndexCallback) {
             return call_user_func($this->displayInIndexCallback, $object);
         }
         return "<span class='{$this->getIndexClass()}'>{$this->getValue($object)}</span>";
     }
 
-    public function displayInEdit($object, $inline = false){
-        return view('thrust::fields.input',[
-            'inline' => $inline,
-            'title' => $this->getTitle(),
-            'type' => $this->getFieldType(),
-            'field' => $this->field,
-            'value' => $this->getValue($object),
+    public function displayInEdit($object, $inline = false)
+    {
+        return view('thrust::fields.input', [
+            'inline'          => $inline,
+            'title'           => $this->getTitle(),
+            'type'            => $this->getFieldType(),
+            'field'           => $this->field,
+            'value'           => $this->getValue($object),
             'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
-            'attributes' => $this->getFieldAttributes(),
-            'description' => $this->getDescription(),
+            'attributes'      => $this->getFieldAttributes(),
+            'description'     => $this->getDescription(),
         ])->render();
     }
 
-    protected function getFieldType(){
+    protected function getFieldType()
+    {
         return 'text';
     }
 
@@ -55,14 +58,16 @@ class Text extends Field{
         return $this;
     }
 
-    protected function getFieldAttributes(){
+    protected function getFieldAttributes()
+    {
         return $this->attributes;
     }
 
     public function getValue($object)
     {
-        if (! $object) return null;
+        if (! $object) {
+            return null;
+        }
         return strip_tags(parent::getValue($object));
     }
-
 }

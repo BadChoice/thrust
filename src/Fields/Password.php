@@ -2,17 +2,17 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class Password extends Text{
-
+class Password extends Text
+{
     public $showInIndex = false;
 
-    public function displayInIndex($object){
-        return "******";
+    public function displayInIndex($object)
+    {
+        return '******';
     }
 
-
-    protected function getFieldType(){
+    protected function getFieldType()
+    {
         return 'password';
     }
-
 }

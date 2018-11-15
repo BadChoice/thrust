@@ -7,11 +7,11 @@ use BadChoice\Thrust\ResourceManager;
 
 class BelongsToMany extends Relationship
 {
-    public $allowDuplicates = false;
+    public $allowDuplicates   = false;
     public $indexTextCallback = null;
-    public $pivotFields = [];
-    public $objectFields = [];
-    public $icon = null;
+    public $pivotFields       = [];
+    public $objectFields      = [];
+    public $icon              = null;
     public $hideName;
 
     public $sortable     = false;
@@ -19,19 +19,19 @@ class BelongsToMany extends Relationship
 
     public function displayInIndex($object)
     {
-        return view('thrust::fields.belongsToMany',[
-            "value"         => $this->getIndexText($object),
-            "withLink"      => $this->withLink,
-            "relationship"  => $this->field,
-            "id"            => $object->id,
-            "icon"          => $this->icon,
-            "resourceName"  => app(ResourceManager::class)->resourceNameFromModel($object),
+        return view('thrust::fields.belongsToMany', [
+            'value'         => $this->getIndexText($object),
+            'withLink'      => $this->withLink,
+            'relationship'  => $this->field,
+            'id'            => $object->id,
+            'icon'          => $this->icon,
+            'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
         ]);
     }
 
     public function sortable($sortable = true, $sortField = 'order')
     {
-        $this->sortable = $sortable;
+        $this->sortable  = $sortable;
         $this->sortField = 'order';
         return $this;
     }
@@ -42,12 +42,14 @@ class BelongsToMany extends Relationship
         return $this;
     }
 
-    public function objectFields($objectFields){
+    public function objectFields($objectFields)
+    {
         $this->objectFields = $objectFields;
         return $this;
     }
 
-    public function pivotFields($pivotFields){
+    public function pivotFields($pivotFields)
+    {
         $this->pivotFields = $pivotFields;
         return $this;
     }
@@ -64,7 +66,8 @@ class BelongsToMany extends Relationship
         return $this;
     }
 
-    public function displayInIndexCallback($callback){
+    public function displayInIndexCallback($callback)
+    {
         $this->indexTextCallback = $callback;
         return $this;
     }
@@ -76,7 +79,7 @@ class BelongsToMany extends Relationship
 
     public function getIndexText($object)
     {
-        if ($this->indexTextCallback){
+        if ($this->indexTextCallback) {
             return call_user_func($this->indexTextCallback, $object);
         }
         return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
@@ -90,7 +93,7 @@ class BelongsToMany extends Relationship
     public function relatedQuery($object, $allowDuplicates = true)
     {
         $query = parent::relatedQuery($object, $allowDuplicates);
-        if ($this->sortable){
+        if ($this->sortable) {
             return $query->orderBy($this->sortField);
         }
         return $query;
@@ -104,12 +107,10 @@ class BelongsToMany extends Relationship
     public function displayInEdit($object, $inline = false)
     {
         $this->withLink = false;
-        return view('thrust::fields.info',[
-            "title" => $this->getTitle(),
-            "value" => $this->displayInIndex($object),
-            "inline" => $inline,
+        return view('thrust::fields.info', [
+            'title'  => $this->getTitle(),
+            'value'  => $this->displayInIndex($object),
+            'inline' => $inline,
         ]);
     }
-
-
 }

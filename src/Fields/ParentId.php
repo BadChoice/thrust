@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class ParentId extends Text {
-
+class ParentId extends Text
+{
     public $showInIndex = false;
 
     protected function getFieldType()
@@ -21,6 +21,4 @@ class ParentId extends Text {
     {
         return "<input type='hidden' name='{$this->field}' value='{$this->getValue($object)}'>";
     }
-
-
 }
