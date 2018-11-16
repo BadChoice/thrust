@@ -2,6 +2,10 @@
 
 namespace BadChoice\Thrust;
 
+use Log;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
 class ResourceManager
 {
     protected $resourcesFolder = 'Thrust';
@@ -24,12 +28,24 @@ class ResourceManager
     private function findResources()
     {
         $folder          = app_path() . '/' . $this->resourcesFolder;
-        $this->resources = collect(scandir($folder))->filter(function ($filename) {
+        $this->resources = collect($this->scandirRecursive($folder))->filter(function ($filename) {
             return str_contains($filename, '.php');
-        })->mapWithKeys(function ($filename) {
-            $resource = substr($filename, 0, -4);
-            return [str_plural(lcfirst(substr($filename, 0, -4))) => '\\App\\Thrust\\' . $resource];
+        })->map(function ($path) use ($folder) {
+            $filePath = str_replace($folder.DIRECTORY_SEPARATOR,"",$path);
+            $filePath = str_replace("/","\\",$filePath);
+            $resourcePath = substr($filePath, 0, -4);
+            return '\\App\\Thrust\\' . $resourcePath;
         });
+    }
+
+    function scandirRecursive($dir,$results = []){
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
+        foreach ($iterator as $file) {
+            if ($file->isDir()) continue;
+            $path = $file->getPathname();
+            $results[str_plural(lcfirst(substr(basename($path), 0, -4)))] = $path;
+        }
+        return $results;
     }
 
     /**
