@@ -34,15 +34,16 @@
  * [x] Inline editing!
  * [x] Table density
  * [x] Custom events to be different than the standard ones?
+ * [x] Quan sortable, afegir x defecte la main action save order
+ * [x] Make the resource found in app service provider recursive into thrust directory ?
+ * [x] Improved ResourceFilters\Search by words, fer-ho per el primer fields nomes?
+ * [x] Search through relationships
  * [] Save image in thrust to use the same route as display
  * [] Relationship rules, apply to field, and should apply to foreing_key when saving
- * [] Quan sortable, afegir x defecte la main action save order
  * [] Use the search route into searcher, and pass the search parameter to query instead of a new url path parameter
  * [] Delete validation
- * [] Make the resource found in app service provider recursive into thrust directory ?
  * [] Make sortable relationships (right now it uses the relationship name instead of the underling field)
  * [] Add latlang to algolia places search?
- * [] Improved ResourceFilters\Search by words, fer-ho per el primer fields nomes?
  * [] Search limitar-lo a 100 (configurable) sense pagination
  */
 
