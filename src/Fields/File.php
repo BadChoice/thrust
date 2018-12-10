@@ -141,7 +141,7 @@ class File extends Field implements Prunable
     public function store($object, $file)
     {
         $this->delete($object, false);
-        $filename   = str_random(10) . $file->extension();
+        $filename   = str_random(10) . "." . $file->extension();
         Storage::putFileAs($this->getPath(), $file, $this->filename ?? $filename);
         $this->updateField($object, $filename);
     }
