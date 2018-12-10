@@ -7,4 +7,5 @@ return [
     'routeMiddleware'                => ['web', 'auth'],
     'indexLayout'                    => 'layout.app',
     'popupId'                        => '#popup',
+    'recursiveResourcesSearch'       => false,
 ];

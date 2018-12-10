@@ -27,6 +27,24 @@ class ResourceManager
 
     private function findResources()
     {
+        if (config('thrust.recursiveResourcesSearch')){
+            return $this->findResourcesRecursive();
+        }
+        return $this->findResourcesInThrust();
+    }
+
+    public function findResourcesInThrust()
+    {
+        $folder          = app_path() . '/' . $this->resourcesFolder;
+        $this->resources = collect(scandir($folder))->filter(function ($filename) {
+            return str_contains($filename, '.php');
+        })->mapWithKeys(function ($filename) {
+            $resource = substr($filename, 0, -4);
+            return [str_plural(lcfirst(substr($filename, 0, -4))) => '\\App\\Thrust\\' . $resource];
+        });
+    }
+
+    public function findResourcesRecursive(){
         $folder          = app_path() . '/' . $this->resourcesFolder;
         $this->resources = collect($this->scandirRecursive($folder))->filter(function ($filename) {
             return str_contains($filename, '.php');
