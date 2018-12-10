@@ -10,7 +10,7 @@
     @if($withLink)
     </a>
     @endif
-    @if ($exists)
+    @if ($exists && $path)
         <a href="{{ url($path) }}" style="margin-left: 10px">@icon(download)</a>
     @endif
 @endcomponent
