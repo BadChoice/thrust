@@ -57,7 +57,7 @@ class Link extends Field
             'displayCount' => $this->displayCount,
             'url'          => $this->getUrl($object),
             'attributes'   => $this->attributes,
-        ]);
+        ])->render();
     }
 
     public function icon($icon)

@@ -26,6 +26,6 @@ class MultipleSelect extends Select
             'value'       => $this->getValue($object),
             'options'     => $this->getOptions(),
             'description' => $this->getDescription(),
-        ]);
+        ])->render();
     }
 }
