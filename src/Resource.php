@@ -58,11 +58,6 @@ abstract class Resource
     public static $defaultOrder = 'ASC';
 
     /**
-     * Define valid sort fields
-     */
-    protected $validSortFields  = null;
-
-    /**
      * @var array Set the default eager loading relationships
      */
     protected $with = [];
@@ -236,9 +231,10 @@ abstract class Resource
         if (request('search')) {
             Search::apply($query, request('search'), static::$search);
         }
+
         if (static::$sortable) {
             Sort::apply($query, static::$sortField, 'ASC');
-        } elseif (request('sort') && in_array(request('sort'), $this->getValidSortFields()->toArray())) {
+        } elseif (request('sort') && $this->sortFieldIsValid(request('sort'))) {
             Sort::apply($query, request('sort'), request('sort_order'));
         } else {
             Sort::apply($query, static::$defaultSort, static::$defaultOrder);
@@ -272,10 +268,8 @@ abstract class Resource
         return Filters::decodeFilters(request('filters'));
     }
 
-    protected function getValidSortFields()
+    public function sortFieldIsValid($sort)
     {
-        return $this->validSortFields !== null ? $this->validSortFields : $this->validSortFields = $this->fieldsFlattened()->filter(function ($field) {
-            return $field->sortable;
-        })->pluck('field');
+        return $this->fieldsFlattened()->where('sortable', true)->pluck('field')->contains($sort);
     }
 }
