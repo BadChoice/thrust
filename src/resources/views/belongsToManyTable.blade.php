@@ -38,3 +38,4 @@
     @endforeach
     </tbody>
 </table>
+@paginator($children)
