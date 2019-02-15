@@ -248,6 +248,9 @@ abstract class Resource
 
     public function rows()
     {
+        if (request('search')) {
+            return $this->query()->get();
+        }
         return $this->query()->paginate($this->pagination);
     }
 
