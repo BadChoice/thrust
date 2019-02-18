@@ -126,7 +126,6 @@ abstract class Resource
     {
         $object = is_numeric($id) ? $this->find($id) : $id;
         app(ResourceGate::class)->check($this, 'delete', $object);
-        $this->canBeDeleted($id, $object);
         $this->prune($object);
         return $object->delete();
     }
