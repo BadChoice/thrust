@@ -72,8 +72,11 @@ class ThrustController extends Controller
 
     public function delete($resourceName, $id)
     {
-        Thrust::make($resourceName)
-                                   ->delete($id);
+        try {
+            Thrust::make($resourceName)->delete($id);
+        } catch (\Exception $e) {
+            return back()->withErrors(['delete' => $e->getMessage()]);
+        }
         return back()->withMessage(__('thrust::messages.deleted'));
     }
 

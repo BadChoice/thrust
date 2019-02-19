@@ -126,8 +126,17 @@ abstract class Resource
     {
         $object = is_numeric($id) ? $this->find($id) : $id;
         app(ResourceGate::class)->check($this, 'delete', $object);
+        $this->canBeDeleted($object);
         $this->prune($object);
         return $object->delete();
+    }
+
+    protected function canBeDeleted($object)
+    {
+        if (method_exists($object, 'canBeDeleted') && ! $object::canBeDeleted($object->id)) {
+            throw new CanNotDeleteException(__('admin.cantDelete'));
+        }
+        return true;
     }
 
     public function canEdit($object)
