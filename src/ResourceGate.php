@@ -15,17 +15,6 @@ class ResourceGate
         if (! $this->can($resource, $ability, $object)) {
             throw new AuthorizationException('This action is unauthorized.');
         }
-        if ($ability == 'delete') {
-            $this->canBeDeleted($object);
-        }
-    }
-
-    public function canBeDeleted($object)
-    {
-        if (method_exists($object, 'canBeDeleted') && ! $object::canBeDeleted($object->id)) {
-            throw new CanNotDeleteException(__('admin.cantDelete'));
-        }
-        return true;
     }
 
     public function can($resource, $ability, $object = null)
