@@ -57,11 +57,12 @@ class Place extends Text
     public function displayInEdit($object, $inline = false)
     {
         return view('thrust::fields.place', [
-            'field'         => $this->field,
-            'title'         => $this->getTitle(),
-            'value'         => $this->getValue($object),
-            'type'          => $this->type,
-            'relatedFields' => $this->relatedFields,
+            'field'             => $this->field,
+            'title'             => $this->getTitle(),
+            'value'             => $this->getValue($object),
+            'type'              => $this->type,
+            'relatedFields'     => $this->relatedFields,
+            'validationRules'   => $this->getHtmlValidation($object, $this->getFieldType()),
         ])->render();
     }
 }
