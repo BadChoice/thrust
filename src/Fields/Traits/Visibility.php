@@ -8,7 +8,6 @@ trait Visibility
     public $hideWhenValue;
     public $showWhenField;
     public $showWhenValue;
-    public $invert;
 
     public function hideWhen($field, $value = true)
     {
