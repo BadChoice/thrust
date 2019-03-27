@@ -34,7 +34,7 @@
                 @endif
                 @foreach($fields as $field)
                     <td class="{{$field->rowClass}}">
-                        @if (! $field->shouldHide($row))
+                        @if (! $field->shouldHide($row) && $field->shouldShow($row))
                             {!! $field->displayInIndex($row) !!}
                         @endif
                     </td>
