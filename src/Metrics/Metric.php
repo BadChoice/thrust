@@ -15,6 +15,11 @@ abstract class Metric
 
     abstract public function uriKey();
 
+    public function getResult()
+    {
+        return $this->result;
+    }
+
     /**
      * @return \Carbon\Carbon date until the cache should be valid
      */
