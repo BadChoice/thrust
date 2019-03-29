@@ -11,6 +11,7 @@ class Link extends Field
     protected $icon         = '';
     protected $displayCount = false;
     protected $displayCallback;
+    protected $attributes;
 
     public function link($link)
     {
@@ -31,6 +32,12 @@ class Link extends Field
         return $this;
     }
 
+    public function attributes($attributes)
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
     public function displayCallback($displayCallback)
     {
         $this->displayCallback = $displayCallback;
@@ -48,8 +55,9 @@ class Link extends Field
             'icon'         => $this->icon,
             'value'        => $this->getTitle(),
             'displayCount' => $this->displayCount,
-            'url'          => $this->getUrl($object)
-        ]);
+            'url'          => $this->getUrl($object),
+            'attributes'   => $this->attributes,
+        ])->render();
     }
 
     public function icon($icon)

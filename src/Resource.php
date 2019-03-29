@@ -52,10 +52,10 @@ abstract class Resource
     /**
      * @var bool define if the resource is sortable and can be arranged in the index view
      */
-    public static $sortable      = false;
-    public static $sortField     = 'order';
-    public static $defaultSort   = 'id';
-    public static $defaultOrder  = 'ASC';
+    public static $sortable     = false;
+    public static $sortField    = 'order';
+    public static $defaultSort  = 'id';
+    public static $defaultOrder = 'ASC';
 
     /**
      * @var array Set the default eager loading relationships
@@ -126,8 +126,17 @@ abstract class Resource
     {
         $object = is_numeric($id) ? $this->find($id) : $id;
         app(ResourceGate::class)->check($this, 'delete', $object);
+        $this->canBeDeleted($object);
         $this->prune($object);
         return $object->delete();
+    }
+
+    protected function canBeDeleted($object)
+    {
+        if (method_exists($object, 'canBeDeleted') && ! $object::canBeDeleted($object->id)) {
+            throw new CanNotDeleteException(__('admin.cantDelete'));
+        }
+        return true;
     }
 
     public function canEdit($object)
@@ -234,7 +243,7 @@ abstract class Resource
 
         if (static::$sortable) {
             Sort::apply($query, static::$sortField, 'ASC');
-        } elseif (request('sort')) {
+        } elseif (request('sort') && $this->sortFieldIsValid(request('sort'))) {
             Sort::apply($query, request('sort'), request('sort_order'));
         } else {
             Sort::apply($query, static::$defaultSort, static::$defaultOrder);
@@ -248,6 +257,9 @@ abstract class Resource
 
     public function rows()
     {
+        if (request('search')) {
+            return $this->query()->get();
+        }
         return $this->query()->paginate($this->pagination);
     }
 
@@ -266,5 +278,10 @@ abstract class Resource
             return collect();
         }
         return Filters::decodeFilters(request('filters'));
+    }
+
+    public function sortFieldIsValid($sort)
+    {
+        return $this->fieldsFlattened()->where('sortable', true)->pluck('field')->contains($sort);
     }
 }

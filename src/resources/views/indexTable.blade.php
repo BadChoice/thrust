@@ -28,7 +28,7 @@
         <tbody class="@if($sortable) sortable @endif">
         @foreach ($rows as $row)
             <tr id="sort_{{$row->id}}">
-                <td class="action"><input class='actionCheckbox' type="checkbox" name="selected[{{$row->id}}]" meta:id="{{$row->id}}"></td>
+                <td class="action hide-mobile"><input class='actionCheckbox' type="checkbox" name="selected[{{$row->id}}]" meta:id="{{$row->id}}"></td>
                 @if ($sortable)
                     <td class="sort action hide-mobile"></td>
                 @endif

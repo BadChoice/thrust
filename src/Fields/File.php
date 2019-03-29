@@ -3,6 +3,7 @@
 namespace BadChoice\Thrust\Fields;
 
 use BadChoice\Thrust\Contracts\Prunable;
+use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\ResourceManager;
 use Illuminate\Support\Facades\Storage;
 
@@ -73,7 +74,7 @@ class File extends Field implements Prunable
             'path'          => $this->displayPath($object),
             'classes'       => $this->classes,
             'style'         => $this->indexStyle,
-            'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
+            'resourceName'  => Thrust::resourceNameFromModel($object),
             'id'            => $object->id,
             'field'         => $this->field,
             'inline'        => true,
@@ -90,7 +91,7 @@ class File extends Field implements Prunable
             'exists'        => $this->exists($object),
             'classes'       => $this->editClasses,
             'style'         => $inline ? $this->indexStyle : $this->editStyle,
-            'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
+            'resourceName'  => Thrust::resourceNameFromModel($object),
             'id'            => $object->id,
             'field'         => $this->field,
             'inline'        => $inline,
@@ -141,7 +142,7 @@ class File extends Field implements Prunable
     public function store($object, $file)
     {
         $this->delete($object, false);
-        $filename   = str_random(10) . $file->extension();
+        $filename   = str_random(10) . "." . $file->extension();
         Storage::putFileAs($this->getPath(), $file, $this->filename ?? $filename);
         $this->updateField($object, $filename);
     }

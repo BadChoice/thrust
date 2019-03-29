@@ -101,8 +101,8 @@ abstract class Field
 
     public function show($show = true)
     {
-        $this->showInIndex = ! $show;
-        $this->showInEdit  = ! $show;
+        $this->showInIndex = $show;
+        $this->showInEdit  = $show;
         return $this;
     }
 

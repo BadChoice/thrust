@@ -16,7 +16,7 @@ class ThrustBelongsToManyController extends Controller
             'resourceName'            => $resourceName,
             'object'                  => $object,
             'title'                   => $object->{$resource->nameField},
-            'children'                => $object->{$relationship},
+            'children'                => $object->{$relationship}()->paginate(100),
             'belongsToManyField'      => $belongsToManyField,
             'relationshipDisplayName' => $belongsToManyField->relationDisplayField,
             'searchable'              => $belongsToManyField->searchable,

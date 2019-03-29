@@ -49,7 +49,10 @@ class Search
      */
     public static function applyRelationshipField(&$query, $searchField, $searchText)
     {
-        [$relationship, $relationshipField] = explode('.', $searchField);
+        //[$relationship, $relationshipField] = explode('.', $searchField);
+        $a = explode('.', $searchField);
+        $relationship = $a[0];
+        $relationshipField = $a[1];
 
         return $query->orWhereHas($relationship, function ($query) use ($relationshipField, $searchText) {
             return $query->where($relationshipField, 'like', "%{$searchText}%");
