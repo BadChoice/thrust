@@ -4,6 +4,11 @@ namespace BadChoice\Thrust\Metrics;
 
 abstract class ValueMetric extends Metric
 {
+    protected function result()
+    {
+        return $this->result;
+    }
+
     public function count($class)
     {
         $this->result = $this->applyRange($class)->count();

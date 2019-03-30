@@ -4,20 +4,27 @@ namespace BadChoice\Thrust\Metrics;
 
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 abstract class Metric
 {
     protected $dateField = 'created_at';
     protected $result;
+    protected $cacheFor = 0;
 
     abstract public function calculate();
 
     abstract public function uriKey();
 
+    abstract protected function result();
+
     public function getResult()
     {
-        return $this->result;
+        return Cache::remember($this->getCacheKey(), $this->cacheFor, function(){
+            if (! $this->result) { $this->calculate(); }
+            return $this->result();
+        });
     }
 
     /**
@@ -54,12 +61,32 @@ abstract class Metric
      */
     protected function obtainPeriod()
     {
-        $range = request('metricRange') ?? array_keys($this->ranges())[0];
+        $range = $this->getRangeKey();
         return CarbonPeriod::create(Carbon::now()->subDays($range), Carbon::now());
     }
 
     private function wrapQueryBuilder($class)
     {
         return ($class instanceof Builder) ? $class : $class::query();
+    }
+
+    /**
+     * @return array|\Illuminate\Http\Request|string
+     */
+    protected function getRangeKey()
+    {
+        return request('metricRange') ?? array_keys($this->ranges())[0];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCacheKey()
+    {
+        return $this->uriKey() . '-' . $this->getRangeKey();
+    }
+
+    public function getTitle(){
+        return ucwords(strtolower(str_replace('-', ' ', $this->uriKey())));
     }
 }

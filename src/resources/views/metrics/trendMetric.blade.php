@@ -1,30 +1,59 @@
-<div class="thrust-panel thrust-trend-metric">
+<div class="thrust-panel thrust-trend-metric m2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
-    <canvas id="trend-metric" width="400" height="400"></canvas>
+    <h4 class="ml2 lighter-gray">{{ $metric->getTitle() }}</h4>
+    <h1 class="ml2 mt-2 mb-3"> {{ $metric->getResult()->last() }}</h1>
+    <canvas id="{{$metric->uriKey()}}" width="400" height="100"></canvas>
     <script>
-        new Chart('trend-metric', {
+        new Chart('{{$metric->uriKey()}}', {
             type: 'line',
             data: {
-                labels: @json($metric->getResult()->pluck('date')),
+                labels: @json($metric->getResult()->keys()),
                 datasets: [{
-                    label: '{{ $metric->uriKey() }}',
-                    data: @json($metric->getResult()->pluck('count')),
+                    label: '{{ $metric->getTitle() }}',
+                    data: @json($metric->getResult()->values()),
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
+                        'RGBA(244, 249, 253, 1.00)',
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
+                        'RGBA(72, 152, 220, 1.00)',
                     ],
-                    borderWidth: 1
+                    pointBorderColor : 'RGBA(72, 152, 220, 1.00)',
+                    pointBackgroundColor :  'RGBA(72, 152, 220, 1.00)',
+                    pointBorderWidth: 0,
+                    pointHoverRadius: 5,
+                    borderWidth: 2
                 }]
             },
             options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 0
+                    }
+                },
+                responsive : true,
+                legend: {
+                    display: false
+                },
                 scales: {
                     yAxes: [{
+                        display : false,
                         ticks: {
                             beginAtZero: true
+                        },
+                        gridLines: {
+                            display:false
+                        }
+                    }],
+                    xAxes: [{
+                        display : false,
+                        gridLines: {
+                            display:false
                         }
                     }]
+
                 }
             }
         });

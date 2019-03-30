@@ -7,6 +7,11 @@ abstract class TrendMetric extends Metric
 {
     protected $dateField = 'created_at';
 
+    public function result()
+    {
+        return $this->getEmptyDays()->merge($this->result->pluck('count', 'date'));
+    }
+
     public function countByDays($class)
     {
         $this->result = $this->applyRange($class)
@@ -51,6 +56,15 @@ abstract class TrendMetric extends Metric
 
     public function averageByMinutes($class, $field)
     {
+    }
+
+    private function getEmptyDays()
+    {
+        $emptyDays = [];
+        foreach ($this->obtainPeriod() as $date) {
+            $emptyDays[$date->format('Y-m-d')] = 0;
+        }
+        return collect($emptyDays);
     }
 
     //Sum
