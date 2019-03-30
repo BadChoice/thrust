@@ -8,6 +8,6 @@ class ThrustMetricsController
     {
         $metricClass = base64_decode($metric);
         $metric = new $metricClass;
-        return view('thrust::metrics.trendMetric', ['metric' => $metric]);
+        return view("thrust::metrics.{$metric->metricTypeName()}Metric", ['metric' => $metric]);
     }
 }

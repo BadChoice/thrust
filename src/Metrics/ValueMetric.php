@@ -4,6 +4,11 @@ namespace BadChoice\Thrust\Metrics;
 
 abstract class ValueMetric extends Metric
 {
+    public function metricTypeName()
+    {
+        return 'value';
+    }
+
     protected function result()
     {
         return $this->result;

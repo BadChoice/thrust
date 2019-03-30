@@ -18,6 +18,7 @@ abstract class Metric
     abstract public function uriKey();
 
     abstract protected function result();
+    abstract public function metricTypeName();
 
     public function getResult()
     {

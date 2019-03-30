@@ -7,6 +7,11 @@ abstract class TrendMetric extends Metric
 {
     protected $dateField = 'created_at';
 
+    public function metricTypeName()
+    {
+        return 'trend';
+    }
+
     public function result()
     {
         return $this->getEmptyDays()->merge($this->result->pluck('count', 'date'));
