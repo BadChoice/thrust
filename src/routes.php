@@ -81,4 +81,6 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
     Route::get('{resourceName}/{id}/hasMany/{field}', 'ThrustHasManyController@index')->name('thrust.hasMany');
 
     Route::get('{resourceName}/{id}/related/{relationship}', 'ThrustRelationshipController@search')->name('thrust.relationship.search');
+
+    Route::get('thrust/metric/{metric}', 'ThrustMetricsController@show')->name('thrust.metric');
 });
