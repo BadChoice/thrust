@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 abstract class PartitionMetric extends Metric
 {
-    private $labelCallback;
-    private $colorsCallback;
+    private $relationKey;
 
     public function metricTypeName()
     {
@@ -16,37 +15,32 @@ abstract class PartitionMetric extends Metric
 
     public function getColors()
     {
-        if (! $this->colorsCallback) return [];
-        return $this->result()->map(function($count, $key){
-           return call_user_func($this->colorsCallback, $key);
+        return $this->result->map(function($value){
+            if (!$value->{$this->relationKey}){
+                return "#eee";
+            }
+            return $value->{$this->relationKey}->color ?? $this->colorFromName($value->{$this->relationKey}->name);
         })->values();
     }
 
     protected function result()
     {
-        if ($this->labelCallback){
-            return $this->result->pluck('count', 'field')->mapWithKeys(function($count, $key){
-                return [call_user_func($this->labelCallback, $key) => $count];
-            });
-        }
-        return $this->result->pluck('count', 'field');
+        return $this->result->mapWithKeys(function($value){
+            return [$value->{$this->relationKey}->name ?? '--' => $value->count];
+        });
     }
 
     public function count($class, $field)
     {
-        $this->result = $this->applyRange($class)
-                      ->groupBy($field)->select(DB::raw("$field as field"), DB::raw("count({$field}) as count"))->get();
+        $foreign_key = (new $class)->$field()->getForeignKey();
+        $this->relationKey = $field;
+        $this->result = $this->applyRange($class)->with($field)
+                      ->groupBy($foreign_key)->select($foreign_key, DB::raw("$foreign_key as field"), DB::raw("count(id) as count"))->get();
         return $this;
     }
 
-    public function label($callback)
+    public function colorFromName($text)
     {
-        $this->labelCallback = $callback;
-        return $this;
-    }
-
-    public function colors($callback){
-        $this->colorsCallback = $callback;
-        return $this;
+        return "#".substr(md5($text), 0, 6);
     }
 }

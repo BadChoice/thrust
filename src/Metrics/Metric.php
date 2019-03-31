@@ -90,4 +90,8 @@ abstract class Metric
     public function getTitle(){
         return ucwords(strtolower(str_replace('-', ' ', $this->uriKey())));
     }
+
+    public function getSize(){
+        return 'col-min33';
+    }
 }

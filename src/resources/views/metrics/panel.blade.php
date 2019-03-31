@@ -1,4 +1,4 @@
-<div id="{{$metric->uriKey()}}-div">
+<div id="{{$metric->uriKey()}}-div" class="{{$metric->getSize()}}">
     <div class="thrust-panel thrust-trend-metric m2" style="width:402px; height:175px">
         <h4 class="ml2 lighter-gray">{{ $metric->getTitle() }}</h4><br>
         <div class="text-center">
