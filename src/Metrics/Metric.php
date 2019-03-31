@@ -12,6 +12,7 @@ abstract class Metric
     protected $dateField = 'created_at';
     protected $result;
     protected $cacheFor = 0;
+    protected $range = null;
 
     abstract public function calculate();
 
@@ -82,6 +83,7 @@ abstract class Metric
      */
     protected function getRangeKey()
     {
+        if ($this->range) return $this->range;
         return request('metricRange') ?? array_keys($this->ranges())[0];
     }
 
