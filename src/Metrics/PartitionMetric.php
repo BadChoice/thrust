@@ -26,7 +26,7 @@ abstract class PartitionMetric extends Metric
     protected function result()
     {
         return $this->result->mapWithKeys(function($value){
-            return [$value->{$this->relationKey}->name ?? '--' => $value->count];
+            return [($value->{$this->relationKey}->name ?? '--') . " ({$value->count})"=> $value->count];
         });
     }
 
