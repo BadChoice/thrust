@@ -9,6 +9,6 @@
 
 @push('edit-scripts')
     <script>
-        $('#{{$metric->uriKey()}}-div').load("{{route('thrust.metric', base64_encode(get_class($metric)))}}")
+        $('#{{$metric->uriKey()}}-div').load("{{route('thrust.metric', base64_encode(get_class($metric)))}}?metricRange={{request('metricRange')}}")
     </script>
 @endpush
