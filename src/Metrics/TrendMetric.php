@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 abstract class TrendMetric extends Metric
 {
     protected $dateField = 'created_at';
+    private $byDays = false;
 
     public function metricTypeName()
     {
@@ -14,7 +15,12 @@ abstract class TrendMetric extends Metric
 
     public function result()
     {
-        return $this->getEmptyDays()->merge($this->result->pluck('count', 'date'));
+        if ($this->byDays) {
+            return $this->getEmptyDays()->merge($this->result->pluck('count', 'date'));
+        }
+        return $this->result->mapWithKeys(function($row){
+            return [wordwrap($row->date, 4, " ", true) => $row->count];
+        });
     }
 
     public function countByDays($class)
@@ -24,11 +30,18 @@ abstract class TrendMetric extends Metric
             ->orderBy(DB::raw("Date({$this->dateField})"))
             ->select(DB::raw("count('id') as count"), DB::raw("Date({$this->dateField}) as date"))
             ->get();
+        $this->byDays = true;
         return $this;
     }
 
     public function countByMonths($class)
     {
+        $this->result = $this->applyRange($class)
+            ->groupBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
+            ->orderBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
+            ->select(DB::raw("count('id') as count"), DB::raw("Extract(YEAR_MONTH FROM {$this->dateField}) date"))
+            ->get();
+        return $this;
     }
 
     public function countByWeeks($class)

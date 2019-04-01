@@ -12,6 +12,7 @@ abstract class Metric
     protected $dateField = 'created_at';
     protected $result;
     protected $cacheFor = 0;
+    protected $range = null;
 
     abstract public function calculate();
 
@@ -50,10 +51,11 @@ abstract class Metric
 
     /**
      * @param $class
+     * @param CarbonPeriod $period the range to apply, if null, the default used
      * @return Builder the query with the date ranges applied
      */
-    protected function applyRange($class){
-        $period = $this->obtainPeriod();
+    protected function applyRange($class, $period = null){
+        if (! $period) $period = $this->obtainPeriod();
         return $this->wrapQueryBuilder($class)->whereBetween($this->dateField, [$period->first(), $period->last()]);
     }
 
@@ -66,6 +68,11 @@ abstract class Metric
         return CarbonPeriod::create(Carbon::now()->subDays($range), Carbon::now());
     }
 
+    protected function obtainPreviousPeriod(){
+        $range = $this->getRangeKey();
+        return CarbonPeriod::create(Carbon::now()->subDays($range * 2), Carbon::now()->subDays($range));
+    }
+
     private function wrapQueryBuilder($class)
     {
         return ($class instanceof Builder) ? $class : $class::query();
@@ -76,6 +83,7 @@ abstract class Metric
      */
     protected function getRangeKey()
     {
+        if ($this->range) return $this->range;
         return request('metricRange') ?? array_keys($this->ranges())[0];
     }
 

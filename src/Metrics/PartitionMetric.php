@@ -26,7 +26,7 @@ abstract class PartitionMetric extends Metric
     protected function result()
     {
         return $this->result->mapWithKeys(function($value){
-            return [$value->{$this->relationKey}->name ?? '--' => $value->count];
+            return [($value->{$this->relationKey}->name ?? '--') . " ({$value->count})"=> $value->count];
         });
     }
 
@@ -35,7 +35,9 @@ abstract class PartitionMetric extends Metric
         $foreign_key = (new $class)->$field()->getForeignKey();
         $this->relationKey = $field;
         $this->result = $this->applyRange($class)->with($field)
-                      ->groupBy($foreign_key)->select($foreign_key, DB::raw("$foreign_key as field"), DB::raw("count(id) as count"))->get();
+                      ->groupBy($foreign_key)
+                      ->orderBy('count','DESC')
+                      ->select($foreign_key, DB::raw("$foreign_key as field"), DB::raw("count(id) as count"))->get();
         return $this;
     }
 
