@@ -25,13 +25,7 @@ abstract class TrendMetric extends Metric
 
     public function countByDays($class)
     {
-        $this->result = $this->applyRange($class)
-            ->groupBy(DB::raw("Date({$this->dateField})"))
-            ->orderBy(DB::raw("Date({$this->dateField})"))
-            ->select(DB::raw("count('id') as count"), DB::raw("Date({$this->dateField}) as date"))
-            ->get();
-        $this->byDays = true;
-        return $this;
+        return $this->doQueryByDays($class, 'count', 'id');
     }
 
     public function countByMonths($class)
@@ -56,15 +50,32 @@ abstract class TrendMetric extends Metric
     {
     }
 
+    public function sumByDays($class, $field)
+    {
+        return $this->doQueryByDays($class, 'sum', $field);
+    }
+
+    public function doQueryByDays($class, $operation, $field)
+    {
+        $this->result = $this->applyRange($class)
+            ->groupBy(DB::raw("Date({$this->dateField})"))
+            ->orderBy(DB::raw("Date({$this->dateField})"))
+            ->select(DB::raw("{$operation}('{$field}') as count"), DB::raw("Date({$this->dateField}) as date"))
+            ->get();
+        $this->byDays = true;
+        return $this;
+    }
+
+    public function averageByDays($class, $field)
+    {
+        return $this->doQueryByDays($class, 'avg', $field);
+    }
+
     public function averageByMonths($class, $field)
     {
     }
 
     public function averageByWeeks($class, $field)
-    {
-    }
-
-    public function averageByDays($class, $field)
     {
     }
 
@@ -75,6 +86,7 @@ abstract class TrendMetric extends Metric
     public function averageByMinutes($class, $field)
     {
     }
+
 
     private function getEmptyDays()
     {
