@@ -34,7 +34,7 @@ abstract class Resource
     /**
      * Defines de number of items to paginate
      */
-    protected $pagination = 25;
+    public $pagination = 25;
 
     /**
      * Defines the searchable fields
