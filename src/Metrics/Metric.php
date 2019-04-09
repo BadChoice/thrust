@@ -75,7 +75,7 @@ abstract class Metric
 
     private function wrapQueryBuilder($class)
     {
-        return ($class instanceof Builder) ? $class : $class::query();
+        return ($class instanceof Builder) ? clone $class : $class::query();
     }
 
     /**

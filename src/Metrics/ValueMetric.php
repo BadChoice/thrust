@@ -35,6 +35,13 @@ abstract class ValueMetric extends Metric
         return $this;
     }
 
+    public function sum($class, $field)
+    {
+        $this->result = $this->applyRange($class)->sum($field);
+        $this->previousResult = $this->applyRange($class, $this->obtainPreviousPeriod())->sum($field);
+        return $this;
+    }
+
     public function average($class, $field)
     {
         $this->result = $this->applyRange($class)->avg($field);
