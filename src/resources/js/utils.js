@@ -140,9 +140,9 @@ function callAjax(url, data){
 //========================================
 // SORT
 //========================================
-function saveOrder(model, page){
+function saveOrder(model, startAt){
     $(".loadingImage").show();
-    postSaveOrder(window.location.origin + '/thrust/' + model + '/updateOrder?page=' + page,
+    postSaveOrder(window.location.origin + '/thrust/' + model + '/updateOrder?startAt=' + startAt,
                  ".sortable");
 }
 

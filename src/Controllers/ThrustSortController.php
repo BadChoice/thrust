@@ -11,11 +11,11 @@ class ThrustSortController extends Controller
     {
         $resource  = Thrust::make($resourceName);
         $idsSorted = request('sort');
-        $page = request('page') ?? 1;
+        $startAt = request('startAt') ?? 0;
         $objects   = $resource->find($idsSorted);
         $idsSorted = array_flip($idsSorted);
-        $objects->each(function ($object) use ($idsSorted, $page) {
-            $object->update(['order' => $idsSorted[$object->id] * $page]);
+        $objects->each(function ($object) use ($idsSorted, $startAt) {
+            $object->update(['order' => $idsSorted[$object->id] + $startAt]);
         });
         return response()->json('OK', 200);
     }
