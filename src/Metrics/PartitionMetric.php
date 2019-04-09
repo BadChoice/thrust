@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Metrics;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 abstract class PartitionMetric extends Metric
@@ -49,9 +50,9 @@ abstract class PartitionMetric extends Metric
     {
         $queryField = $this->setField($class, $field);
         $this->result = $this->withRelationShip($this->applyRange($class))
-                      ->groupBy($queryField)
-                      ->orderBy('count','DESC')
-                      ->select($queryField, DB::raw("$queryField as field"), DB::raw("count(id) as count"))->get();
+            ->groupBy($queryField)
+            ->orderBy('count','DESC')
+            ->select($queryField, DB::raw("$queryField as field"), DB::raw("count(id) as count"))->get();
         return $this;
     }
 
@@ -65,7 +66,11 @@ abstract class PartitionMetric extends Metric
         $foreign_key = null;
         $this->field = $field;
         try {
-            $this->foreign_key = (new $class)->$field()->getForeignKey();
+            if ($class instanceof Builder){
+                $this->foreign_key = $class->getModel()->$field()->getForeignKey();
+            }else {
+                $this->foreign_key = (new $class)->$field()->getForeignKey();
+            }
         }catch(\Exception $e){
 
         }
