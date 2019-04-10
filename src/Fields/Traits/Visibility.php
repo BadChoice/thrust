@@ -28,7 +28,7 @@ trait Visibility
         if ($this->hideWhenField == null) {
             return false;
         }
-        return $object->{$this->hideWhenField} !== $this->hideWhenValue;
+        return $object->{$this->hideWhenField} === $this->hideWhenValue;
     }
 
     public function shouldShow($object)
