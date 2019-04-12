@@ -84,7 +84,7 @@ abstract class TrendMetric extends Metric
         $this->result = $this->applyRange($class)
             ->groupBy(DB::raw("Date({$this->dateField})"))
             ->orderBy(DB::raw("Date({$this->dateField})"))
-            ->select(DB::raw("{$operation}('{$field}') as count"), DB::raw("Date({$this->dateField}) as date"))
+            ->select(DB::raw("{$operation}(`{$field}`) as count"), DB::raw("Date({$this->dateField}) as date"))
             ->get();
         $this->byDays = true;
         return $this;
@@ -95,7 +95,7 @@ abstract class TrendMetric extends Metric
         $this->result = $this->applyRange($class)
             ->groupBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
             ->orderBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
-            ->select(DB::raw("{$operation}('{$field}') as count"), DB::raw("Extract(YEAR_MONTH FROM {$this->dateField}) date"))
+            ->select(DB::raw("{$operation}(`{$field}`) as count"), DB::raw("Extract(YEAR_MONTH FROM {$this->dateField}) date"))
             ->get();
         return $this;
     }
@@ -106,7 +106,7 @@ abstract class TrendMetric extends Metric
         $this->result = $this->applyRange($class)
             ->groupBy(DB::raw("Hour({$this->dateField})"))
             ->orderBy(DB::raw("Hour({$this->dateField})"))
-            ->select(DB::raw("{$operation}('{$field}') as count"), DB::raw("Hour({$this->dateField}) as date"))
+            ->select(DB::raw("{$operation}(`{$field}`) as count"), DB::raw("Hour({$this->dateField}) as date"))
             ->get();
         $this->byDays = false;
         return $this;
