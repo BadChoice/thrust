@@ -30,12 +30,7 @@ abstract class TrendMetric extends Metric
 
     public function countByMonths($class)
     {
-        $this->result = $this->applyRange($class)
-            ->groupBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
-            ->orderBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
-            ->select(DB::raw("count('id') as count"), DB::raw("Extract(YEAR_MONTH FROM {$this->dateField}) date"))
-            ->get();
-        return $this;
+        return $this->doQueryByMonth($class, 'count', 'id');
     }
 
     public function countByWeeks($class)
@@ -44,6 +39,7 @@ abstract class TrendMetric extends Metric
 
     public function countByHours($class)
     {
+        return $this->doQueryByHours($class, 'count', 'id');
     }
 
     public function countByMinutes($class)
@@ -53,6 +49,34 @@ abstract class TrendMetric extends Metric
     public function sumByDays($class, $field)
     {
         return $this->doQueryByDays($class, 'sum', $field);
+    }
+
+    public function averageByDays($class, $field)
+    {
+        return $this->doQueryByDays($class, 'avg', $field);
+    }
+
+    public function averageByMonths($class, $field)
+    {
+        return $this->doQueryByMonth($class, 'avg', $field);
+    }
+
+    public function averageByWeeks($class, $field)
+    {
+    }
+
+    public function sumByHours($class, $field)
+    {
+        return $this->doQueryByHours($class, 'sum', $field);
+    }
+
+    public function averageByHours($class, $field)
+    {
+        return $this->doQueryByHours($class, 'avg', $field);
+    }
+
+    public function averageByMinutes($class, $field)
+    {
     }
 
     public function doQueryByDays($class, $operation, $field)
@@ -66,25 +90,26 @@ abstract class TrendMetric extends Metric
         return $this;
     }
 
-    public function averageByDays($class, $field)
+    public function doQueryByMonth($class, $operation, $field)
     {
-        return $this->doQueryByDays($class, 'avg', $field);
+        $this->result = $this->applyRange($class)
+            ->groupBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
+            ->orderBy(DB::raw("Extract(YEAR_MONTH FROM {$this->dateField})"))
+            ->select(DB::raw("{$operation}('{$field}') as count"), DB::raw("Extract(YEAR_MONTH FROM {$this->dateField}) date"))
+            ->get();
+        return $this;
     }
 
-    public function averageByMonths($class, $field)
+    public function doQueryByHours($class, $operation, $field)
     {
-    }
-
-    public function averageByWeeks($class, $field)
-    {
-    }
-
-    public function averageByHours($class, $field)
-    {
-    }
-
-    public function averageByMinutes($class, $field)
-    {
+        $this->range = 90;
+        $this->result = $this->applyRange($class)
+            ->groupBy(DB::raw("Hour({$this->dateField})"))
+            ->orderBy(DB::raw("Hour({$this->dateField})"))
+            ->select(DB::raw("{$operation}('{$field}') as count"), DB::raw("Hour({$this->dateField}) as date"))
+            ->get();
+        $this->byDays = false;
+        return $this;
     }
 
 
