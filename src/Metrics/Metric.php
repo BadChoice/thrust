@@ -13,6 +13,7 @@ abstract class Metric
     protected $result;
     protected $cacheFor = 0;
     protected $range = null;
+    protected $formatCallback;
 
     abstract public function calculate();
 
@@ -20,6 +21,18 @@ abstract class Metric
 
     abstract protected function result();
     abstract public function metricTypeName();
+
+    public function formatCallback($formatCallback){
+        $this->formatCallback = $formatCallback;
+        return $this;
+    }
+
+    public function applyFormat($value){
+        if ($this->formatCallback){
+            return call_user_func($this->formatCallback, $value);
+        }
+        return $value;
+    }
 
     public function getResult()
     {

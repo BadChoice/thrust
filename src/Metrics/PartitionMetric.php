@@ -37,12 +37,12 @@ abstract class PartitionMetric extends Metric
     {
         return $this->result->mapWithKeys(function($value){
             if ($this->namesCallback){
-                return [call_user_func($this->namesCallback, $value) . " ({$value->count})" => $value->count];
+                return [call_user_func($this->namesCallback, $value) . " ({$value->count})" => $this->applyFormat($value->count)];
             }
             if ($this->foreign_key) {
-                return [($value->{$this->field}->name ?? '--') . " ({$value->count})" => $value->count];
+                return [($value->{$this->field}->name ?? '--') . " ({$value->count})" => $this->applyFormat($value->count)];
             }
-            return [($value->{$this->field} ?? '--') . " ({$value->count})" => $value->count];
+            return [($value->{$this->field} ?? '--') . " ({$value->count})" => $this->applyFormat($value->count)];
         });
     }
 

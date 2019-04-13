@@ -18,6 +18,11 @@ abstract class ValueMetric extends Metric
         return $this;
     }
 
+    public function applyFormat($value){
+        if ($this->format) return number_format($value, $this->format);
+        return parent::applyFormat($value);
+    }
+
     protected function result()
     {
         return $this->result;
