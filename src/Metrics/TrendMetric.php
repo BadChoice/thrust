@@ -16,7 +16,9 @@ abstract class TrendMetric extends Metric
     public function result()
     {
         if ($this->byDays) {
-            return $this->getEmptyDays()->merge($this->result->pluck('count', 'date'));
+            return $this->getEmptyDays()->merge($this->result->mapWithKeys(function($row){
+                return [$row->date => $this->applyFormat($row->count)];
+            }));
         }
         return $this->result->mapWithKeys(function($row){
             return [wordwrap($row->date, 4, " ", true) => $this->applyFormat($row->count)];
