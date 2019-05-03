@@ -1,7 +1,7 @@
 @extends(config('thrust.indexLayout'))
 @section('content')
-    <div class="description">
-        <span class="title">
+    <div class="thrust-index-header description">
+        <span class="thrust-index-title title">
             @if (isset($parent_id) )
                 @php $parent = $resource->parent($parent_id) @endphp
                 <a href="{{route('thrust.index', [app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent) ]) }}">{{ $parent->name }} </a> /
