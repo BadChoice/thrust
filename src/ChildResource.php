@@ -21,7 +21,10 @@ abstract class ChildResource extends Resource
     protected function getBaseQuery()
     {
         $query = parent::getBaseQuery();
-        return $query->where($this->parentForeignKey(), $this->parentId);
+        if ($this->parentId) {
+            $query->where($this->parentForeignKey(), $this->parentId);
+        }
+        return $query;
     }
 
     public function parentForeignKey()
