@@ -43,6 +43,7 @@
     $('#popup-searcher').searcher('/thrust/{{$resourceName}}/{{$object->id}}/belongsToMany/{{$belongsToManyField->field}}/search/', {
         'resultsDiv' : 'popup-results',
         'allDiv' : 'popup-all',
+        'updateAddressBar' : false,
         'onFound' : function(){
             addListeners();
         }
