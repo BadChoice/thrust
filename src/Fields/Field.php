@@ -94,8 +94,8 @@ abstract class Field
 
     public function hide($hide = true)
     {
-        $this->showInIndex = $hide;
-        $this->showInEdit  = $hide;
+        $this->showInIndex = !$hide;
+        $this->showInEdit  = !$hide;
         return $this;
     }
 
