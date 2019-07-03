@@ -13,6 +13,7 @@
         <form action="{{route('thrust.store', [$resourceName] )}}" method="POST">
     @endif
     {{ csrf_field() }}
+    <div class="thrust-tabs"><li id="thrust-tabs-list"></li></div>
     <div class="configForm">
         @foreach($fields as $field)
             {!! $field->displayInEdit($object) !!}
@@ -39,6 +40,21 @@
             @if (! $fullPage) dropdownParent: $('{{config('thrust.popupId', '#popup')}}') @endif
         });
         setupVisibility({!! json_encode($visibility)  !!});
+    </script>
+
+    <script>
+        $(".formTab").each(function(idx, element){
+            $("#thrust-tabs-list").append("<ul class='thrust-tab-header' onclick='showTab(this, \"#" + $(element).attr("id") +"\")'>" + $(element).attr('title') + "</ul>")
+        });
+        $(".thrust-tab-header").first().addClass('active');
+        $(".formTab").first().addClass('active');
+
+        function showTab(header, element){
+            $(".formTab").hide();
+            $(element).show();
+            $('.thrust-tab-header').removeClass('active');
+            $(header).addClass('active')
+        }
     </script>
 @endpush
 
