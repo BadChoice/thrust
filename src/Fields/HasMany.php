@@ -10,6 +10,7 @@ class HasMany extends Relationship
     public $link           = null;
     public $resourceName   = null;
     public $icon           = null;
+    public $withCount      = false;
     public $useTitle;
 
     public static function make($dbField, $title = null)
@@ -19,15 +20,22 @@ class HasMany extends Relationship
         return $field;
     }
 
-    public function icon($icon)
+    public function icon($icon, $withCount = false)
     {
         $this->icon = $icon;
+        $this->withCount = $withCount;
         return $this;
     }
 
-    public function useTitle($useTitle = true)
+    public function onlyCount(){
+        $this->withCount = true;
+        return $this;
+    }
+
+    public function useTitle($useTitle = true, $withCount = true)
     {
         $this->useTitle = $useTitle;
+        $this->withCount = $withCount;
         return $this;
     }
 
@@ -58,8 +66,14 @@ class HasMany extends Relationship
 
     public function getIndexText($object)
     {
+        if ($this->icon){
+            return $this->withCount ? $this->getRelation($object)->count() : '';
+        }
         if ($this->useTitle) {
-            return $this->getTitle() . ' (' . $this->getRelation($object)->count() . ')';
+            return $this->getTitle() . ($this->withCount ? ' (' . $this->getRelation($object)->count() . ')' : '');
+        }
+        if ($this->withCount) {
+            return $this->getRelation($object)->count();
         }
         return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
     }
