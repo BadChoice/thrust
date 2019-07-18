@@ -157,6 +157,7 @@ class File extends Field implements Prunable
 
     public function exists($object)
     {
+        if (! $this->filename && ! $object->{$this->field}) return false;
         return Storage::exists($this->getPath(). ($this->filename ?? $object->{$this->field}));
     }
 
