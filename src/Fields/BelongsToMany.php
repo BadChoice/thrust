@@ -8,6 +8,7 @@ use BadChoice\Thrust\ResourceManager;
 class BelongsToMany extends Relationship
 {
     public $allowDuplicates   = false;
+    public $excludeNonDuplicatesInSearch = true;
     public $indexTextCallback = null;
     public $pivotFields       = [];
     public $objectFields      = [];
@@ -54,9 +55,10 @@ class BelongsToMany extends Relationship
         return $this;
     }
 
-    public function allowDuplicates($allowDuplicates = true)
+    public function allowDuplicates($allowDuplicates = true, $excludeNonDuplicatesInSearch = true)
     {
         $this->allowDuplicates = $allowDuplicates;
+        $this->excludeNonDuplicatesInSearch = $excludeNonDuplicatesInSearch;
         return $this;
     }
 
@@ -87,6 +89,9 @@ class BelongsToMany extends Relationship
 
     public function getOptions($object)
     {
+        if (! $this->allowDuplicates && ! $this->excludeNonDuplicatesInSearch){
+            return $this->relatedQuery($object, true)->get();
+        }
         return $this->relatedQuery($object, $this->allowDuplicates)->get();
     }
 
