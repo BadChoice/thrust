@@ -60,7 +60,7 @@ abstract class Resource
     /**
      * @var array Set the default eager loading relationships
      */
-    protected $with = [];
+    protected $with = null;
 
     /**
      * @return array array of fields
@@ -203,7 +203,7 @@ abstract class Resource
 
     public function getWithFields()
     {
-        return count($this->with) ? $this->with : $this->getRelationshipsFields()->toArray();
+        return $this->with !== null ? $this->with : $this->getRelationshipsFields()->toArray();
     }
 
     public function getRelationshipsFields()

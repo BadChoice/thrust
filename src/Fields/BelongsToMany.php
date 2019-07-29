@@ -84,6 +84,9 @@ class BelongsToMany extends Relationship
         if ($this->indexTextCallback) {
             return call_user_func($this->indexTextCallback, $object);
         }
+        if ($this->icon) {
+            return "";
+        }
         return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
     }
 
