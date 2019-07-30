@@ -10,7 +10,7 @@ class Gravatar extends Field
 
     public function displayInIndex($object)
     {
-        return $this->getImageTag($object->{$this->field});
+        return $this->getImageTag(data_get($object, $this->field));
     }
 
     public function displayInEdit($object, $inline = false)
