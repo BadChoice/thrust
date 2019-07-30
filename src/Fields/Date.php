@@ -5,16 +5,26 @@ namespace BadChoice\Thrust\Fields;
 class Date extends Text
 {
     protected $timeAgo;
+    protected $format;
 
     protected function getFieldType()
     {
         return 'date';
     }
 
-    public function displayInIndex($object){
-        if ($this->timeAgo)
-            return $object->{$this->field}->diffForHumans();
+    public function format($format)
+    {
+        $this->format = $format;
+        return $this;
+    }
 
+    public function displayInIndex($object){
+        $value = data_get($object, $this->field);
+        if ($value && $this->timeAgo)
+            return $object->{$this->field}->diffForHumans();
+        if ($value && $this->format){
+            return $object->{$this->field}->format($this->format);
+        }
         return parent::displayInIndex($object);
     }
 
@@ -23,5 +33,4 @@ class Date extends Text
         $this->timeAgo = $timeAgo;
         return $this;
     }
-
 }
