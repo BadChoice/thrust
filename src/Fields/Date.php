@@ -2,6 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use Carbon\Carbon;
+
 class Date extends Text
 {
     protected $timeAgo;
@@ -32,5 +34,13 @@ class Date extends Text
     {
         $this->timeAgo = $timeAgo;
         return $this;
+    }
+
+    public function getValue($object)
+    {
+        if (data_get($object, $this->field) instanceof Carbon){
+            return data_get($object, $this->field)->toDateString();
+        }
+        return parent::getValue($object);
     }
 }
