@@ -10,7 +10,7 @@
             @endif
             @foreach($fields as $field)
                 <th class="{{$field->rowClass}}">
-                    <div class='{{$field->getSortableHeaderClass()}}'>{{ $field->getTitle() }}
+                    <div class='{{$field->getSortableHeaderClass()}}'>{{ $field->getTitle(true) }}
                     @if ($field->sortable && !request('search'))
                         <div class='sortArrows'>
                             <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'desc')}}' class='sortUp'>▲</a>

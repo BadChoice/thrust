@@ -20,6 +20,7 @@ abstract class Field
     public $withDesc    = false;
     public $description = false;
 
+    public $withoutIndexHeader = false;
     public $rowClass = '';
 
     abstract public function displayInIndex($object);
@@ -46,6 +47,12 @@ abstract class Field
         return $this;
     }
 
+    public function withoutIndexHeader($withoutIndexHeader = true)
+    {
+        $this->withoutIndexHeader = $withoutIndexHeader;
+        return $this;
+    }
+
     public function sortable($sortable = true)
     {
         $this->sortable = $sortable;
@@ -59,8 +66,9 @@ abstract class Field
         return $this;
     }
 
-    public function getTitle()
+    public function getTitle($forHeader = false)
     {
+        if ($forHeader && $this->withoutIndexHeader) return "";
         return $this->title ?? trans_choice(config('thrust.translationsPrefix').$this->field, 1);
     }
 

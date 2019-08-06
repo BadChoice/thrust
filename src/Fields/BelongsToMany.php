@@ -74,8 +74,9 @@ class BelongsToMany extends Relationship
         return $this;
     }
 
-    public function getTitle()
+    public function getTitle($forHeader = false)
     {
+        if ($forHeader && $this->withoutIndexHeader) return "";
         return $this->title ?? trans_choice(config('thrust.translationsPrefix') . str_singular($this->field), 2);
     }
 
