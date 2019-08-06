@@ -5,6 +5,7 @@ namespace BadChoice\Thrust\Fields;
 class Decimal extends Text
 {
     protected $asInteger = false;
+    public $rowClass = 'text-right';
 
     public function getValue($object)
     {

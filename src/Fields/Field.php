@@ -134,4 +134,9 @@ abstract class Field
     {
         return $this->field;
     }
+
+    public function getSortableHeaderClass(){
+        if (str_contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
+        return 'sortableHeader';
+    }
 }
