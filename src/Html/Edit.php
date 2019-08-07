@@ -53,7 +53,7 @@ class Edit
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
         return view('thrust::edit', [
             'nameField'     => $this->resource->nameField,
-            'resourceName'  => $this->resource ? : $this->resource->name(),
+            'resourceName'  => $this->resourceName ? : $this->resource->name(),
             'fields'        => $this->getEditFields(),
             'object'        => $object,
             'visibility'    => $this->getVisiblityJson(),
