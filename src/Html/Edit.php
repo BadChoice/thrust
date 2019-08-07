@@ -10,10 +10,12 @@ use BadChoice\Thrust\Resource;
 class Edit
 {
     protected $resource;
+    protected $resourceName;
 
-    public function __construct(Resource $resource)
+    public function __construct(Resource $resource, $resourceName = null)
     {
-        $this->resource = $resource;
+        $this->resource     = $resource;
+        $this->resourceName = $resourceName;
     }
 
     public function getEditFields()
@@ -51,7 +53,7 @@ class Edit
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
         return view('thrust::edit', [
             'nameField'     => $this->resource->nameField,
-            'resourceName'  => $this->resource->name(),
+            'resourceName'  => $this->resource ? : $this->resource->name(),
             'fields'        => $this->getEditFields(),
             'object'        => $object,
             'visibility'    => $this->getVisiblityJson(),

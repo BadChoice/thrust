@@ -3,7 +3,7 @@
     @include('thrust::components.searchSingle')
 
     <div class="description mb4">
-        {!! ( new BadChoice\Thrust\Html\Edit($resource))->show($object, true)  !!}
+        {!! ( new BadChoice\Thrust\Html\Edit($resource, $resourceName))->show($object, true)  !!}
     </div>
 @stop
 
