@@ -67,15 +67,24 @@ abstract class PartitionMetric extends Metric
         $this->field = $field;
         try {
             if ($class instanceof Builder){
-                $this->foreign_key = $class->getModel()->$field()->getForeignKey();
+                $this->foreign_key = $this->relationGetForeignKey($class->getModel()->$field());
             }else {
-                $this->foreign_key = (new $class)->$field()->getForeignKey();
+                $this->foreign_key = $this->relationGetForeignKey((new $class)->$field());
             }
         }catch(\Exception $e){
 
         }
         return $this->getQueryField();
     }
+
+    protected function relationGetForeignKey($relation){
+        if (method_exists($relation, 'getForeignKey')) {
+            return $relation->getForeignKey();
+        }
+        return $relation->getForeignKeyName();
+    }
+}
+
     protected function getQueryField(){
         if ($this->foreign_key) return $this->foreign_key;
         return $this->field;

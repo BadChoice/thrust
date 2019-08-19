@@ -24,6 +24,15 @@ abstract class Relationship extends Field
         return $object->{$this->field}();
     }
 
+    public function getRelationForeignKey($object)
+    {
+        $relation = $this->getRelation($object);
+        if (method_exists($relation, 'getForeignKey')) {
+            return $relation->getForeignKey();
+        }
+        return $relation->getForeignKeyName();
+    }
+
     public function getRelationName($object)
     {
         $relation = $object->{$this->field};

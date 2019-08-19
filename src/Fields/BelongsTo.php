@@ -46,7 +46,7 @@ class BelongsTo extends Relationship
             return view('thrust::fields.selectAjax', [
                 'resourceName'  => app(ResourceManager::class)->resourceNameFromModel(get_class($object)),
                 'title'         => $this->getTitle(),
-                'field'         => $this->getRelation($object)->getForeignKey(),
+                'field'         => $this->getRelationForeignKey($object),
                 'relationship'  => $this->field,
                 'value'         => $this->getValueId($object),
                 'name'          => $this->getRelationName($object),
@@ -57,7 +57,7 @@ class BelongsTo extends Relationship
         }
         return view('thrust::fields.select', [
             'title'         => $this->getTitle(),
-            'field'         => $this->getRelation($object)->getForeignKey(),
+            'field'         => $this->getRelationForeignKey($object),
             'searchable'    => $this->searchable,
             'value'         => $this->getValueId($object),
             'options'       => $this->getOptions($object),

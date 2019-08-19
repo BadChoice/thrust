@@ -31,9 +31,9 @@ abstract class ChildResource extends Resource
     {
         $relation = (new static::$model)->{static::$parentRelation}();
         if (method_exists($relation, 'getForeignKey')) {
-            return (new static::$model)->{static::$parentRelation}()->getForeignKey();
+            return $relation->getForeignKey();
         }
-        return (new static::$model)->{static::$parentRelation}()->getForeignKeyName();
+        return $relation->getForeignKeyName();
     }
 
     public function parent($object)
