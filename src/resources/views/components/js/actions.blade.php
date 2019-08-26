@@ -19,20 +19,23 @@
             return alert("{{ __("thrust::messages.noRowsSelected") }}");
         }
 
-        if (!needsConfirmation || confirm(confirmationMessage)){
+        if (! needsConfirmation || confirm(confirmationMessage)){
             doAction(actionClass, selected)
         }
     }
 
     function doAction(actionClass, selected){
+        $('#actions-loading').show();
         $.post("{{ route('thrust.actions.perform', [$resourceName]) }}", {
             "_token": "{{ csrf_token() }}",
             "action" : actionClass,
             "ids" : selected
         }).done(function(data){
+            console.log("Action finished");
             showMessage(data["message"]);
             location.reload();
         }).fail(function(){
+            console.log("Action failed");
             showMessage("Something went wrong");
         });
     }

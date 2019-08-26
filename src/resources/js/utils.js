@@ -183,6 +183,9 @@ function parseMessage(message, values) {
 }
 
 function getTranslatedMessage(message) {
+    if (typeof lang === "undefined") {
+        return message;
+    }
     return lang[message] ? lang[message] : message;
 }
 
