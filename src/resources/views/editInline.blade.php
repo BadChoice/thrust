@@ -5,7 +5,9 @@
 <form action="{{route('thrust.update', [$resourceName, $object->id] )}}" id='thrust-form-{{$object->id}}' method="POST">
     @foreach($fields as $field)
         <td class="{{$field->rowClass}}">
-            {!! $field->displayInEdit($object, true) !!}
+            @if ($field->showInEdit)
+                {!! $field->displayInEdit($object, true) !!}
+            @endif
         </td>
     @endforeach
     <td colspan="2">
