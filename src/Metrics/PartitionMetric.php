@@ -83,7 +83,6 @@ abstract class PartitionMetric extends Metric
         }
         return $relation->getForeignKeyName();
     }
-}
 
     protected function getQueryField(){
         if ($this->foreign_key) return $this->foreign_key;
