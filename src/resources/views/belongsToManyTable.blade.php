@@ -38,4 +38,4 @@
     @endforeach
     </tbody>
 </table>
-@paginator($children)
+@include('thrust::components.paginator', ["data" => $children, 'popupLinks' => true])
