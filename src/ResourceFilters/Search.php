@@ -14,7 +14,7 @@ class Search
             return $searchFields->reduce(function($query, $searchField) use($searchText) {
                 return static::applyFieldSimple($query, $searchField, $searchText);
             }, $query);
-        });
+        })->distinct();
     }
 
     /**
