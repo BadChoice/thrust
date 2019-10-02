@@ -53,7 +53,8 @@ class Select extends Field
             'inline'      => $inline,
             'field'       => $this->field,
             'searchable'  => $this->searchable,
-            'value'       => intval($this->getValue($object)),
+//            'value'       => intval($this->getValue($object)),
+            'value'       => $this->getValue($object),
             'options'     => $this->getOptions(),
             'description' => $this->getDescription(),
         ])->render();
