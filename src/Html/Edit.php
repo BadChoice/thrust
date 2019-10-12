@@ -20,7 +20,9 @@ class Edit
 
     public function getEditFields()
     {
-        $fields = collect($this->resource->fields())->where('showInEdit', true);
+        $fields = collect($this->resource->fields())->filter(function($field){
+            return $field->showInEdit && $this->resource->can($field->policyAction);
+        });
         if ($this->resource::$sortable) {
             $fields->prepend(Hidden::make($this->resource::$sortField));
         }

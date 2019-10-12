@@ -13,6 +13,7 @@ class Panel
 
     public $hideWhenField;
     public $hideWhenValue;
+    public $policyAction = null;
 
     public static function make($fields, $title = null)
     {
@@ -39,7 +40,7 @@ class Panel
         $html = '<div class="'. $this->panelClass .'" id="panel_'.$this->getId().'" title="'. $this->title .'">';
         $html .= $this->getTitle();
         return $html . collect($this->fields)->where('showInEdit', true)->reduce(function ($carry, Field $field) use ($object) {
-            return $carry .$field->displayInEdit($object);
+            return $carry . $field->displayInEdit($object);
         }) .'</div>';
     }
 

@@ -141,12 +141,17 @@ abstract class Resource
 
     public function canEdit($object)
     {
-        return app(ResourceGate::class)->can($this, 'update', $object);
+        return $this->can('update', $object);
     }
 
     public function canDelete($object)
     {
-        return app(ResourceGate::class)->can($this, 'delete', $object);
+        return $this->can('delete', $object);
+    }
+
+    public function can($policyAction, $object = null){
+        if (! $policyAction) return true;
+        return app(ResourceGate::class)->can($this, $policyAction, $object);
     }
 
     public function makeNew()

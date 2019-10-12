@@ -16,6 +16,7 @@ abstract class Field
 
     public $showInIndex = true;
     public $showInEdit  = true;
+    public $policyAction = null;
 
     public $withDesc    = false;
     public $description = false;
@@ -130,6 +131,12 @@ abstract class Field
     {
         $this->showInIndex = false;
         $this->showInEdit  = true;
+        return $this;
+    }
+
+    public function policyAction($policyAction)
+    {
+        $this->policyAction = $policyAction;
         return $this;
     }
 
