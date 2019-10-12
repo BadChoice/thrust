@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -20,14 +21,18 @@ class ResourceGate
     public function can($resource, $ability, $object = null)
     {
         $valid    = true;
-        $resource = app(ResourceManager::class)->make($resource);
+        $resource = Thrust::make($resource);
         if ($resource::$gate) {
             $valid = auth()->user()->can($resource::$gate);
         }
-        $policy = Gate::getPolicyFor($resource::$model);
+        $policy = $this->policyFor($resource);
         if ($policy) {
             $valid = auth()->user()->can($ability, $object ?? $resource::$model) && $valid;
         }
         return $valid;
+    }
+
+    public function policyFor($resource){
+        return Gate::getPolicyFor($resource::$model);
     }
 }
