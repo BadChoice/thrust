@@ -20,10 +20,12 @@
         @endforeach
     </div>
 
-    @include('thrust::components.saveButton')
+    @if (auth()->user()->can('update', $object))
+        @include('thrust::components.saveButton')
 
-    @if (isset($object->id) )
-        <a class="secondary button hidden" id="thrust-save-and-continue" onclick="submitAjaxForm('thrust-form-{{$object->id}}')">{{ __("thrust::messages.saveAndContinueEditing") }}</a>
+        @if (isset($object->id) )
+            <a class="secondary button hidden" id="thrust-save-and-continue" onclick="submitAjaxForm('thrust-form-{{$object->id}}')">{{ __("thrust::messages.saveAndContinueEditing") }}</a>
+        @endif
     @endif
 </form>
 
