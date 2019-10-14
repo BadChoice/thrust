@@ -11,8 +11,16 @@ class ThrustActionsController extends Controller
     {
         $resource  = Thrust::make($resourceName);
         $object    = $resource->find($id);
-        $object->update([$field => ! $object->{$field}]);
-        return back();
+        if(! method_exists($object, 'toggleActive')){
+            $object->update([$field => !$object->{$field}]);
+            return back();
+        }
+        try {
+            $object->toggleActive();
+            return back();
+        }catch(\Exception $e){
+            return back()->withErrors(['msg' => $e->getMessage()]);
+        }
     }
 
     public function create($resourceName)
