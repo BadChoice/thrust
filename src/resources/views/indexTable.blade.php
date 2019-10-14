@@ -1,5 +1,6 @@
 @include('thrust::components.paginator', ["data" => $rows])
 @if (count($rows) > 0)
+    @include('thrust::components.tableDensity')
     <table class="thrust-table list striped">
         <thead class="sticky">
             <th class="hide-mobile">
@@ -20,9 +21,8 @@
                     </div>
                 </th>
             @endforeach
-            <th class="action text-right" colspan="2" >
-                @include('thrust::components.tableDensity')
-            </th>
+{{--            <th class="action text-right" colspan="2" >--}}
+{{--            </th>--}}
         </thead>
 
         <tbody class="@if($sortable) sortable @endif">
@@ -34,23 +34,11 @@
                 @endif
                 @foreach($fields as $field)
                     <td class="{{$field->rowClass}}">
-                        @if (! $field->shouldHide($row) && $field->shouldShow($row))
+                        @if (! $field->shouldHide($row) && $field->shouldShow($row) && $resource->can($field->policyAction, $row))
                             {!! $field->displayInIndex($row) !!}
                         @endif
                     </td>
                 @endforeach
-
-                @if ($resource->canEdit($row))
-                    <td class="action"> <a class='showPopup edit thrust-edit' href="{{route('thrust.edit', [$resource->name(), $row->id]) }}"></a> </td>
-                @else
-                    <td></td>
-                @endif
-
-                @if ($resource->canDelete($row))
-                    <td class="action"> <a class="delete-resource thrust-delete" data-delete="confirm resource" href="{{route('thrust.delete', [$resource->name(), $row->id])}}"></a></td>
-                @else
-                    <td></td>
-                @endif
             </tr>
         @endforeach
         </tbody>

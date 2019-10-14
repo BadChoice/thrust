@@ -20,7 +20,7 @@ class Edit
 
     public function getEditFields()
     {
-        $fields = collect($this->resource->fields())->filter(function($field){
+        $fields = collect($this->resource->getFields())->filter(function($field){
             return $field->showInEdit && $this->resource->can($field->policyAction);
         });
         if ($this->resource::$sortable) {

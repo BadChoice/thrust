@@ -6,6 +6,7 @@ use BadChoice\Thrust\Actions\Delete;
 use BadChoice\Thrust\Actions\MainAction;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Contracts\Prunable;
+use BadChoice\Thrust\Fields\Edit;
 use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\Fields\Relationship;
 use BadChoice\Thrust\ResourceFilters\Filters;
@@ -67,9 +68,16 @@ abstract class Resource
      */
     abstract public function fields();
 
+    public function getFields(){
+        return array_merge(
+            $this->fields(),
+            [Edit::make('edit'), Fields\Delete::make('delete')]
+        );
+    }
+
     public function fieldsFlattened()
     {
-        return collect($this->fields())->map(function ($field) {
+        return collect($this->getFields())->map(function ($field) {
             if ($field instanceof Panel) {
                 return $field->fields;
             }
