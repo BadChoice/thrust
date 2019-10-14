@@ -149,9 +149,9 @@ abstract class Resource
         return $this->can('delete', $object);
     }
 
-    public function can($policyAction, $object = null){
-        if (! $policyAction) return true;
-        return app(ResourceGate::class)->can($this, $policyAction, $object);
+    public function can($ability, $object = null){
+        if (! $ability) return true;
+        return app(ResourceGate::class)->can($this, $ability, $object);
     }
 
     public function makeNew()
