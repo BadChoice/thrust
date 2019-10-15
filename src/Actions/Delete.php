@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Actions;
 
+use BadChoice\Thrust\ResourceGate;
 use Illuminate\Support\Collection;
 
 class Delete extends Action
@@ -13,8 +14,11 @@ class Delete extends Action
 
     public function handle(Collection $objects)
     {
-        $objects->each(function ($object) {
-            $this->resource->delete($object);
+        $gate = app(ResourceGate::class);
+        $objects->each(function ($object) use($gate) {
+            if ($gate->can($this->resource, 'delete', $object)) {
+                $this->resource->delete($object);
+            }
         });
     }
 }
