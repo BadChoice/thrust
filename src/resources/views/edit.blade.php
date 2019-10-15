@@ -13,7 +13,7 @@
         <form action="{{route('thrust.store', [$resourceName] )}}" method="POST">
     @endif
     {{ csrf_field() }}
-    <div class="thrust-tabs"><li id="thrust-tabs-list"></li></div>
+    <div class="thrust-tabs"><ul id="thrust-tabs-list"></ul></div>
     <div class="configForm">
         @foreach($fields as $field)
             {!! $field->displayInEdit($object) !!}
@@ -48,7 +48,7 @@
 
     <script>
         $(".formTab").each(function(idx, element){
-            $("#thrust-tabs-list").append("<ul class='thrust-tab-header' onclick='showTab(this, \"#" + $(element).attr("id") +"\")'>" + $(element).attr('title') + "</ul>")
+            $("#thrust-tabs-list").append("<li class='thrust-tab-header' onclick='showTab(this, \"#" + $(element).attr("id") +"\")'>" + $(element).attr('title') + "</li>")
         });
         $(".thrust-tab-header").first().addClass('active');
         $(".formTab").first().addClass('active');
