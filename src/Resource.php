@@ -71,7 +71,7 @@ abstract class Resource
     public function getFields(){
         return array_merge(
             $this->fields(),
-            [Edit::make('edit'), Fields\Delete::make('delete')]
+            $this->editAndDeleteFields()
         );
     }
 
@@ -296,5 +296,10 @@ abstract class Resource
     public function sortFieldIsValid($sort)
     {
         return $this->fieldsFlattened()->where('sortable', true)->pluck('field')->contains($sort);
+    }
+
+    protected function editAndDeleteFields()
+    {
+        return [Edit::make('edit'), Fields\Delete::make('delete')];
     }
 }
