@@ -64,6 +64,11 @@ abstract class Resource
     protected $with = null;
 
     /**
+     * @var Collection where rows already fetched are stored
+     */
+    private $alreadyFetchedRows;
+
+    /**
      * @return array array of fields
      */
     abstract public function fields();
@@ -270,10 +275,10 @@ abstract class Resource
 
     public function rows()
     {
-        if (request('search')) {
-            return $this->query()->get();
+        if (! $this->alreadyFetchedRows) {
+            return $this->fetchRows();
         }
-        return $this->query()->paginate($this->pagination);
+        return $this->alreadyFetchedRows;
     }
 
     public function getDescription()
@@ -301,5 +306,15 @@ abstract class Resource
     protected function editAndDeleteFields()
     {
         return [Edit::make('edit'), Fields\Delete::make('delete')];
+    }
+
+    private function fetchRows()
+    {
+        if (request('search')) {
+            $this->alreadyFetchedRows = $this->query()->get();
+        }else {
+            $this->alreadyFetchedRows = $this->query()->paginate($this->pagination);
+        }
+        return $this->alreadyFetchedRows;
     }
 }

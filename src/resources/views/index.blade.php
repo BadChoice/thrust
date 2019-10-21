@@ -7,7 +7,7 @@
                 <a href="{{route('thrust.index', [app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent) ]) }}">{{ $parent->name }} </a> /
             @endif
             {{ trans_choice(config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
-            ({{ $resource->count() }})
+            ({{ $resource->rows()->total() }})
         </span>
         <br><br>
         @include('thrust::components.mainActions')
