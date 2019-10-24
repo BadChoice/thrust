@@ -311,7 +311,7 @@ abstract class Resource
     private function fetchRows()
     {
         if (request('search')) {
-            $this->alreadyFetchedRows = $this->query()->get();
+            $this->alreadyFetchedRows = $this->query()->paginate(200);
         }else {
             $this->alreadyFetchedRows = $this->query()->paginate($this->pagination);
         }
