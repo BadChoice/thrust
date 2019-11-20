@@ -48,7 +48,7 @@
 
     <script>
         $(".formTab").each(function(idx, element){
-            $("#thrust-tabs-list").append("<li class='thrust-tab-header' onclick='showTab(this, \"#" + $(element).attr("id") +"\")'>" + $(element).attr('title') + "</li>")
+            $("#thrust-tabs-list").append("<ul class='thrust-tab-header' onclick='showTab(this, \"#" + $(element).attr("id") +"\")'>" + $(element).attr('title') + "</ul>")
         });
         $(".thrust-tab-header").first().addClass('active');
         $(".formTab").first().addClass('active');
