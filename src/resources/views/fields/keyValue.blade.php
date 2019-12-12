@@ -1,4 +1,5 @@
 @component('thrust::components.formField', ["field" => $field, "title" => $title, "description" => $description ?? null, "inline" => $inline])
+    <input type="hidden" name="{{$field}}" value="">
     <template id="template-{{$field}}">
         <div id="keyValue-template" class="mb2 keyValueField-{{$field}}" style="height:30px">
             <div class="inline" id="keyValueFields-template">
@@ -6,7 +7,7 @@
                 {!! $keyValueField->generateValueField('template') !!}
             </div>
             <span>
-                <a class="button secondary" onclick="keyValueRemove('template')">@icon(times)</a>
+                <a class="button secondary" onclick="keyValueRemove(this)">@icon(times)</a>
             </span>
         </div>
     </template>
@@ -20,7 +21,7 @@
                         {!! $keyValueField->generateValueField($loop->iteration, $v->value) !!}
                     </div>
                     <span>
-                        <a class="button secondary" onclick="keyValueRemove('{{$loop->iteration}}')">@icon(times)</a>
+                        <a class="button secondary" onclick="keyValueRemove(this)">@icon(times)</a>
                     </span>
                 </div>
             @endforeach
@@ -32,9 +33,9 @@
 
     @push('edit-scripts')
         <script>
-            function keyValueRemove(iteration){
-                $("#keyValue-" + iteration).hide();
-                $("#keyValueFields-" + iteration).remove();
+            function keyValueRemove(element){
+                $(element).parent().parent().find('div').remove();
+                $(element).parent().parent().hide();
             }
 
             function keyValueAdd(){
