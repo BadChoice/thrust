@@ -49,9 +49,13 @@
 
                 newKeyValue.find('div').first('div').find('input').first().prop('id', 'keyValue['+ n +'][key]');
                 newKeyValue.find('div').first('div').find('input').first().prop('name', 'keyValue['+ n +'][key]');
+                newKeyValue.find('div').first('div').find('select').first().prop('id', 'keyValue['+ n +'][key]');
+                newKeyValue.find('div').first('div').find('select').first().prop('name', 'keyValue['+ n +'][key]');
 
                 newKeyValue.find('div').first('div').find('input').last().prop('id', 'keyValue['+ n +'][value]');
                 newKeyValue.find('div').first('div').find('input').last().prop('name', 'keyValue['+ n +'][value]');
+                newKeyValue.find('div').first('div').find('select').last().prop('id', 'keyValue['+ n +'][value]');
+                newKeyValue.find('div').first('div').find('select').last().prop('name', 'keyValue['+ n +'][value]');
                 $('#keyValue-{{$field}}').append(newKeyValue);
             }
         </script>
