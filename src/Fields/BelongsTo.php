@@ -33,7 +33,7 @@ class BelongsTo extends Relationship
 
     public function getOptions($object)
     {
-        $possibleRelations = $this->relatedQuery($object, true)->pluck($this->relationDisplayField, $this->getRelation($object)->getOwnerKeyName());
+        $possibleRelations = $this->relatedQuery($object, true)->pluck($this->relationDisplayField, $this->getOwnerKey($object));
         if ($this->allowNull) {
             return $possibleRelations->prepend('--', '')->toArray();
         }
@@ -68,6 +68,6 @@ class BelongsTo extends Relationship
     }
 
     private function getValueId($object){
-        return $object->{$this->field}->{$this->getRelation($object)->getOwnerKeyName()} ?? null;
+        return $object->{$this->field}->{$this->getOwnerKey($object)} ?? null;
     }
 }

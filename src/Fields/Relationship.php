@@ -33,6 +33,15 @@ abstract class Relationship extends Field
         return $relation->getForeignKeyName();
     }
 
+    public function getOwnerKey($object)
+    {
+        $relation = $this->getRelation($object);
+        if (method_exists($relation, 'getOwnerKey')) {
+            return $relation->getOwnerKey();
+        }
+        return $relation->getOwnerKeyName();
+    }
+
     public function getRelationName($object)
     {
         $relation = $object->{$this->field};
