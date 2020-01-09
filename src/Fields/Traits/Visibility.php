@@ -9,6 +9,11 @@ trait Visibility
     public $showWhenField;
     public $showWhenValue;
     public $showCallback;
+    public $hideEditWhenField;
+    public $hideEditWhenValue;
+    public $showEditWhenField;
+    public $showEditWhenValue;
+    public $showEditCallback;
 
     public function hideWhen($field, $value = true)
     {
@@ -24,8 +29,27 @@ trait Visibility
         return $this;
     }
 
+    public function hideEditWhen($field, $value = true)
+    {
+        $this->hideEditWhenField    = $field;
+        $this->hideEditWhenValue    = $value;
+        return $this;
+    }
+
+    public function showEditWhen($field, $value = true)
+    {
+        $this->showEditWhenField    = $field;
+        $this->showEditWhenValue    = $value;
+        return $this;
+    }
+
     public function showCallback($callback){
         $this->showCallback = $callback;
+        return $this;
+    }
+
+    public function showEditCallback($callback){
+        $this->showEditCallback = $callback;
         return $this;
     }
 
@@ -46,5 +70,24 @@ trait Visibility
             return true;
         }
         return $object->{$this->showWhenField} === $this->showWhenValue;
+    }
+
+    public function shouldHideInEdit($object)
+    {
+        if ($this->hideEditWhenField == null || $this->showEditCallback) {
+            return false;
+        }
+        return $object->{$this->hideEditWhenField} === $this->hideEditWhenValue;
+    }
+
+    public function shouldShowInEdit($object)
+    {
+        if ($this->showEditCallback){
+            return call_user_func($this->showEditCallback, $object);
+        }
+        if ($this->showEditWhenField == null) {
+            return true;
+        }
+        return $object->{$this->showEditWhenField} === $this->showEditWhenValue;
     }
 }

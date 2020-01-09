@@ -16,7 +16,9 @@
     <div class="thrust-tabs"><ul id="thrust-tabs-list"></ul></div>
     <div class="configForm">
         @foreach($fields as $field)
-            {!! $field->displayInEdit($object) !!}
+            @if (! $field->shouldHideInEdit($object) && $field->shouldShowInEdit($object))
+                    {!! $field->displayInEdit($object) !!}
+            @endif
         @endforeach
     </div>
 
