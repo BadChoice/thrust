@@ -54,6 +54,8 @@ class Panel
         return implode('', ['<h4>', icon($this->icon ?? ''), ' ', $this->title, '</h4>']);
     }
 
+    // Retro compatibility with previous versions
+    // TODO migrate hideWhen to new index methods
     public function hideWhen($field, $value = true)
     {
         $this->hideEditWhen($field, $value);
