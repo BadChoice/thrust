@@ -63,6 +63,19 @@ class Panel
         return $this;
     }
 
+    public function shouldHideInEdit($object)
+    {
+        if ($this->hideWhenField == null ) {
+            return false;
+        }
+        return $object->{$this->hideWhenField} === $this->hideWhenValue;
+    }
+
+    public function shouldShowInEdit($object)
+    {
+        return true;
+    }
+
     public function getId()
     {
         return $this->panelId ?? $this->title;

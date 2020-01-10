@@ -2,12 +2,14 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\Fields\Traits\Visibility;
+use BadChoice\Thrust\Fields\Traits\EditVisibility;
+use BadChoice\Thrust\Fields\Traits\IndexVisibility;
 use BadChoice\Thrust\Html\Validation;
 
 abstract class Field
 {
-    use Visibility;
+    use EditVisibility;
+    use IndexVisibility;
 
     public $field;
     public $sortable = false;
@@ -33,6 +35,8 @@ abstract class Field
         $field        = new static;
         $field->field = $dbField;
         $field->title = $title;
+        $field->makeEditVisibility();
+        $field->makeIndexVisibility();
         return $field;
     }
 
@@ -154,4 +158,20 @@ abstract class Field
         if (str_contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
         return 'sortableHeader';
     }
+
+    // Retro compatibility with previous versions
+    // TODO migrate hideWhen, shouldHide and showCallback to new index methods
+    public function hideWhen($field, $value = true)
+    {
+        $this->hideIndexWhen($field, $value);
+    }
+
+    public function showCallback($callback){
+        $this->showIndexCallback($callback);
+    }
+
+    public function shouldHide($object){
+        $this->shouldHideInIndex($object);
+    }
+
 }
