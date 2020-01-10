@@ -2,6 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Fields\Traits\EditVisibility;
+
 class Panel
 {
     public $fields;
@@ -11,8 +13,7 @@ class Panel
     public $panelId;
     public $panelClass = 'formPanel';
 
-    public $hideWhenField;
-    public $hideWhenValue;
+    use EditVisibility;
     public $policyAction = null;
 
     public static function make($fields, $title = null)
@@ -20,6 +21,7 @@ class Panel
         $panel         = new static;
         $panel->fields = $fields;
         $panel->title  = $title;
+        $panel->makeEditVisibility();
         return $panel;
     }
 
@@ -54,26 +56,8 @@ class Panel
 
     public function hideWhen($field, $value = true)
     {
-        $this->hideWhenField = $field;
-        $this->hideWhenValue = $value;
-        collect($this->fields)->each(function ($field) {
-            $field->hideWhenField = $this->hideWhenField;
-            $field->hideWhenValue = $this->hideWhenValue;
-        });
+        $this->hideEditWhen($field, $value);
         return $this;
-    }
-
-    public function shouldHideInEdit($object)
-    {
-        if ($this->hideWhenField == null ) {
-            return false;
-        }
-        return $object->{$this->hideWhenField} === $this->hideWhenValue;
-    }
-
-    public function shouldShowInEdit($object)
-    {
-        return true;
     }
 
     public function getId()
