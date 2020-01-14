@@ -11,6 +11,11 @@ class CSVExporter
 
     public function export(Resource $resource)
     {
+        $this->generate($resource);
+        return response(rtrim($this->output, "\n"), 200, $this->getHeaders($resource->name()));
+    }
+
+    public function generate($resource) {
         $this->indexFields = $resource->fieldsFlattened()->where('showInIndex', true);
         $this->writeHeader();
         $resource->query()->chunk(200, function ($rows) use (&$output, $resource) {
@@ -18,7 +23,7 @@ class CSVExporter
                 $this->writeRow($row);
             });
         });
-        return response(rtrim($this->output, "\n"), 200, $this->getHeaders($resource->name()));
+        return $this->output;
     }
 
     private function getHeaders($title)
