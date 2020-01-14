@@ -37,14 +37,26 @@ class Edit
         return $this->resource->fieldsFlattened()->where('showInIndex', true);
     }
 
-    public function getVisiblityJson()
+    public function getPanelHideVisibilityJson()
     {
         return $this->resource->panels()->filter(function ($panel) {
-            return $panel->hideWhenField != null;
+            return $panel->hideEdit->field != null;
         })->mapWithKeys(function ($panel) {
             return [$panel->getId() => [
-                'field' => $panel->hideWhenField,
-                'value' => $panel->hideWhenValue]
+                'field' => $panel->hideEdit->field,
+                'value' => $panel->hideEdit->value]
+            ];
+        });
+    }
+
+    public function getPanelShowVisibilityJson()
+    {
+        return $this->resource->panels()->filter(function ($panel) {
+            return $panel->showEdit->field != null;
+        })->mapWithKeys(function ($panel) {
+            return [$panel->getId() => [
+                'field' => $panel->showEdit->field,
+                'value' => $panel->showEdit->value]
             ];
         });
     }
@@ -58,7 +70,8 @@ class Edit
             'resourceName'  => $this->resourceName ? : $this->resource->name(),
             'fields'        => $this->getEditFields(),
             'object'        => $object,
-            'visibility'    => $this->getVisiblityJson(),
+            'hideVisibility'    => $this->getPanelHideVisibilityJson(),
+            'showVisibility'    => $this->getPanelShowVisibilityJson(),
             'fullPage'      => $fullPage
         ])->render();
     }

@@ -2,8 +2,12 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Fields\Traits\Visibility;
+
 class Panel
 {
+    use Visibility;
+
     public $fields;
     public $showInEdit = true;
     public $title;
@@ -11,8 +15,6 @@ class Panel
     public $panelId;
     public $panelClass = 'formPanel';
 
-    public $hideWhenField;
-    public $hideWhenValue;
     public $policyAction = null;
 
     public static function make($fields, $title = null)
@@ -52,16 +54,6 @@ class Panel
         return implode('', ['<h4>', icon($this->icon ?? ''), ' ', $this->title, '</h4>']);
     }
 
-    public function hideWhen($field, $value = true)
-    {
-        $this->hideWhenField = $field;
-        $this->hideWhenValue = $value;
-        collect($this->fields)->each(function ($field) {
-            $field->hideWhenField = $this->hideWhenField;
-            $field->hideWhenValue = $this->hideWhenValue;
-        });
-        return $this;
-    }
 
     public function getId()
     {

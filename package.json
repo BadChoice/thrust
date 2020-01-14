@@ -12,8 +12,8 @@
   "devDependencies": {
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.2.0",
-    "jquery": "^3.3.1",
-    "laravel-mix": "^1.7.2",
+    "jquery": "^3.4.1",
+    "laravel-mix": "^5.0.1",
     "less": "^2.7.3",
     "less-loader": "^4.1.0"
   },

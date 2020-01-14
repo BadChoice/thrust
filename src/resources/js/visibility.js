@@ -1,25 +1,33 @@
-function setupVisibility(config){
-    $.each(config, function(panel_id, visibility){
-        setupFormFieldVisibility(panel_id, visibility);
+function setupVisibility(hideConfig, showConfig){
+    $.each(hideConfig, function(panel_id, visibility){
+        setupFormFieldVisibility(panel_id, visibility, 'hide');
+    });
+    $.each(showConfig, function(panel_id, visibility){
+        setupFormFieldVisibility(panel_id, visibility, 'show');
     });
 }
 
-function setupFormFieldVisibility(panel_id, visibility){
-    showOrHideFormVisibility(panel_id, visibility, false);
+function setupFormFieldVisibility(panel_id, visibility, type){
+    showOrHideFormVisibility(panel_id, visibility, false, type);
     $("#" + visibility["field"]).change(function(event){
-        showOrHideFormVisibility(panel_id, visibility, true);
+        showOrHideFormVisibility(panel_id, visibility, true, type);
     });
 }
 
-function showOrHideFormVisibility(panel_id, visibility, animated){
+function showOrHideFormVisibility(panel_id, visibility, animated, type){
     var animationSpeed = animated ? 'fast' : 0;
-    //console.log($("#" + visibility["field"]).val(), visibility["value"]);
     if ($("#" + visibility["field"]).val() == visibility["value"]) {
-        //console.log("Hide!" + "#panel_" + panel_id);
-        $("#panel_" + panel_id).hide(animationSpeed);
+        if (type == 'show'){
+            $("#panel_" + panel_id).show(animationSpeed);
+        }else{
+            $("#panel_" + panel_id).hide(animationSpeed);
+        }
     }
     else{
-        //console.log("show");
-        $("#panel_" + panel_id).show(animationSpeed);
+        if (type == 'show'){
+            $("#panel_" + panel_id).hide(animationSpeed);
+        }else{
+            $("#panel_" + panel_id).show(animationSpeed);
+        }
     }
 }

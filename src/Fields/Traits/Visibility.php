@@ -2,49 +2,70 @@
 
 namespace BadChoice\Thrust\Fields\Traits;
 
+
 trait Visibility
 {
-    public $hideWhenField;
-    public $hideWhenValue;
-    public $showWhenField;
-    public $showWhenValue;
-    public $showCallback;
+    public $visibilities = [];
 
-    public function hideWhen($field, $value = true)
-    {
-        $this->hideWhenField    = $field;
-        $this->hideWhenValue    = $value;
+    function __get($value){
+        if(! isset($this->visibilities[$value])){
+            $class = "BadChoice\Thrust\Visibility\\".ucfirst(substr($value, 0, 4));
+            $this->visibilities[$value] = new $class();
+	    }
+        return $this->visibilities[$value];
+    }
+
+    function hideWhen($field, $value=true, $where=null){
+        if ($where == null || $where == 'index')
+            $this->hideIndex->hideWhen($field, $value);
+        if ($where == null || $where == 'edit')
+            $this->hideEdit->hideWhen($field, $value);
+
         return $this;
     }
 
-    public function showWhen($field, $value = true)
-    {
-        $this->showWhenField    = $field;
-        $this->showWhenValue    = $value;
+    function showWhen($field, $value=true, $where=null){
+        if ($where == null || $where == 'index')
+            $this->showIndex->showWhen($field, $value);
+        if ($where == null || $where == 'edit')
+            $this->showEdit->showWhen($field, $value);
+
         return $this;
     }
 
-    public function showCallback($callback){
-        $this->showCallback = $callback;
+    function hideCallback($callback, $where=null){
+        if ($where == null || $where == 'index')
+            $this->hideIndex->hideCallback($callback);
+        if ($where == null || $where == 'edit')
+            $this->hideEdit->hideCallback($callback);
+
         return $this;
     }
 
-    public function shouldHide($object)
-    {
-        if ($this->hideWhenField == null || $this->showCallback) {
-            return false;
-        }
-        return $object->{$this->hideWhenField} === $this->hideWhenValue;
+    function showCallback($callback, $where=null){
+        if ($where == null || $where == 'index')
+            $this->showIndex->showCallback($callback);
+        if ($where == null || $where == 'edit')
+            $this->showEdit->showCallback($callback);
+
+        return $this;
     }
 
-    public function shouldShow($object)
-    {
-        if ($this->showCallback){
-            return call_user_func($this->showCallback, $object);
-        }
-        if ($this->showWhenField == null) {
-            return true;
-        }
-        return $object->{$this->showWhenField} === $this->showWhenValue;
+    function shouldHide($object, $where=null){
+        if ($where == 'index')
+            return $this->hideIndex->shouldHide($object);
+        if ($where == null || $where == 'edit')
+            return $this->hideEdit->shouldHide($object);
+
+        return $this->hideEdit->shouldHide($object) && $this->hideIndex->shouldHide($object);
+    }
+
+    function shouldShow($object, $where=null){
+        if ($where == 'index')
+            return $this->showIndex->shouldShow($object);
+        if ($where == null || $where == 'edit')
+            return $this->showEdit->shouldShow($object);
+
+        return $this->showEdit->shouldShow($object) && $this->showIndex->shouldShow($object);
     }
 }
