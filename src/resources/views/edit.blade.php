@@ -16,7 +16,7 @@
     <div class="thrust-tabs"><ul id="thrust-tabs-list"></ul></div>
     <div class="configForm">
         @foreach($fields as $field)
-            @if (! $field->shouldHideInEdit($object) && $field->shouldShowInEdit($object))
+            @if (! $field->shouldHide($object, 'edit') && $field->shouldShow($object, 'edit'))
                     {!! $field->displayInEdit($object) !!}
             @endif
         @endforeach
@@ -45,7 +45,7 @@
             dropdownAutoWidth : true,
             @if (! $fullPage) dropdownParent: $('{{config('thrust.popupId', '#popup')}}') @endif
         });
-        setupVisibility({!! json_encode($visibility)  !!});
+        setupVisibility({!! json_encode($hideVisibility)  !!}, {!! json_encode($showVisibility)  !!});
     </script>
 
     <script>

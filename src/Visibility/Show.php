@@ -29,6 +29,6 @@ class Show
         if ($this->field == null) {
             return true;
         }
-        return $object->{$this->field} === $this->value;
+        return $object->{$this->field} == $this->value;
     }
 }
