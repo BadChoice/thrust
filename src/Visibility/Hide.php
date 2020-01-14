@@ -26,6 +26,8 @@ class Hide
         if ($this->field == null || $this->callback) {
             return false;
         }
+        if (! $object)
+            return true;
         return $object->{$this->field} === $this->value;
     }
 }
