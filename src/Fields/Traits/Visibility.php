@@ -16,88 +16,56 @@ trait Visibility
     }
 
     function hideWhen($field, $value=true, $where=null){
-        switch ($where){
-            case 'edit':
-                $this->hideEdit->hideWhen($field, $value);
-                break;
-            case 'index':
-                $this->hideIndex->hideWhen($field, $value);
-                break;
-            default:
-                $this->hideEdit->hideWhen($field, $value);
-                $this->hideIndex->hideWhen($field, $value);
-                break;
-        }
+        if ($where == null || $where == 'index')
+            $this->hideIndex->hideWhen($field, $value);
+        if ($where == null || $where == 'edit')
+            $this->hideEdit->hideWhen($field, $value);
+
         return $this;
     }
 
     function showWhen($field, $value=true, $where=null){
-        switch ($where){
-            case 'edit':
-                $this->showEdit->showWhen($field, $value);
-                break;
-            case 'index':
-                $this->showIndex->showWhen($field, $value);
-                break;
-            default:
-                $this->showEdit->showWhen($field, $value);
-                $this->showIndex->showWhen($field, $value);
-                break;
-        }
+        if ($where == null || $where == 'index')
+            $this->showIndex->showWhen($field, $value);
+        if ($where == null || $where == 'edit')
+            $this->showEdit->showWhen($field, $value);
+
         return $this;
     }
 
     function hideCallback($callback, $where=null){
-        switch ($where){
-            case 'edit':
-                $this->hideEdit->hideCallback($callback);
-                break;
-            case 'index':
-                $this->hideIndex->hideCallback($callback);
-                break;
-            default:
-                $this->hideEdit->hideCallback($callback);
-                $this->hideIndex->hideCallback($callback);
-                break;
-        }
+        if ($where == null || $where == 'index')
+            $this->hideIndex->hideCallback($callback);
+        if ($where == null || $where == 'edit')
+            $this->hideEdit->hideCallback($callback);
+
         return $this;
     }
 
     function showCallback($callback, $where=null){
-        switch ($where){
-            case 'edit':
-                $this->showEdit->showCallback($callback);
-                break;
-            case 'index':
-                $this->showIndex->showCallback($callback);
-                break;
-            default:
-                $this->showEdit->showCallback($callback);
-                $this->showIndex->showCallback($callback);
-                break;
-        }
+        if ($where == null || $where == 'index')
+            $this->showIndex->showCallback($callback);
+        if ($where == null || $where == 'edit')
+            $this->showEdit->showCallback($callback);
+
         return $this;
     }
 
     function shouldHide($object, $where=null){
-        switch ($where){
-            case 'edit':
-                return $this->hideEdit->shouldHide($object);
-            case 'index':
-                return $this->hideIndex->shouldHide($object);
-            default:
-                return $this->hideEdit->shouldHide($object) && $this->hideIndex->shouldHide($object);
-        }
+        if ($where == 'index')
+            return $this->hideIndex->shouldHide($object);
+        if ($where == null || $where == 'edit')
+            return $this->hideEdit->shouldHide($object);
+
+        return $this->hideEdit->shouldHide($object) && $this->hideIndex->shouldHide($object);
     }
 
     function shouldShow($object, $where=null){
-        switch ($where){
-            case 'edit':
-                return $this->showEdit->shouldShow($object);
-            case 'index':
-                return $this->showIndex->shouldShow($object);
-            default:
-                return $this->showEdit->shouldShow($object) && $this->showIndex->shouldShow($object);
-        }
+        if ($where == 'index')
+            return $this->showIndex->shouldShow($object);
+        if ($where == null || $where == 'edit')
+            return $this->showEdit->shouldShow($object);
+
+        return $this->showEdit->shouldShow($object) && $this->showIndex->shouldShow($object);
     }
 }
