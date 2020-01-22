@@ -27,4 +27,10 @@ class Currency extends Decimal
         }
         return $this->getValue($object);
     }
+
+    public function getValue($object)
+    {
+        $value = parent::getValue($object);
+        return str_replace(",","",$value);
+    }
 }
