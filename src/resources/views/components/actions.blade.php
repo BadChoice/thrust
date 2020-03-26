@@ -22,6 +22,6 @@ $actions = collect($resource->actions());
     @endif
 
     @foreach( $actions->where('main', true) as $action)
-        <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", {{$action->needsConfirmation}},{{$action->needsSelection}}, "{{$action->confirmationMessage}}")'> {!! icon($action->icon) !!} </button>
+        <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", "{{$action->needsConfirmation}}","{{$action->needsSelection}}", "{{$action->confirmationMessage}}")'> {!! icon($action->icon) !!} </button>
     @endforeach
 @endif
