@@ -41,7 +41,7 @@ class ThrustActionsController extends Controller
     {
         $action     = $this->findActionForResource($resourceName, request('action'));
         $ids        = is_string(request('ids')) ? explode(',', request('ids')) : request('ids');
-        $response   = $action->handle($action->resource->find($ids));
+        $response   = $action->handle(collect($action->resource->find($ids)));
 
         if (request()->ajax()) {
             return response()->json(['ok' => true, 'message' => $response ?? 'done']);

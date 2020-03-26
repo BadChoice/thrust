@@ -11,11 +11,11 @@
     });
 
 
-    function runAction(actionClass, needsConfirmation, confirmationMessage){
+    function runAction(actionClass, needsConfirmation, needsSelection, confirmationMessage){
         var selected = getSelectedRowsIds();
-        console.log(actionClass, selected, needsConfirmation);
+        console.log(actionClass, selected, needsConfirmation, needsSelection);
 
-        if (selected.length == 0){
+        if (needsSelection == 1 && selected.length == 0){
             return alert("{{ __("thrust::messages.noRowsSelected") }}");
         }
 

@@ -11,6 +11,7 @@ abstract class Action
     public $title               = null;
     public $icon                = null;
     public $main                = false;
+    public $needsSelection      = true;
 
     public $resource;
 
