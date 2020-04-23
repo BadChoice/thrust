@@ -6,6 +6,7 @@ use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\ResourceManager;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class File extends Field implements Prunable
 {
@@ -143,7 +144,7 @@ class File extends Field implements Prunable
     public function store($object, $file)
     {
         $this->delete($object, false);
-        $filename   = str_random(10) . "." . $file->extension();
+        $filename   = Str::random(10) . "." . $file->extension();
         Storage::putFileAs($this->getPath(), $file, $this->filename ?? $filename);
         $this->updateField($object, $filename);
     }
