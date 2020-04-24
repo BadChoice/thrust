@@ -6,7 +6,7 @@
                 @php $parent = $resource->parent($parent_id) @endphp
                 <a href="{{route('thrust.index', [app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent) ]) }}">{{ $parent->name }} </a> /
             @endif
-            {{ trans_choice(config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
+            {{ trans_choice(config('thrust.translationsPrefix') . Illuminate\Support\Str::singular($resourceName), 2) }}
             ({{ $resource->rows()->total() }})
         </span>
         <br><br>

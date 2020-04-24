@@ -4,6 +4,7 @@ namespace BadChoice\Thrust\Fields;
 
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceManager;
+use Illuminate\Support\Str;
 
 class BelongsToMany extends Relationship
 {
@@ -77,7 +78,7 @@ class BelongsToMany extends Relationship
     public function getTitle($forHeader = false)
     {
         if ($forHeader && $this->withoutIndexHeader) return "";
-        return $this->title ?? trans_choice(config('thrust.translationsPrefix') . str_singular($this->field), 2);
+        return $this->title ?? trans_choice(config('thrust.translationsPrefix') . Str::singular($this->field), 2);
     }
 
     public function getIndexText($object)
