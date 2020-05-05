@@ -70,10 +70,11 @@ abstract class Field
     public function getTitle($forHeader = false)
     {
         if ($forHeader && $this->withoutIndexHeader) return "";
+        $translationKey = $this->field;
         if (str_contains($this->field, '[')){
-            $this->field = str_replace("]","",str_replace("[",".", $this->field));
+            $translationKey = str_replace("]","",str_replace("[",".", $this->field));
         }
-        return $this->title ?? trans_choice(config('thrust.translationsPrefix').$this->field, 1);
+        return $this->title ?? trans_choice(config('thrust.translationsPrefix').$translationKey, 1);
     }
 
     public function getDescription()
