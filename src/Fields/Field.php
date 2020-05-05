@@ -86,6 +86,10 @@ abstract class Field
         if (str_contains($this->field, '.')) {
             return data_get($object, $this->field);
         }
+        if (str_contains($this->field, '[')){
+            $this->field = str_replace("]","",str_replace("[",".", $this->field));
+            return data_get($object, $this->field);
+        }
         return $object->{$this->field};
     }
 
