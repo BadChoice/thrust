@@ -310,11 +310,14 @@ abstract class Resource
 
     private function fetchRows()
     {
-        if (request('search')) {
-            $this->alreadyFetchedRows = $this->query()->paginate(200);
-        }else {
-            $this->alreadyFetchedRows = $this->query()->paginate($this->pagination);
-        }
+        $this->alreadyFetchedRows = $this->query()->paginate($this->getPagination());
         return $this->alreadyFetchedRows;
+    }
+
+    protected function getPagination(){
+        if (request('search')) {
+            return 200;
+        }
+        return min(100, request('pagination') ?? $this->pagination);
     }
 }
