@@ -58,7 +58,7 @@ class ThrustController extends Controller
         try{
             $resource->create(request()->all());
         } catch (\Exception $e) {
-            return back()->withErrors(['delete' => $e->getMessage()]);
+            return back()->withErrors(['message' => $e->getMessage()]);
         }
         return back()->withMessage(__('thrust::messages.created'));
     }
