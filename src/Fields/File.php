@@ -17,8 +17,8 @@ class File extends Field implements Prunable
     public $prunable            = true;
     public $showInEdit          = false;
     public $editClasses         = 'br1';
-    public $indexStyle          = 'height:30px; width:30px; object-fit: cover;';
-    public $editStyle           = 'height:150px; width:300px; object-fit: cover;';
+    public $indexStyle          = 'height:30px; width:30px; object-fit: contain; border:solid 1px #eee;';
+    public $editStyle           = 'height:150px; width:300px; object-fit: contain; border:solid 1px #eee;';
     public $withLink            = true;
     protected $filename         = null;
     public $onlyUpload          = false;

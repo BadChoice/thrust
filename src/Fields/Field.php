@@ -71,7 +71,11 @@ abstract class Field
     public function getTitle($forHeader = false)
     {
         if ($forHeader && $this->withoutIndexHeader) return "";
-        return $this->title ?? trans_choice(config('thrust.translationsPrefix').$this->field, 1);
+        $translationKey = $this->field;
+        if (str_contains($this->field, '[')){
+            $translationKey = str_replace("]","",str_replace("[",".", $this->field));
+        }
+        return $this->title ?? trans_choice(config('thrust.translationsPrefix').$translationKey, 1);
     }
 
     public function getDescription()
@@ -85,6 +89,10 @@ abstract class Field
             return null;
         }
         if (Str::contains($this->field, '.')) {
+            return data_get($object, $this->field);
+        }
+        if (str_contains($this->field, '[')){
+            $this->field = str_replace("]","",str_replace("[",".", $this->field));
             return data_get($object, $this->field);
         }
         return $object->{$this->field};
