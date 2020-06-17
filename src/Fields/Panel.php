@@ -60,4 +60,13 @@ class Panel
         return $this->panelId ?? $this->title;
     }
 
+    public function shouldShow($object, $state)
+    {
+        return true;
+    }
+
+    public function shouldHide($object, $state)
+    {
+        return false;
+    }
 }

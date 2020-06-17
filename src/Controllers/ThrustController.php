@@ -2,11 +2,11 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-use BadChoice\Thrust\Facades\Thrust;
-use BadChoice\Thrust\Html\Edit;
-use BadChoice\Thrust\ResourceGate;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use BadChoice\Thrust\ResourceGate;
+use BadChoice\Thrust\Html\Edit;
+use BadChoice\Thrust\Facades\Thrust;
 
 class ThrustController extends Controller
 {
@@ -55,7 +55,11 @@ class ThrustController extends Controller
     {
         $resource = Thrust::make($resourceName);
         request()->validate($resource->getValidationRules(null));
-        $resource->create(request()->all());
+        try{
+            $resource->create(request()->all());
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
+        }
         return back()->withMessage(__('thrust::messages.created'));
     }
 
