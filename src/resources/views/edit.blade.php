@@ -1,5 +1,5 @@
     @if ($fullPage)
-        <h2> {{  trans_choice(config('thrust.translationsPrefix'). str_singular($resourceName), 1) }} </h2>
+        <h2> {{  trans_choice(config('thrust.translationsPrefix'). Illuminate\Support\Str::singular($resourceName), 1) }} </h2>
     @else
         <div class="configForm">
             <h2> {{ $object->{$nameField} ?? 'New' }}</h2>

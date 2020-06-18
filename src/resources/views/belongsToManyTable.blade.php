@@ -5,7 +5,7 @@
             <th></th>
         @endif
         <th>
-            {{ trans_choice(config('thrust.translationsPrefix') . str_singular($belongsToManyField->field), 1) }}
+            {{ trans_choice(config('thrust.translationsPrefix') . Illuminate\Support\Str::singular($belongsToManyField->field), 1) }}
         </th>
     @endif
     @foreach($belongsToManyField->objectFields as $field)

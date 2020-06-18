@@ -4,6 +4,7 @@ namespace BadChoice\Thrust\Fields;
 
 use BadChoice\Thrust\Fields\Traits\Visibility;
 use BadChoice\Thrust\Html\Validation;
+use Illuminate\Support\Str;
 
 abstract class Field
 {
@@ -87,7 +88,7 @@ abstract class Field
         if (! $object) {
             return null;
         }
-        if (str_contains($this->field, '.')) {
+        if (Str::contains($this->field, '.')) {
             return data_get($object, $this->field);
         }
         if (str_contains($this->field, '[')){
@@ -159,7 +160,7 @@ abstract class Field
     }
 
     public function getSortableHeaderClass(){
-        if (str_contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
+        if (Str::contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
         return 'sortableHeader';
     }
 }
