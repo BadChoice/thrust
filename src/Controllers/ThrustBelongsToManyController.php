@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
+use BadChoice\Thrust\Facades\Thrust;
 
 class ThrustBelongsToManyController extends Controller
 {
@@ -34,7 +34,7 @@ class ThrustBelongsToManyController extends Controller
         if (! $belongsToManyField->allowDuplicates && $object->{$relationship}->contains(request('id'))){
             return back()->withMessage('already exists and duplicates not allowed');
         }
-        $object->{$relationship}()->attach(request('id'), request()->except(['id', '_token']));
+        $object->{$relationship}()->attach(request('id'), $belongsToManyField->postProcessData(request()->except(['id', '_token'])));
         return back()->withMessage('added');
     }
 

@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\ResourceFilters\Search;
 
 class BelongsToMany extends Relationship
 {
@@ -121,5 +121,14 @@ class BelongsToMany extends Relationship
             'value'  => $this->displayInIndex($object),
             'inline' => $inline,
         ]);
+    }
+
+    public function postProcessData($data)
+    {
+        return collect($this->pivotFields)->map(function($pivotField) use ($data){
+            return [$pivotField->field => $pivotField->postProcessData($data[$pivotField->field])];
+        })->reduce(function($carry, $item){
+            return array_merge($carry, $item);
+        }, []);
     }
 }

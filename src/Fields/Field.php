@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\Fields\Traits\Visibility;
 use BadChoice\Thrust\Html\Validation;
+use BadChoice\Thrust\Fields\Traits\Visibility;
 
 abstract class Field
 {
@@ -161,5 +161,10 @@ abstract class Field
     public function getSortableHeaderClass(){
         if (str_contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
         return 'sortableHeader';
+    }
+
+    public function postProcessData($data)
+    {
+        return $data;
     }
 }
