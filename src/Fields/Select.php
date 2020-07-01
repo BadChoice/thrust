@@ -4,10 +4,11 @@ namespace BadChoice\Thrust\Fields;
 
 class Select extends Field
 {
-    protected $options    = [];
-    protected $allowNull  = false;
-    protected $searchable = false;
-    protected $forceIntValue = false;
+    protected $options          = [];
+    protected $allowNull        = false;
+    protected $searchable       = false;
+    protected $forceIntValue    = false;
+    protected $attributes       = '';
 
     public function options($options, $allowNull = false)
     {
@@ -57,6 +58,7 @@ class Select extends Field
             'value'       => $this->getValue($object),
             'options'     => $this->getOptions(),
             'description' => $this->getDescription(),
+            'attributes'  => $this->getFieldAttributes(),
         ])->render();
     }
 
@@ -66,5 +68,16 @@ class Select extends Field
             return intval(parent::getValue($object));
         }
         return parent::getValue($object);
+    }
+
+    public function attributes($attributes)
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    protected function getFieldAttributes()
+    {
+        return $this->attributes;
     }
 }
