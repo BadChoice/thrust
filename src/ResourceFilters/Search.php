@@ -2,6 +2,8 @@
 
 namespace BadChoice\Thrust\ResourceFilters;
 
+use Illuminate\Support\Str;
+
 class Search
 {
     public static function apply($query, $searchText, $searchFields)
@@ -35,7 +37,7 @@ class Search
     }
 
     public static function applyFieldSimple(&$query, $searchField, $searchText){
-        if (str_contains($searchField, '.')) {
+        if (Str::contains($searchField, '.')) {
             return self::applyRelationshipField($query, $searchField, $searchText);
         }
         return $query->orWhere($searchField, 'like', "%{$searchText}%");
