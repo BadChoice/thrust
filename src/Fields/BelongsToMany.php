@@ -2,9 +2,9 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\ResourceFilters\Search;
-use BadChoice\Thrust\ResourceManager;
 use Illuminate\Support\Str;
+use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\ResourceFilters\Search;
 
 class BelongsToMany extends Relationship
 {

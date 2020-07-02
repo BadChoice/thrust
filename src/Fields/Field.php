@@ -2,9 +2,9 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\Fields\Traits\Visibility;
-use BadChoice\Thrust\Html\Validation;
 use Illuminate\Support\Str;
+use BadChoice\Thrust\Html\Validation;
+use BadChoice\Thrust\Fields\Traits\Visibility;
 
 abstract class Field
 {
