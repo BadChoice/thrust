@@ -123,13 +123,4 @@ class BelongsToMany extends Relationship
             'inline' => $inline,
         ]);
     }
-
-    public function postProcessData($data)
-    {
-        return collect($this->pivotFields)->map(function($pivotField) use ($data){
-            return [$pivotField->field => $pivotField->postProcessData($data[$pivotField->field])];
-        })->reduce(function($carry, $item){
-            return array_merge($carry, $item);
-        }, []);
-    }
 }

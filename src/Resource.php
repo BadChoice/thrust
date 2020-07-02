@@ -2,17 +2,17 @@
 
 namespace BadChoice\Thrust;
 
-use BadChoice\Thrust\Actions\Delete;
-use BadChoice\Thrust\Actions\MainAction;
-use BadChoice\Thrust\Contracts\FormatsNewObject;
-use BadChoice\Thrust\Contracts\Prunable;
-use BadChoice\Thrust\Fields\Edit;
-use BadChoice\Thrust\Fields\Panel;
-use BadChoice\Thrust\Fields\Relationship;
-use BadChoice\Thrust\ResourceFilters\Filters;
-use BadChoice\Thrust\ResourceFilters\Search;
-use BadChoice\Thrust\ResourceFilters\Sort;
 use Illuminate\Support\Str;
+use BadChoice\Thrust\ResourceFilters\Sort;
+use BadChoice\Thrust\ResourceFilters\Search;
+use BadChoice\Thrust\ResourceFilters\Filters;
+use BadChoice\Thrust\Fields\Relationship;
+use BadChoice\Thrust\Fields\Panel;
+use BadChoice\Thrust\Fields\Edit;
+use BadChoice\Thrust\Contracts\Prunable;
+use BadChoice\Thrust\Contracts\FormatsNewObject;
+use BadChoice\Thrust\Actions\MainAction;
+use BadChoice\Thrust\Actions\Delete;
 
 abstract class Resource
 {
@@ -191,7 +191,7 @@ abstract class Resource
         })->toArray();
     }
 
-    private function mapRequest($data)
+    public function mapRequest($data)
     {
         $this->fieldsFlattened()->filter(function ($field) use ($data) {
             return isset($data[$field->field]);

@@ -33,10 +33,4 @@ class Currency extends Decimal
         $value = parent::getValue($object);
         return str_replace(",","",$value);
     }
-
-    public function postProcessData($data)
-    {
-        $data = parent::postProcessData($data);
-        return $this->asInteger ? $data * 100 : $data;
-    }
 }
