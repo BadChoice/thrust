@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
+use BadChoice\Thrust\Facades\Thrust;
 
 class ThrustHasManyController extends Controller
 {
@@ -19,6 +19,7 @@ class ThrustHasManyController extends Controller
             'searchable'              => count($resource::$search) > 0,
             'resource'                => $childResource,
             'parent_id'               => $id,
+            'minSearchChars'          => $childResource::$minSearchChars,
 //            "object"                  => $object,
 //            "title"                   => $object->{$resource->nameField},
 //            "children"                => $object->{$relationship},

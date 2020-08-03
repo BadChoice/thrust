@@ -30,7 +30,7 @@
 @section('scripts')
     @parent
     @if ($searchable)
-        @include('thrust::components.searchScript', ['resourceName' => $resourceName])
+        @include('thrust::components.searchScript', ['resourceName' => $resourceName, 'minSearchChars' => $minSearchChars ])
     @endif
     @include('thrust::components.js.actions', ['resourceName' => $resourceName])
     @include('thrust::components.js.filters', ['resourceName' => $resourceName])

@@ -43,6 +43,11 @@ abstract class Resource
      */
     public static $search = [];
 
+    /**
+     * Defines the minimum amont of chars to start the search.
+     * By default 3.
+     */
+    public static $minSearchChars = 3;
 
     /**
      * @var Defines the global gate ability for the actions to be performed,
