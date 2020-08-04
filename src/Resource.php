@@ -43,6 +43,7 @@ abstract class Resource
      */
     public static $search = [];
 
+
     /**
      * @var Defines the global gate ability for the actions to be performed,
      * It goes along with the default Laravel resource Policy if any
