@@ -3,6 +3,6 @@
         'onFound' : function(){
             addListeners();
         },
-        'minChars' : {{ $minSearchChars }}
+        'minChars' : {{ config('thrust.minSearchChars') }}
     });
 </script>

@@ -18,8 +18,7 @@ class ThrustHasManyController extends Controller
             'resourceName'            => $hasManyField->resourceName,
             'searchable'              => count($resource::$search) > 0,
             'resource'                => $childResource,
-            'parent_id'               => $id,
-            'minSearchChars'          => $childResource::$minSearchChars,
+            'parent_id'               => $id
 //            "object"                  => $object,
 //            "title"                   => $object->{$resource->nameField},
 //            "children"                => $object->{$relationship},
