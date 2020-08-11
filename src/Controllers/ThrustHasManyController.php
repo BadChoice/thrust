@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
+use BadChoice\Thrust\Facades\Thrust;
 
 class ThrustHasManyController extends Controller
 {

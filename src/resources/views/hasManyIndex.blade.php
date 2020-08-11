@@ -2,7 +2,7 @@
 @section('content')
     <div class="description">
         <span class="title">
-            {{ trans_choice( config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
+            {{ trans_choice( config('thrust.translationsPrefix') . Illuminate\Support\Str::singular($resourceName), 2) }}
             ({{ $resource->count() }})
         </span>
         <br><br>
@@ -11,7 +11,7 @@
                 {!! $action->display($resourceName) !!}
             @endforeach
         </div>
-        {{ trans_choice( config('thrust.translationsDescriptionsPrefix') . str_singular($resourceName), 1) }}
+        {{ trans_choice( config('thrust.translationsDescriptionsPrefix') . Illuminate\Support\Str::singular($resourceName), 1) }}
     </div>
 
     <div id="all">
