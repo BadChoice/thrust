@@ -111,7 +111,7 @@ class BelongsToMany extends Relationship
 
     public function search($object, $search)
     {
-        return Search::apply($this->getRelation($object), $search, [$this->relationDisplayField]);
+        return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
 
     public function displayInEdit($object, $inline = false)
