@@ -27,12 +27,12 @@ $(document).ready(function(){
 });
 
 function addListeners(){
-    $('[data-post]').on('click', function (e) {
+    $('[data-post]').off('click').on('click', function (e) {
         e.preventDefault();
         return $('<form action="' + $(this).attr('href') + `" method="POST"><input type="hidden" name="_token" value="${csrf_token}"></form>`).appendTo('body').submit();
     });
 
-    $('[data-delete]').on('click', function (e) {
+    $('[data-delete]').off('click').on('click', function (e) {
         let dataDelete = $(this).attr('data-delete');
         if (dataDelete.indexOf("confirm") !== -1 && ! confirm(confirmDelete)) {
             return e.preventDefault();
@@ -51,12 +51,12 @@ function addListeners(){
     });
 
     // ajax and delete used together to do a post to some endpoint in order to delete or detach a resource
-    $(".ajax").on('click', function(e){
+    $(".ajax").off('click').on('click', function(e){
         e.preventDefault();
         callAjax($(this).attr('href'));
     });
 
-    $(".showPopup").on('click',function(e) {
+    $(".showPopup").off('click').on('click',function(e) {
         e.preventDefault();
         showPopup($(this).attr('href'));
     });
