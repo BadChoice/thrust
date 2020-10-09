@@ -19,6 +19,9 @@ class BelongsToMany extends Relationship
     public $sortable     = false;
     public $sortField    = 'order';
 
+    public $relatedSortable   = false;
+    public $relatedSortField  = 'order';
+
     public function displayInIndex($object)
     {
         return view('thrust::fields.belongsToMany', [
@@ -34,7 +37,14 @@ class BelongsToMany extends Relationship
     public function sortable($sortable = true, $sortField = 'order')
     {
         $this->sortable  = $sortable;
-        $this->sortField = 'order';
+        $this->sortField = $sortField;
+        return $this;
+    }
+
+    public function relatedSortable($relatedSortable = true, $relatedSortField = 'order')
+    {
+        $this->shouldOrder = $shouldOrder;
+        $this->relatedSortField = $relatedSortField;
         return $this;
     }
 
@@ -89,7 +99,7 @@ class BelongsToMany extends Relationship
         if ($this->icon) {
             return "";
         }
-        return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
+        return ($this->sortable ? $object->{$this->field}()->orderBy($this->sortField)->get() : $object->{$this->field})->pluck($this->relationDisplayField)->implode(', ');
     }
 
     public function getOptions($object)
@@ -103,8 +113,8 @@ class BelongsToMany extends Relationship
     public function relatedQuery($object, $allowDuplicates = true)
     {
         $query = parent::relatedQuery($object, $allowDuplicates);
-        if ($this->sortable) {
-            return $query->orderBy($this->sortField);
+        if ($this->relatedSortable) {
+            return $query->orderBy($this->relatedSortField);
         }
         return $query;
     }
