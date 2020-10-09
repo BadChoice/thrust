@@ -72,7 +72,7 @@ abstract class Field
     {
         if ($forHeader && $this->withoutIndexHeader) return "";
         $translationKey = $this->field;
-        if (str_contains($this->field, '[')){
+        if (Str::contains($this->field, '[')){
             $translationKey = str_replace("]","",str_replace("[",".", $this->field));
         }
         return $this->title ?? trans_choice(config('thrust.translationsPrefix').$translationKey, 1);
@@ -91,7 +91,7 @@ abstract class Field
         if (Str::contains($this->field, '.')) {
             return data_get($object, $this->field);
         }
-        if (str_contains($this->field, '[')){
+        if (Str::contains($this->field, '[')){
             $this->field = str_replace("]","",str_replace("[",".", $this->field));
             return data_get($object, $this->field);
         }

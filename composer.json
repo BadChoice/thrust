@@ -4,8 +4,7 @@
     "type": "library",
     "require": {
         "laravel/framework": "^7.4",
-        "intervention/image": "^2.5",
-        "laravel/helpers": "^1.2"
+        "intervention/image": "^2.5"
     },
     "license": "MIT",
     "authors": [
