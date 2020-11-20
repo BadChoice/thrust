@@ -13,6 +13,7 @@ class BelongsToMany extends Relationship
     public $indexTextCallback = null;
     public $pivotFields       = [];
     public $objectFields      = [];
+    public $withCount      = false;
     public $icon              = null;
     public $hideName;
 
@@ -34,6 +35,16 @@ class BelongsToMany extends Relationship
         ]);
     }
 
+    public function displayInEdit($object, $inline = false)
+    {
+        $this->withLink = false;
+        return view('thrust::fields.info', [
+            'title'  => $this->getTitle(),
+            'value'  => $this->displayInIndex($object),
+            'inline' => $inline,
+        ]);
+    }
+
     public function sortable($sortable = true, $sortField = 'order')
     {
         $this->sortable  = $sortable;
@@ -43,7 +54,7 @@ class BelongsToMany extends Relationship
 
     public function relatedSortable($relatedSortable = true, $relatedSortField = 'order')
     {
-        $this->shouldOrder = $shouldOrder;
+        $this->relatedSortable  = $relatedSortable;
         $this->relatedSortField = $relatedSortField;
         return $this;
     }
@@ -99,6 +110,9 @@ class BelongsToMany extends Relationship
         if ($this->icon) {
             return "";
         }
+        if ($this->withCount) {
+            return $this->getRelation($object)->count();
+        }
         return ($this->sortable ? $object->{$this->field}()->orderBy($this->sortField)->get() : $object->{$this->field})->pluck($this->relationDisplayField)->implode(', ');
     }
 
@@ -124,13 +138,8 @@ class BelongsToMany extends Relationship
         return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
 
-    public function displayInEdit($object, $inline = false)
-    {
-        $this->withLink = false;
-        return view('thrust::fields.info', [
-            'title'  => $this->getTitle(),
-            'value'  => $this->displayInIndex($object),
-            'inline' => $inline,
-        ]);
+    public function onlyCount(){
+        $this->withCount = true;
+        return $this;
     }
 }
