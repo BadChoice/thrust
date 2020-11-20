@@ -38,13 +38,11 @@ class ThrustBelongsToManyController extends Controller
         return back()->withMessage('added');
     }
 
-    public function delete($resourceName, $id, $relationship, $detachId)
+    public function delete($resourceName, $id, $relationship, $pivotId)
     {
         $resource = Thrust::make($resourceName);
         $object   = $resource->find($id);
-        //$object->{$relationship}()->detach($detachId);
-        //dd($object->{$relationship}()->wherePivot('id', $detachId)->first());
-        $relationObject = $object->{$relationship}()->wherePivot('id', $detachId)->first();
+        $relationObject = $object->{$relationship}()->wherePivot('id', $pivotId)->first();
         $relationObject->pivot->delete();
         return back()->withMessage('deleted');
     }

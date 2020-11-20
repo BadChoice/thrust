@@ -13,6 +13,7 @@ class BelongsToMany extends Relationship
     public $indexTextCallback = null;
     public $pivotFields       = [];
     public $objectFields      = [];
+    public $withCount      = false;
     public $icon              = null;
     public $hideName;
 
@@ -31,10 +32,20 @@ class BelongsToMany extends Relationship
         ]);
     }
 
+    public function displayInEdit($object, $inline = false)
+    {
+        $this->withLink = false;
+        return view('thrust::fields.info', [
+            'title'  => $this->getTitle(),
+            'value'  => $this->displayInIndex($object),
+            'inline' => $inline,
+        ]);
+    }
+
     public function sortable($sortable = true, $sortField = 'order')
     {
         $this->sortable  = $sortable;
-        $this->sortField = 'order';
+        $this->sortField = $sortField;
         return $this;
     }
 
@@ -89,6 +100,9 @@ class BelongsToMany extends Relationship
         if ($this->icon) {
             return "";
         }
+        if ($this->withCount) {
+            return $this->getRelation($object)->count();
+        }
         return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
     }
 
@@ -114,13 +128,8 @@ class BelongsToMany extends Relationship
         return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
 
-    public function displayInEdit($object, $inline = false)
-    {
-        $this->withLink = false;
-        return view('thrust::fields.info', [
-            'title'  => $this->getTitle(),
-            'value'  => $this->displayInIndex($object),
-            'inline' => $inline,
-        ]);
+    public function onlyCount(){
+        $this->withCount = true;
+        return $this;
     }
 }
