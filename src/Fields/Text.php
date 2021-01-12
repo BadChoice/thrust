@@ -7,6 +7,7 @@ class Text extends Field
     protected $displayInIndexCallback = null;
     protected $editableHint           = false;
     protected $attributes             = '';
+    protected $shouldAllowScripts     = false;
 
     public function editableHint($editableHint = true)
     {
@@ -69,5 +70,16 @@ class Text extends Field
             return null;
         }
         return strip_tags(parent::getValue($object));
+    }
+
+    public function allowScripts()
+    {
+        $this->shouldAllowScripts = true;
+        return $this;
+    }
+
+    public function mapAttributeFromRequest($value)
+    {
+        return parent::mapAttributeFromRequest(!$this->shouldAllowScripts ? strip_tags($value) : $value);
     }
 }
