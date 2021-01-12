@@ -4,6 +4,8 @@ namespace BadChoice\Thrust\Fields;
 
 class TextArea extends Field
 {
+    protected $shouldAllowScripts = false;
+
     public $showInIndex = false;
 
     public function displayInIndex($object)
@@ -30,5 +32,17 @@ class TextArea extends Field
     public function getValue($object)
     {
         return strip_tags($object->{$this->field});
+    }
+
+
+    public function allowScripts()
+    {
+        $this->shouldAllowScripts = true;
+        return $this;
+    }
+
+    public function mapAttributeFromRequest($value)
+    {
+        return parent::mapAttributeFromRequest(!$this->shouldAllowScripts ? strip_tags($value) : $value);
     }
 }
