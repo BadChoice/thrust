@@ -142,4 +142,14 @@ class BelongsToMany extends Relationship
         $this->withCount = true;
         return $this;
     }
+
+    public function mapRequest($data)
+    {
+        collect($this->pivotFields)->filter(function ($field) use ($data) {
+            return isset($data[$field->field]);
+        })->each(function ($field) use (&$data) {
+            $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
+        });
+        return $data;
+    }
 }
