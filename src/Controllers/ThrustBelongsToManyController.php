@@ -34,7 +34,7 @@ class ThrustBelongsToManyController extends Controller
         if (! $belongsToManyField->allowDuplicates && $object->{$relationship}->contains(request('id'))){
             return back()->withMessage('already exists and duplicates not allowed');
         }
-        $object->{$relationship}()->attach(request('id'), $resource->mapRequest(request()->except(['id', '_token'])));
+        $object->{$relationship}()->attach(request('id'), $belongsToManyField->mapRequest(request()->except(['id', '_token'])));
         return back()->withMessage('added');
     }
 
