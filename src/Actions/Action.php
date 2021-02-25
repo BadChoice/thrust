@@ -30,14 +30,12 @@ abstract class Action
     {
         return str_replace('\\', '\\\\', get_class($this));
     }
-
     public function getTitle()
     {
-        $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
         if ($this->icon) {
-            return icon($this->icon) . ' ' . $title ;
+            return icon($this->icon) . __("thrust::messages.$this->title");
         }
-        return $title;
+        return __("thrust::messages.$this->title");
     }
 
     /**

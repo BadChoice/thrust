@@ -9,6 +9,7 @@ class Delete extends Action
 {
     public $needsConfirmation = true;
     public $icon              = 'trash';
+    public $title             = 'delete';
 //    public $main = true;
     public $main = false;
 
@@ -20,13 +21,6 @@ class Delete extends Action
                 $this->resource->delete($object);
             }
         });
-    }
-    public function getTitle()
-    {
-        if ($this->icon) {
-            return icon($this->icon) . __("thrust::messages.delete");
-        }
-        return __("thrust::messages.delete");
     }
 
 }
