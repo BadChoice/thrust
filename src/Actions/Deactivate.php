@@ -20,4 +20,11 @@ class Deactivate extends Action
             $object->update([$this->field => false]);
         });*/
     }
+    public function getTitle()
+    {
+        if ($this->icon) {
+            return icon($this->icon) . __("thrust::messages.deactivate");
+        }
+        return __("thrust::messages.deactivate");
+    }
 }

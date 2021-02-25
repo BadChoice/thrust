@@ -21,4 +21,12 @@ class Delete extends Action
             }
         });
     }
+    public function getTitle()
+    {
+        if ($this->icon) {
+            return icon($this->icon) . __("thrust::messages.delete");
+        }
+        return __("thrust::messages.delete");
+    }
+
 }

@@ -17,4 +17,11 @@ class Activate extends Action
             $this->field => true
         ]);
     }
+    public function getTitle()
+    {
+        if ($this->icon) {
+            return icon($this->icon) . __("thrust::messages.activate");
+        }
+        return __("thrust::messages.activate");
+    }
 }
