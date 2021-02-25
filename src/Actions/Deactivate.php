@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 class Deactivate extends Action
 {
     public $needsConfirmation = true;
-    public $title             = 'deactivate';
     public $icon              = 'times';
     public $field             = 'active';
 

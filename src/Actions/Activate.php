@@ -8,7 +8,6 @@ class Activate extends Action
 {
     public $needsConfirmation = true;
     public $icon              = 'check';
-    public $title             = 'activate';
     public $field             = 'active';
 
     public function handle(Collection $objects)

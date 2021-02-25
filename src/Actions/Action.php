@@ -30,12 +30,15 @@ abstract class Action
     {
         return str_replace('\\', '\\\\', get_class($this));
     }
+
     public function getTitle()
     {
+        $classname = lcfirst(collect(explode('\\', get_class($this)))->last());
+        $title = $this->title ??  __("thrust::messages.$classname");
         if ($this->icon) {
-            return icon($this->icon) . __("thrust::messages.$this->title");
+            return icon($this->icon) . " " . $title;
         }
-        return __("thrust::messages.$this->title");
+        return $title;
     }
 
     /**

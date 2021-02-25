@@ -9,7 +9,6 @@ class Delete extends Action
 {
     public $needsConfirmation = true;
     public $icon              = 'trash';
-    public $title             = 'delete';
 //    public $main = true;
     public $main = false;
 
