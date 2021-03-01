@@ -33,10 +33,9 @@ abstract class Action
 
     public function getTitle()
     {
-        $classname = lcfirst(collect(explode('\\', get_class($this)))->last());
-        $title = $this->title ??  __("thrust::messages.$classname");
+        $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
         if ($this->icon) {
-            return icon($this->icon) . " " . $title;
+            return icon($this->icon) . ' ' . $title ;
         }
         return $title;
     }

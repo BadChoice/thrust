@@ -10,6 +10,11 @@ class Activate extends Action
     public $icon              = 'check';
     public $field             = 'active';
 
+    public function __construct()
+    {
+        $this->title = __('thrust::messages.activate');
+    }
+
     public function handle(Collection $objects)
     {
         $this->getAllObjectsQuery($objects)->update([

@@ -9,6 +9,10 @@ class Delete extends Action
 {
     public $needsConfirmation = true;
     public $icon              = 'trash';
+    public function __construct()
+    {
+        $this->title = __('thrust::messages.delete');
+    }
 //    public $main = true;
     public $main = false;
 
