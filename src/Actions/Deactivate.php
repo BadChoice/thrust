@@ -7,9 +7,12 @@ use Illuminate\Support\Collection;
 class Deactivate extends Action
 {
     public $needsConfirmation = true;
-    public $title             = 'Deactivate';
     public $icon              = 'times';
     public $field             = 'active';
+    public function __construct()
+    {
+        $this->title = __('thrust::messages.deactivate');
+    }
 
     public function handle(Collection $objects)
     {
