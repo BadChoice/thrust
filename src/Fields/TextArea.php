@@ -4,6 +4,7 @@ namespace BadChoice\Thrust\Fields;
 
 class TextArea extends Field
 {
+    protected $attributes         = '';
     protected $shouldAllowScripts = false;
 
     public $showInIndex = false;
@@ -15,7 +16,7 @@ class TextArea extends Field
 
     protected function getFieldAttributes()
     {
-        return 'cols=50 rows=10';
+        return 'cols=50 rows=10'.' '.$this->attributes;
     }
 
     public function displayInEdit($object, $inline = false)
@@ -44,5 +45,11 @@ class TextArea extends Field
     public function mapAttributeFromRequest($value)
     {
         return parent::mapAttributeFromRequest(!$this->shouldAllowScripts ? strip_tags($value) : $value);
+    }
+
+    public function attributes($attributes)
+    {
+        $this->attributes = $attributes;
+        return $this;
     }
 }
