@@ -26,7 +26,23 @@ $(document).ready(function(){
     addListeners();
 });
 
+function addActionsDropdownListener() {
+    $(document).on('click.actionsDropdown', function onClickDropdownContainer(mouseClickEvent) {
+        let clickOutDropdownContainer = !$(mouseClickEvent.target).parents(".dropdown-container").length;
+        let clickOutActionButtons = !$(mouseClickEvent.target).parents(".dropdown.inline").length;
+        let dropdownContainer = $('.dropdown-container');
+        if (dropdownContainer.is(":visible") && clickOutDropdownContainer &&clickOutActionButtons) {
+            dropdownContainer.hide();
+            $(this).off('click.actionsDropdown');
+        }
+    });
+}
+
 function addListeners(){
+    $('.dropdown.inline').on('click', function () {
+        addActionsDropdownListener()
+    });
+
     $('[data-post]').off('click').on('click', function (e) {
         e.preventDefault();
         return $('<form action="' + $(this).attr('href') + `" method="POST"><input type="hidden" name="_token" value="${csrf_token}"></form>`).appendTo('body').submit();
