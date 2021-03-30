@@ -23,7 +23,9 @@
             @endif
         </select>
         @foreach($belongsToManyField->pivotFields as $field)
-            {!! $field->displayInEdit(null, true)  !!}
+            @if(!$field->shouldHide($object, 'index'))
+                {!! $field->displayInEdit(null, true)  !!}
+            @endif
         @endforeach
         <button class="secondary">{{__('thrust::messages.add') }} </button>
     </form>
