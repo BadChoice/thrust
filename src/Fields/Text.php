@@ -41,7 +41,7 @@ class Text extends Field
             'title'           => $this->getTitle(),
             'type'            => $this->getFieldType(),
             'field'           => $this->field,
-            'value'           => $this->getValue($object),
+            'value'           => htmlspecialchars_decode($this->getValue($object)),
             'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
             'attributes'      => $this->getFieldAttributes(),
             'description'     => $this->getDescription(),
