@@ -8,11 +8,11 @@ class Search
 {
     public static function apply($query, $searchText, $searchFields)
     {
-        $searchFields = collect($searchFields);
-        $firstField   = $searchFields->shift();
-        static::applyField($query, $firstField, $searchText);
+        return $query->where(function ($query) use($searchText, $searchFields){
+            $searchFields = collect($searchFields);
+            $firstField   = $searchFields->shift();
+            static::applyField($query, $firstField, $searchText);
 
-        return $query->orWhere(function ($query) use($searchText, $searchFields){
             return $searchFields->reduce(function($query, $searchField) use($searchText) {
                 return static::applyFieldSimple($query, $searchField, $searchText);
             }, $query);

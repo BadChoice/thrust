@@ -1,5 +1,5 @@
 <script>
-    $('#searcher').searcher('/thrust/{{$resourceName}}/search/', {
+    $('#searcher').searcher('{{$searchUrl ?? "/thrust/{$resourceName}/search/"}}', {
         'onFound' : function(){
             addListeners();
         },
