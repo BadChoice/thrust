@@ -43,6 +43,11 @@ abstract class Resource
      */
     public static $search = [];
 
+    /**
+     * Defines the resource to search from this resource. If not defined, searches on itself
+     * When defined, the search is global for the resource
+     */
+    public static $searchResource;
 
     /**
      * @var Defines the global gate ability for the actions to be performed,
