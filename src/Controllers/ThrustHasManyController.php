@@ -37,6 +37,6 @@ class ThrustHasManyController extends Controller
     {
         request()->merge(['search' => $searchText]);
         $resource = Thrust::make($resourceName)->parentId($id);
-        return (new Index($resource))->show();
+        return (new Index($resource::$searchResource ? new $resource::$searchResource: $resource))->show();
     }
 }
