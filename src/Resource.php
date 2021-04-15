@@ -260,11 +260,11 @@ abstract class Resource
             Search::apply($query, request('search'), static::$search);
         }
 
-        if (static::$sortable) {
-            Sort::apply($query, static::$sortField, 'ASC');
-        } elseif (request('sort') && $this->sortFieldIsValid(request('sort'))) {
+        if (request('sort') && $this->sortFieldIsValid(request('sort'))) {
             Sort::apply($query, request('sort'), request('sort_order'));
-        } else {
+        } elseif (static::$sortable) {
+            Sort::apply($query, static::$sortField, 'ASC');
+        }  else {
             Sort::apply($query, static::$defaultSort, static::$defaultOrder);
         }
 

@@ -1,8 +1,11 @@
 <div class="actions thrust-main-actions">
     <?php
         $mainActions = collect($resource->mainActions());
-        if ($resource::$sortable) {
+        if ($resource::$sortable && !request('sort')) {
             $mainActions->prepend(BadChoice\Thrust\Actions\SaveOrder::make('saveOrder'));
+        }
+        if (request('sort')) {
+            $mainActions->prepend(BadChoice\Thrust\Actions\ClearSorting::make('clearSorting'));
         }
     ?>
     @foreach($mainActions as $action)
