@@ -26,8 +26,9 @@ abstract class Filter
     public function title()
     {
         $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
-        if (strpos(__('admin.'.$title), 'admin.') === false) {
-            $title = __('admin.'.$title);
+        $translationsPrefix = config('thrust.translationsPrefix');
+        if (strpos(__($translationsPrefix.$title), $translationsPrefix) === false) {
+            $title = __($translationsPrefix.$title);
         }
         return $title;
     }
