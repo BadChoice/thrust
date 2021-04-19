@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 abstract class Filter
 {
+    public $title = null;
+
     /**
      * @param Request $request
      * @param $query
@@ -23,7 +25,11 @@ abstract class Filter
 
     public function title()
     {
-        return niceTitle(collect(explode('\\', get_class($this)))->last());
+        $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
+        if (strpos(__('admin.'.$title), 'admin.') === false) {
+            $title = __('admin.'.$title);
+        }
+        return $title;
     }
 
     public function filterValue($filtersApplied)

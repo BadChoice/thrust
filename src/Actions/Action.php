@@ -34,6 +34,9 @@ abstract class Action
     public function getTitle()
     {
         $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
+        if (strpos(__('admin.'.$title), 'admin.') === false) {
+            $title = __('admin.'.$title);
+        }
         if ($this->icon) {
             return icon($this->icon) . ' ' . $title ;
         }
