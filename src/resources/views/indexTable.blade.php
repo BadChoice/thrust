@@ -6,7 +6,7 @@
             <th class="hide-mobile">
                 <input type="checkbox" onclick="toggleSelectAll(this)">
             </th>
-            @if ($sortable && !request('sort'))
+            @if ($sortable)
                 <th class="hide-mobile">  </th>
             @endif
             @foreach($fields as $field)
@@ -25,11 +25,11 @@
 {{--            </th>--}}
         </thead>
 
-        <tbody class="@if($sortable && !request('sort')) sortable @endif">
+        <tbody class="@if($sortable) sortable @endif">
         @foreach ($rows as $row)
             <tr id="sort_{{$row->id}}">
                 <td class="action hide-mobile"><input class='actionCheckbox' type="checkbox" name="selected[{{$row->id}}]" meta:id="{{$row->id}}"></td>
-                @if ($sortable && !request('sort'))
+                @if ($sortable)
                     <td class="sort action hide-mobile"></td>
                 @endif
                 @foreach($fields as $field)
