@@ -2,11 +2,14 @@
 
 namespace BadChoice\Thrust\Filters;
 
+use BadChoice\Thrust\Helpers\Iconable;
+use BadChoice\Thrust\Helpers\Titleable;
 use Illuminate\Http\Request;
 
 abstract class Filter
 {
-    public $title = null;
+    use Titleable;
+    use Iconable;
 
     /**
      * @param Request $request
@@ -21,16 +24,6 @@ abstract class Filter
     public function class()
     {
         return get_class($this);
-    }
-
-    public function title()
-    {
-        $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
-        $translationsPrefix = config('thrust.translationsPrefix');
-        if (strpos(__($translationsPrefix.$title), $translationsPrefix) === false) {
-            $title = __($translationsPrefix.$title);
-        }
-        return $title;
     }
 
     public function filterValue($filtersApplied)

@@ -2,14 +2,17 @@
 
 namespace BadChoice\Thrust\Actions;
 
+use BadChoice\Thrust\Helpers\Iconable;
+use BadChoice\Thrust\Helpers\Titleable;
 use Illuminate\Support\Collection;
 
 abstract class Action
 {
+    use Titleable;
+    use Iconable;
+
     public $needsConfirmation   = true;
     public $confirmationMessage = 'Are you sure?';
-    public $title               = null;
-    public $icon                = null;
     public $main                = false;
     public $needsSelection      = true;
 
@@ -29,19 +32,6 @@ abstract class Action
     public function getClassForJs()
     {
         return str_replace('\\', '\\\\', get_class($this));
-    }
-
-    public function getTitle()
-    {
-        $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
-        $translationsPrefix = config('thrust.translationsPrefix');
-        if (strpos(__($translationsPrefix.$title), $translationsPrefix) === false) {
-            $title = __($translationsPrefix.$title);
-        }
-        if ($this->icon) {
-            return icon($this->icon) . ' ' . $title ;
-        }
-        return $title;
     }
 
     /**
