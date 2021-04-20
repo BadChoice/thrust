@@ -18,4 +18,5 @@ return [
     'apply'                  => 'Aplicar',
     'activate'               => 'Activar',
     'deactivate'             => 'Desactivar',
+    'clearSorting'           => 'Borrar la ordenación'
 ];
