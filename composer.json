@@ -15,7 +15,7 @@
     ],
     "autoload": {
         "files" : [
-            "src/Helpers/helpers.php"
+            "src/Helpers/helpers2.php"
         ],
         "psr-4": {
             "BadChoice\\Thrust\\": "src"
