@@ -50,6 +50,9 @@ class Text extends Field
 
     protected function getFieldType()
     {
+        if ( strpos(strtolower($this->field), 'password') !== false ) {
+            return 'password';
+        }
         return 'text';
     }
 
