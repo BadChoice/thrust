@@ -3,7 +3,7 @@
         e.preventDefault();
         var selected = getSelectedRowsIds();
         if (selected.length == 0){
-            return alert("{{ __("thrust::messages.noRowsSelected") }}");
+            return alert("{!! __("thrust::messages.noRowsSelected") !!}");
         }
 
         $(this).attr('href', $(this).attr('href') + "&ids=" + selected);
@@ -16,7 +16,7 @@
         console.log(actionClass, selected, needsConfirmation, needsSelection);
 
         if (needsSelection == 1 && selected.length == 0){
-            return alert("{{ __("thrust::messages.noRowsSelected") }}");
+            return alert("{!! __("thrust::messages.noRowsSelected") !!}");
         }
 
         if (! needsConfirmation || confirm(confirmationMessage)){
