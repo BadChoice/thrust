@@ -7,7 +7,7 @@
     <ul class="dropdown-container filters" style="right:70px; margin-top:0px">
         <form id="filtersForm">
         @foreach (collect($filters) as $filter)
-            <li>{{ $filter->title() }}</li>
+            <li> {!! $filter->getIcon() !!} {!! $filter->getTitle() !!}</li>
             <li class="text-left">
                 {!! $filter->display($filtersApplied) !!}
             </li>
