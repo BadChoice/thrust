@@ -1,5 +1,5 @@
 @if($withLinks)
-    <a href="{{route('thrust.toggle', [$resourceName, $id, $field])}}">
+    <a class="thrust-toggle" href="{{route('thrust.toggle', [$resourceName, $id, $field])}}">
 @endif
 @if ($value)
     <i class="fa @if($asSwitch) fa-2x fa-toggle-on @else fa-check @endif green"></i>
