@@ -26,7 +26,8 @@
 
     </div>
 
-    <div id="all">
+
+    <div id="all" @if(request('search')) style="display: none;" @endif>
         {!! (new BadChoice\Thrust\Html\Index($resource))->show() !!}
     </div>
     <div id="results"></div>
