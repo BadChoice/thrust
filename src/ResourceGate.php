@@ -21,14 +21,16 @@ class ResourceGate
     public function can($resource, $ability, $object = null)
     {
         $valid    = true;
-        $resource = Thrust::make($resource);
-        if ($resource::$gate) {
-            $valid = auth()->user()->can($resource::$gate);
-        }
-        $policy = $this->policyFor($resource);
-        if ($policy) {
-            $valid = auth()->user()->can($ability, $object ?? $resource::$model) && $valid;
-        }
+        try{
+            $resource = Thrust::make($resource);
+            if ($resource::$gate) {
+                $valid = auth()->user()->can($resource::$gate);
+            }
+            $policy = $this->policyFor($resource);
+            if ($policy) {
+                $valid = auth()->user()->can($ability, $object ?? $resource::$model) && $valid;
+            }
+        } catch(\Exception $e) {}
         return $valid;
     }
 
