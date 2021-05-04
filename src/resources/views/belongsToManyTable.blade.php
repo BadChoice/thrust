@@ -37,7 +37,9 @@
                     <td>{!! $field->displayInIndex($row->pivot)  !!}</td>
                 @endif
             @endforeach
-            <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.belongsToMany.delete', [$resourceName, $object->id, $belongsToManyField->field, $row->pivot->id])}}"></a></td>
+            @if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'delete', $row->pivot))
+                <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.belongsToMany.delete', [$resourceName, $object->id, $belongsToManyField->field, $row->pivot->id])}}"></a></td>
+            @endif
         </tr>
     @endforeach
     </tbody>
