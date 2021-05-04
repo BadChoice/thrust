@@ -256,9 +256,8 @@ abstract class Resource
     public function query()
     {
         $query = $this->getBaseQuery();
-        if (request('search')) {
-            Search::apply($query, request('search'), static::$search);
-        }
+
+        $this->applySearch($query);
 
         $this->applySort($query);
 
@@ -266,6 +265,13 @@ abstract class Resource
             Filters::applyFromRequest($query, request('filters'));
         }
         return $query;
+    }
+
+    protected function applySearch(&$query)
+    {
+        if (request('search')) {
+            Search::apply($query, request('search'), static::$search);
+        }
     }
 
     private function applySort(&$query)

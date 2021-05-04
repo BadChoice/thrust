@@ -5,4 +5,8 @@
         },
         'minChars' : {{ config('thrust.minSearchChars') }}
     });
+
+    @if(request('search'))
+        $('#searcher').keyup();
+    @endif
 </script>

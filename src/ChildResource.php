@@ -30,6 +30,13 @@ abstract class ChildResource extends Resource
         return $query;
     }
 
+    protected function applySearch(&$query)
+    {
+        if($this->parentId) return;
+
+        parent::applySearch($query);
+    }
+
     public function parentForeignKey()
     {
         $relation = (new static::$model)->{static::$parentRelation}();
