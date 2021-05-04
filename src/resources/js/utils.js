@@ -72,6 +72,12 @@ function addListeners(){
         callAjax($(this).attr('href'));
     });
 
+    // ajax and toggle
+    $(".ajax-get").off('click').on('click', function(e){
+        e.preventDefault();
+        ajaxGet($(this).attr('href'));
+    });
+
     $(".showPopup").off('click').on('click',function(e) {
         e.preventDefault();
         showPopup($(this).attr('href'));
@@ -139,6 +145,27 @@ function callAjax(url, data){
     else            { data = $.extend({}, data, {_token : csrf_token}); }
 
     $.post(url, data, function(){})
+        .done(function(data) {
+            if(data) {
+                $(".loadingImage").hide();
+                showMessage("done");
+                reloadPopup();
+            }
+        })
+        .fail(function(result) {
+            console.log(result);
+            $(".loadingImage").hide();
+            showMessage(result.responseText);
+        });
+}
+
+function ajaxGet(url){
+
+    if(window.location.href.toString().search("public") != - 1){
+        url =  "/revo-retail/public" + url;
+    }
+
+    $.get(url, function(){})
         .done(function(data) {
             if(data) {
                 $(".loadingImage").hide();

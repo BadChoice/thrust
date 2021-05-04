@@ -34,6 +34,11 @@
 @endif
 
 <script>
+
+    $("{{config('thrust.popupId', '#popup')}} .thrust-toggle").each(function(index, el){
+        $(el).addClass('ajax-get');
+    });
+    
     addListeners();
     // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
     @if ($searchable && !$ajaxSearch)
