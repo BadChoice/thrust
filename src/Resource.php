@@ -256,22 +256,35 @@ abstract class Resource
     public function query()
     {
         $query = $this->getBaseQuery();
-        if (request('search')) {
-            Search::apply($query, request('search'), static::$search);
-        }
 
-        if (static::$sortable) {
-            Sort::apply($query, static::$sortField, 'ASC');
-        } elseif (request('sort') && $this->sortFieldIsValid(request('sort'))) {
-            Sort::apply($query, request('sort'), request('sort_order'));
-        } else {
-            Sort::apply($query, static::$defaultSort, static::$defaultOrder);
-        }
+        $this->applySearch($query);
+
+        $this->applySort($query);
 
         if (request('filters')) {
             Filters::applyFromRequest($query, request('filters'));
         }
         return $query;
+    }
+
+    protected function applySearch(&$query)
+    {
+        if (request('search')) {
+            Search::apply($query, request('search'), static::$search);
+        }
+    }
+
+    private function applySort(&$query)
+    {
+        if (request('sort') && $this->sortFieldIsValid(request('sort'))) {
+            return Sort::apply($query, request('sort'), request('sort_order'));
+        } 
+        
+        if (static::$sortable) {
+            return Sort::apply($query, static::$sortField, 'ASC');
+        }
+
+        return Sort::apply($query, static::$defaultSort, static::$defaultOrder);
     }
 
     public function rows()
@@ -320,5 +333,10 @@ abstract class Resource
             return 200;
         }
         return min(100, request('pagination') ?? $this->pagination);
+    }
+
+    public function sortableIsActive()
+    {
+        return static::$sortable && !request('sort');
     }
 }

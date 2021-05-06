@@ -23,7 +23,7 @@ class Index
     public function show()
     {
         return view('thrust::indexTable', [
-            'sortable'  => $this->resource::$sortable,
+            'sortable'  => $this->resource->sortableIsActive(),
             'resource'  => $this->resource,
             'fields'    => $this->getIndexFields(),
             'rows'      => $this->resource->rows()

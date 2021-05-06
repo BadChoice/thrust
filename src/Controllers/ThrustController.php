@@ -70,7 +70,11 @@ class ThrustController extends Controller
             request()->validate($resource->getValidationRules($id));
         }
 
-        $resource->update($id, request()->except('inline'));
+        try {
+            $resource->update($id, request()->except('inline'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
+        }
         return back()->withMessage(__('thrust::messages.updated'));
     }
 

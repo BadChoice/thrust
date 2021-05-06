@@ -8,8 +8,12 @@ class Activate extends Action
 {
     public $needsConfirmation = true;
     public $icon              = 'check';
-    public $title             = 'Activate';
     public $field             = 'active';
+
+    public function __construct()
+    {
+        $this->title = __('thrust::messages.activate');
+    }
 
     public function handle(Collection $objects)
     {
@@ -17,4 +21,5 @@ class Activate extends Action
             $this->field => true
         ]);
     }
+
 }

@@ -12,8 +12,10 @@ class ThrustBelongsToManyController extends Controller
         $resource           = Thrust::make($resourceName);
         $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
+        $explodedPivotClass  = explode('\\', $object->$relationship()->getPivotClass());
         return view('thrust::belongsToManyIndex', [
             'resourceName'            => $resourceName,
+            'pivotResourceName'       => end($explodedPivotClass),
             'object'                  => $object,
             'title'                   => $object->{$resource->nameField},
             'children'                => ($belongsToManyField->sortable ? $object->{$relationship}()->orderBy($belongsToManyField->sortField) : $object->{$relationship}())->paginate(100),

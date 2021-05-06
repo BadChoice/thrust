@@ -16,4 +16,7 @@ return [
     'updated'                => 'Actualitzat',
     'deleted'                => 'Eliminat',
     'apply'                  => 'Aplicar',
+    'activate'               => 'Activar',
+    'deactivate'             => 'Desactivar',
+    'clearSorting'           => 'Esborrar l\'ordenació',
 ];

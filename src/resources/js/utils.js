@@ -26,7 +26,23 @@ $(document).ready(function(){
     addListeners();
 });
 
+function addActionsDropdownListener() {
+    $(document).on('click.actionsDropdown', function onClickDropdownContainer(mouseClickEvent) {
+        let clickOutDropdownContainer = !$(mouseClickEvent.target).parents(".dropdown-container").length;
+        let clickOutActionButtons = !$(mouseClickEvent.target).parents(".dropdown.inline").length;
+        let dropdownContainer = $('.dropdown-container');
+        if (dropdownContainer.is(":visible") && clickOutDropdownContainer &&clickOutActionButtons) {
+            dropdownContainer.hide();
+            $(this).off('click.actionsDropdown');
+        }
+    });
+}
+
 function addListeners(){
+    $('.dropdown.inline').on('click', function () {
+        addActionsDropdownListener()
+    });
+
     $('[data-post]').off('click').on('click', function (e) {
         e.preventDefault();
         return $('<form action="' + $(this).attr('href') + `" method="POST"><input type="hidden" name="_token" value="${csrf_token}"></form>`).appendTo('body').submit();
@@ -54,6 +70,12 @@ function addListeners(){
     $(".ajax").off('click').on('click', function(e){
         e.preventDefault();
         callAjax($(this).attr('href'));
+    });
+
+    // ajax and toggle
+    $(".ajax-get").off('click').on('click', function(e){
+        e.preventDefault();
+        ajaxGet($(this).attr('href'));
     });
 
     $(".showPopup").off('click').on('click',function(e) {
@@ -123,6 +145,27 @@ function callAjax(url, data){
     else            { data = $.extend({}, data, {_token : csrf_token}); }
 
     $.post(url, data, function(){})
+        .done(function(data) {
+            if(data) {
+                $(".loadingImage").hide();
+                showMessage("done");
+                reloadPopup();
+            }
+        })
+        .fail(function(result) {
+            console.log(result);
+            $(".loadingImage").hide();
+            showMessage(result.responseText);
+        });
+}
+
+function ajaxGet(url){
+
+    if(window.location.href.toString().search("public") != - 1){
+        url =  "/revo-retail/public" + url;
+    }
+
+    $.get(url, function(){})
         .done(function(data) {
             if(data) {
                 $(".loadingImage").hide();
