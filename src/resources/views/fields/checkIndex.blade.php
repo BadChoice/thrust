@@ -4,7 +4,7 @@
 @if ($value)
     <i class="fa @if($asSwitch) fa-2x fa-toggle-on @else fa-check @endif green"></i>
 @else
-    <i class="fa @if($asSwitch) fa-2x fa-toggle-off o20 @else fa-times red @endif " style="color:red"></i>
+    <i class="fa @if($asSwitch) fa-2x fa-toggle-off @else fa-times red @endif " style="color:rgba(255,0,0,0.2)"></i>
 @endif
 @if($withLinks)
     </a>
