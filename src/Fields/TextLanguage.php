@@ -8,6 +8,8 @@ class TextLanguage extends Text
     protected $languages;
     public $showInIndex = false;
     public $showInEdit  = true;
+    public $isTextArea  = false;
+    public $textAreaRows = 5;
 
     public function languages($languages){
         $this->languages = $languages;
@@ -26,11 +28,20 @@ class TextLanguage extends Text
             'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
             'attributes'      => $this->getFieldAttributes(),
             'description'     => $this->getDescription(),
+            'isTextArea'      => $this->isTextArea,
+            'textAreaRows'    => $this->textAreaRows,
         ])->render();
     }
 
     public function getValue($object)
     {
         return Field::getValue($object);
+    }
+
+    public function isTextArea($rows = null)
+    {
+        $this->isTextArea = true;
+        $this->textAreaRows = $rows == null ? $this->textAreaRows : $rows;
+        return $this;
     }
 }
