@@ -9,6 +9,7 @@ class TextLanguage extends Text
     public $showInIndex = false;
     public $showInEdit  = true;
     public $isTextArea  = false;
+    public $textAreaRows = 5;
 
     public function languages($languages){
         $this->languages = $languages;
@@ -28,6 +29,7 @@ class TextLanguage extends Text
             'attributes'      => $this->getFieldAttributes(),
             'description'     => $this->getDescription(),
             'isTextArea'      => $this->isTextArea,
+            'textAreaRows'    => $this->textAreaRows,
         ])->render();
     }
 
@@ -36,9 +38,10 @@ class TextLanguage extends Text
         return Field::getValue($object);
     }
 
-    public function isTextArea()
+    public function isTextArea($rows = null)
     {
         $this->isTextArea = true;
+        $this->textAreaRows = $rows == null ? $this->textAreaRows : $rows;
         return $this;
     }
 }

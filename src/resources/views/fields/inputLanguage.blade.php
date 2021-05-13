@@ -9,7 +9,7 @@
     @foreach ($languages as $language)
         @if( $isTextArea )
             <textarea id="{{$id}}{{$language}}" name="{{$field}}[{{$language}}]" placeholder="{{$title}}" {{$attributes}} {!! $validationRules !!} @if($inline)
-            style="width:auto;" @endif class="hidden languageField{{$id}}">{{$value[$language] ?? ""}}</textarea>
+            style="width:auto;" @endif class="hidden languageField{{$id}}" rows="{{$textAreaRows}}">{{$value[$language] ?? ""}}</textarea>
         @else
             <input type={{$type}} id="{{$id}}{{$language}}" value="{{$value[$language] ?? ""}}" name="{{$field}}[{{$language}}]" placeholder="{{$title}}"
                    {{$attributes}} {!! $validationRules !!} @if($inline) style="width:auto;" @endif class="hidden languageField{{$id}}">
