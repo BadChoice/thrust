@@ -52,7 +52,7 @@ abstract class Resource
 
 
     /**
-     * @var string Explain
+     * @var string when resource is update will show a confirmation alert with the message specified
      */
     public $confirmationMessage = '';
 
