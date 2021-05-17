@@ -72,7 +72,8 @@ class Edit
             'object'        => $object,
             'hideVisibility'    => $this->getPanelHideVisibilityJson(),
             'showVisibility'    => $this->getPanelShowVisibilityJson(),
-            'fullPage'      => $fullPage
+            'fullPage'      => $fullPage,
+            'confirmationMessage' => $this->resource->getConfirmation()
         ])->render();
     }
 

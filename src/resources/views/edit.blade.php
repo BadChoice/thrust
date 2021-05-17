@@ -22,9 +22,8 @@
         @endforeach
     </div>
 
-
     @if (app(BadChoice\Thrust\ResourceGate::class)->can($resourceName, 'update', $object))
-        @include('thrust::components.saveButton')
+        @include('thrust::components.saveButton', ["confirmationMessage" => $confirmationMessage])
 
         @if (isset($object->id) )
             <a class="secondary button hidden" id="thrust-save-and-continue" onclick="submitAjaxForm('thrust-form-{{$object->id}}')">{{ __("thrust::messages.saveAndContinueEditing") }}</a>

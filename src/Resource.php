@@ -52,6 +52,12 @@ abstract class Resource
 
 
     /**
+     * @var string Explain
+     */
+    public $confirmationMessage = '';
+
+
+    /**
      * @var bool define if the resource is sortable and can be arranged in the index view
      */
     public static $sortable     = false;
@@ -338,5 +344,14 @@ abstract class Resource
     public function sortableIsActive()
     {
         return static::$sortable && !request('sort');
+    }
+
+    public function getConfirmation()
+    {
+        $translationPrefix = config('thrust.translationsPrefix');
+        if ( $this->confirmationMessage && (strpos(__($translationPrefix.$this->confirmationMessage), $translationPrefix) === false) ) {
+            return __($translationPrefix.$this->confirmationMessage);
+        }
+        return $this->confirmationMessage;
     }
 }
