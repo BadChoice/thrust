@@ -8,6 +8,7 @@ class MultipleSelect extends Select
     protected $allowNull  = false;
     protected $searchable = false;
     protected $isMultiple = true;
+    protected $clearable  = false;
 
     public function displayInIndex($object)
     {
@@ -26,6 +27,13 @@ class MultipleSelect extends Select
             'value'       => $this->getValue($object),
             'options'     => $this->getOptions(),
             'description' => $this->getDescription(),
+            'clearable'   => $this->clearable,
         ])->render();
+    }
+
+    public function clearable($clearable = true)
+    {
+        $this->clearable = $clearable;
+        return $this;
     }
 }

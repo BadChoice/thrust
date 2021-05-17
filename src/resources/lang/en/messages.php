@@ -19,4 +19,5 @@ return [
     'activate'               => 'Activate',
     'deactivate'             => 'Deactivate',
     'clearSorting'           => 'Clear sorting',
+    'clearSelection'         => 'Clear selection',
 ];
