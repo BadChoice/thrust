@@ -18,4 +18,6 @@ return [
     'apply'                  => 'Appliquer',
     'activate'               => 'Activer',
     'deactivate'             => 'Désactiver',
+    'clearSorting'           => 'Effacer le tri',
+    'clearSelection'         => 'Effacer la sélection',
 ];

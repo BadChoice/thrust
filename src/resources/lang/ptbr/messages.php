@@ -18,4 +18,6 @@ return [
     'apply'                  => 'Aplicar',
     'activate'               => 'Activar',
     'deactivate'             => 'Desactivar',
+    'clearSorting'           => 'Limpar classificação',
+    'clearSelection'         => 'Limpar seleção',
 ];
