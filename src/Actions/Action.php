@@ -18,6 +18,8 @@ abstract class Action
 
     public $resource;
 
+    protected $selectedTargets;
+
     abstract public function handle(Collection $objects);
 
     /**
@@ -43,5 +45,11 @@ abstract class Action
     public function getAllObjectsQuery($objects)
     {
         return $objects->first()->query()->whereIn('id', $objects->pluck('id')->toArray());
+    }
+
+    public function setSelectedTargets($targets)
+    {
+        $this->selectedTargets = $targets;
+        return $this;
     }
 }

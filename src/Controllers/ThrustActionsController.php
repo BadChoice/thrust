@@ -26,9 +26,12 @@ class ThrustActionsController extends Controller
     public function create($resourceName)
     {
         $action      = $this->findActionForResource($resourceName, request('action'));
+
         if (! $action) {
             abort(404);
         }
+        
+        $action->setSelectedTargets(collect(explode(',', request('ids'))));
 
         return view('thrust::actions.create', [
             'action'        => $action,
