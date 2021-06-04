@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceFilters\Sort;
 use BadChoice\Thrust\ResourceFilters\Search;
@@ -54,7 +55,7 @@ abstract class Resource
     /**
      * @var string when resource is update will show a confirmation alert with the message specified
      */
-    public $confirmationMessage = '';
+    public $updateConfirmationMessage = '';
 
 
     /**
@@ -346,12 +347,8 @@ abstract class Resource
         return static::$sortable && !request('sort');
     }
 
-    public function getConfirmation()
+    public function getUpdateConfirmationMessage()
     {
-        $translationPrefix = config('thrust.translationsPrefix');
-        if ( $this->confirmationMessage && (strpos(__($translationPrefix.$this->confirmationMessage), $translationPrefix) === false) ) {
-            return __($translationPrefix.$this->confirmationMessage);
-        }
-        return $this->confirmationMessage;
+        return Translation::useTranslationPrefix($this->updateConfirmationMessage, $this->updateConfirmationMessage);
     }
 }

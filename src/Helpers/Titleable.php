@@ -19,7 +19,7 @@ trait Titleable {
 	}
 
     private function translatedTitle() {
-        return ($this->title && (strpos(__($this->getTranslationPrefix().$this->title), $this->getTranslationPrefix()) === false)) ? __($this->getTranslationPrefix().$this->title) : null;
+        return Translation::useTranslationPrefix($this->title);
 	}
 
 	private function rawTitle() {
@@ -28,7 +28,7 @@ trait Titleable {
 
     private function translatedClassNameTitle() {
         $ucClassName = lcfirst($this->sanitizedClassName());
-        return strpos(__($this->getTranslationPrefix().$ucClassName), $this->getTranslationPrefix()) === false ? __($this->getTranslationPrefix().$ucClassName) : null;
+        return Translation::useTranslationPrefix($ucClassName);
 	}
 
     private function niceClassNameTitle() {
