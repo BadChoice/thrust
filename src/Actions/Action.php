@@ -14,7 +14,7 @@ abstract class Action
     use Iconable;
 
     public $needsConfirmation   = true;
-    public $actionConfirmationMessage = 'Are you sures';
+    public $actionConfirmationMessage = 'Are you sure';
     public $main                = false;
     public $needsSelection      = true;
 
