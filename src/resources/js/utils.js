@@ -51,7 +51,7 @@ function addListeners(){
     $('[data-delete]').off('click').on('click', function (e) {
         console.log('enter data-delete');
         let dataDelete = $(this).attr('data-delete');
-        let confirmDeleteMessage = $(this).attr('confirm-message') ?? confirmDelete;
+        let confirmDeleteMessage = $(this).attr('confirm-message');
         if (dataDelete.indexOf("confirm") !== -1 && ! confirm(confirmDeleteMessage)) {
             return e.preventDefault();
         }
