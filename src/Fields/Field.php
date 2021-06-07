@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\Html\Validation;
 use BadChoice\Thrust\Fields\Traits\Visibility;
@@ -24,6 +25,8 @@ abstract class Field
 
     public $withoutIndexHeader = false;
     public $rowClass = '';
+
+    public $deleteConfirmationMessage = 'Are you sure';
 
     abstract public function displayInIndex($object);
 
@@ -162,5 +165,10 @@ abstract class Field
     public function getSortableHeaderClass(){
         if (Str::contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
         return 'sortableHeader';
+    }
+
+    public function getDeleteConfirmationMessage()
+    {
+        return Translation::useTranslationPrefix(Str::camel($this->deleteConfirmationMessage), $this->deleteConfirmationMessage ? $this->deleteConfirmationMessage.'?' : $this->deleteConfirmationMessage);
     }
 }

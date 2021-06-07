@@ -49,8 +49,10 @@ function addListeners(){
     });
 
     $('[data-delete]').off('click').on('click', function (e) {
+        console.log('enter data-delete');
         let dataDelete = $(this).attr('data-delete');
-        if (dataDelete.indexOf("confirm") !== -1 && ! confirm(confirmDelete)) {
+        let confirmDeleteMessage = $(this).attr('confirm-message') ?? confirmDelete;
+        if (dataDelete.indexOf("confirm") !== -1 && ! confirm(confirmDeleteMessage)) {
             return e.preventDefault();
         }
         if (dataDelete.indexOf("ajax") !== -1) {
@@ -61,7 +63,7 @@ function addListeners(){
             e.preventDefault();
             return $('<form action="' + $(this).attr('href') + '" method="POST"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' + csrf_token + '"></form>').appendTo('body').submit();
         }
-        if (! confirm(confirmDelete)) {
+        if (! confirm(confirmDeleteMessage)) {
             e.preventDefault();
         }
     });

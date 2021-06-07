@@ -14,7 +14,10 @@ class Delete extends Field {
     public function displayInIndex($object)
     {
         $link = route('thrust.delete', [Thrust::resourceNameFromModel($object), $object->id]);
-        return "<a class='delete-resource thrust-delete' data-delete='confirm resource' href='{$link}'></a>";
+
+        return "<a class='delete-resource thrust-delete' data-delete='resource" .
+            ( $this->deleteConfirmationMessage ? " confirm' confirm-message='{$this->getDeleteConfirmationMessage()}'" : "'") .
+            " href='{$link}'></a>";
     }
 
     public function displayInEdit($object, $inline = false){ }

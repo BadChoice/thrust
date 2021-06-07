@@ -4,7 +4,9 @@ namespace BadChoice\Thrust\Actions;
 
 use BadChoice\Thrust\Helpers\Iconable;
 use BadChoice\Thrust\Helpers\Titleable;
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 abstract class Action
 {
@@ -12,7 +14,7 @@ abstract class Action
     use Iconable;
 
     public $needsConfirmation   = true;
-    public $confirmationMessage = 'Are you sure?';
+    public $actionConfirmationMessage = 'Are you sures';
     public $main                = false;
     public $needsSelection      = true;
 
@@ -51,5 +53,10 @@ abstract class Action
     {
         $this->selectedTargets = $targets;
         return $this;
+    }
+
+    public function getActionConfirmationMessage()
+    {
+        return Translation::useTranslationPrefix(Str::camel($this->actionConfirmationMessage), $this->actionConfirmationMessage ? $this->actionConfirmationMessage.'?' : $this->actionConfirmationMessage);
     }
 }

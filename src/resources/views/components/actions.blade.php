@@ -12,7 +12,7 @@ $actions = collect($resource->actions());
             @foreach($actions->where('main', false) as $action)
                 <li class="text-left">
                     @if (count($action->fields()) == 0)
-                        <a class='pointer' onclick='runAction("{{ $action->getClassForJs() }}", "{{$action->needsConfirmation}}","{{$action->needsSelection}}", "{{$action->confirmationMessage}}")'>
+                        <a class='pointer' onclick='runAction("{{ $action->getClassForJs() }}", "{{$action->needsConfirmation}}", "{{$action->needsSelection}}", "{{$action->getActionConfirmationMessage()}}")'>
                             {!! $action->getIcon() !!} {!! $action->getTitle() !!}
                         </a>
                     @else
@@ -26,6 +26,6 @@ $actions = collect($resource->actions());
     @endif
 
     @foreach( $actions->where('main', true) as $action)
-        <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", "{{$action->needsConfirmation}}","{{$action->needsSelection}}", "{{$action->confirmationMessage}}")'> {!! icon($action->icon) !!} </button>
+        <button class="secondary" onclick='runAction("{{ $action->getClassForJs() }}", "{{$action->needsConfirmation}}", "{{$action->needsSelection}}", "{{$action->getActionConfirmationMessage()}}")'> {!! icon($action->icon) !!} </button>
     @endforeach
 @endif
