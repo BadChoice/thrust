@@ -70,9 +70,10 @@ class Edit
             'resourceName'  => $this->resourceName ? : $this->resource->name(),
             'fields'        => $this->getEditFields(),
             'object'        => $object,
-            'hideVisibility'    => $this->getPanelHideVisibilityJson(),
-            'showVisibility'    => $this->getPanelShowVisibilityJson(),
-            'fullPage'      => $fullPage
+            'hideVisibility'      => $this->getPanelHideVisibilityJson(),
+            'showVisibility'      => $this->getPanelShowVisibilityJson(),
+            'fullPage'            => $fullPage,
+            'updateConfirmationMessage' => $this->resource->getUpdateConfirmationMessage()
         ])->render();
     }
 

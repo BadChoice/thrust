@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceFilters\Sort;
 use BadChoice\Thrust\ResourceFilters\Search;
@@ -49,6 +50,12 @@ abstract class Resource
      * It goes along with the default Laravel resource Policy if any
      */
     public static $gate;
+
+
+    /**
+     * @var string when resource is update will show a confirmation alert with the message specified
+     */
+    public $updateConfirmationMessage = '';
 
 
     /**
@@ -338,5 +345,10 @@ abstract class Resource
     public function sortableIsActive()
     {
         return static::$sortable && !request('sort');
+    }
+
+    public function getUpdateConfirmationMessage()
+    {
+        return Translation::useTranslationPrefix($this->updateConfirmationMessage, $this->updateConfirmationMessage);
     }
 }
