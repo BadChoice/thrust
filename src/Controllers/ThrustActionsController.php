@@ -26,9 +26,12 @@ class ThrustActionsController extends Controller
     public function create($resourceName)
     {
         $action      = $this->findActionForResource($resourceName, request('action'));
+
         if (! $action) {
             abort(404);
         }
+        
+        $action->setSelectedTargets(collect(explode(',', request('ids'))));
 
         return view('thrust::actions.create', [
             'action'        => $action,
@@ -41,7 +44,14 @@ class ThrustActionsController extends Controller
     {
         $action     = $this->findActionForResource($resourceName, request('action'));
         $ids        = is_string(request('ids')) ? explode(',', request('ids')) : request('ids');
-        $response   = $action->handle($action->resource->find($ids));
+
+        try {
+            $response   = $action->handle(collect($action->resource->find($ids)));
+        } catch (\Exception $e) {
+            return request()->ajax() ?
+                response()->json(['ok' => false, 'message' => $e->getMessage()]) :
+                back()->withErrors(['msg' => $e->getMessage()]);
+        }
 
         if (request()->ajax()) {
             return response()->json(['ok' => true, 'message' => $response ?? 'done']);

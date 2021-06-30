@@ -8,4 +8,5 @@ return [
     'indexLayout'                    => 'layout.app',
     'popupId'                        => '#popup',
     'recursiveResourcesSearch'       => false,
+    'minSearchChars'                 => 3,
 ];

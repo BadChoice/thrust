@@ -5,6 +5,7 @@ namespace BadChoice\Thrust\Fields;
 use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\ResourceManager;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as InterventionImage;
 
 class Image extends File implements Prunable
@@ -79,7 +80,7 @@ class Image extends File implements Prunable
             $constraint->upsize();
         });
 
-        $filename   = str_random(10) . '.png';
+        $filename   = Str::random(10) . '.png';
         Storage::put($this->getPath() . $filename, (string)$image->encode('png'));
         Storage::put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
             $constraint->aspectRatio();

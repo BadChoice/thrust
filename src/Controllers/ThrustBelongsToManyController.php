@@ -2,8 +2,8 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Routing\Controller;
+use BadChoice\Thrust\Facades\Thrust;
 
 class ThrustBelongsToManyController extends Controller
 {
@@ -12,11 +12,13 @@ class ThrustBelongsToManyController extends Controller
         $resource           = Thrust::make($resourceName);
         $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
+        $explodedPivotClass  = explode('\\', $object->$relationship()->getPivotClass());
         return view('thrust::belongsToManyIndex', [
             'resourceName'            => $resourceName,
+            'pivotResourceName'       => end($explodedPivotClass),
             'object'                  => $object,
             'title'                   => $object->{$resource->nameField},
-            'children'                => $object->{$relationship}()->paginate(100),
+            'children'                => ($belongsToManyField->sortable ? $object->{$relationship}()->orderBy($belongsToManyField->sortField) : $object->{$relationship}())->paginate(100),
             'belongsToManyField'      => $belongsToManyField,
             'relationshipDisplayName' => $belongsToManyField->relationDisplayField,
             'searchable'              => $belongsToManyField->searchable,
@@ -34,17 +36,15 @@ class ThrustBelongsToManyController extends Controller
         if (! $belongsToManyField->allowDuplicates && $object->{$relationship}->contains(request('id'))){
             return back()->withMessage('already exists and duplicates not allowed');
         }
-        $object->{$relationship}()->attach(request('id'), request()->except(['id', '_token']));
+        $object->{$relationship}()->attach(request('id'), $belongsToManyField->mapRequest(request()->except(['id', '_token'])));
         return back()->withMessage('added');
     }
 
-    public function delete($resourceName, $id, $relationship, $detachId)
+    public function delete($resourceName, $id, $relationship, $pivotId)
     {
         $resource = Thrust::make($resourceName);
         $object   = $resource->find($id);
-        //$object->{$relationship}()->detach($detachId);
-        //dd($object->{$relationship}()->wherePivot('id', $detachId)->first());
-        $relationObject = $object->{$relationship}()->wherePivot('id', $detachId)->first();
+        $relationObject = $object->{$relationship}()->wherePivot('id', $pivotId)->first();
         $relationObject->pivot->delete();
         return back()->withMessage('deleted');
     }

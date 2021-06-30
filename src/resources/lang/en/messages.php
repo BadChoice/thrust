@@ -16,4 +16,8 @@ return [
     'updated'                => 'Updated',
     'deleted'                => 'Deleted',
     'apply'                  => 'Apply',
+    'activate'               => 'Activate',
+    'deactivate'             => 'Deactivate',
+    'clearSorting'           => 'Clear sorting',
+    'clearSelection'         => 'Clear selection',
 ];

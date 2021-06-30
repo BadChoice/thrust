@@ -4,9 +4,14 @@
         <span class="thrust-index-title title">
             @if (isset($parent_id) )
                 @php $parent = $resource->parent($parent_id) @endphp
-                <a href="{{route('thrust.index', [app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent) ]) }}">{{ $parent->name }} </a> /
+                @if($isChild)
+                    <a href="{{ route('thrust.hasMany', $hasManyBackUrlParams) }}"> {{ \BadChoice\Thrust\Facades\Thrust::make(app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent))->parent($parent)->name }} </a>
+                @else
+                    <a href="{{ route('thrust.index', [app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent) ]) }}"> {{ trans_choice(config('thrust.translationsPrefix') . Illuminate\Support\Str::singular(app(\BadChoice\Thrust\ResourceManager::class)->resourceNameFromModel($parent)), 2) }} </a>
+                @endif
+                 / {{ $parent->name }} -
             @endif
-            {{ trans_choice(config('thrust.translationsPrefix') . str_singular($resourceName), 2) }}
+            {{ trans_choice(config('thrust.translationsPrefix') . Illuminate\Support\Str::singular($resourceName), 2) }}
             ({{ $resource->rows()->total() }})
         </span>
         <br><br>
@@ -21,7 +26,8 @@
 
     </div>
 
-    <div id="all">
+
+    <div id="all" @if(request('search')) style="display: none;" @endif>
         {!! (new BadChoice\Thrust\Html\Index($resource))->show() !!}
     </div>
     <div id="results"></div>
