@@ -12,24 +12,33 @@
 </div>
 <div id="popup-results"></div>
 
-<div class="mt4">
-    <form id='belongsToManyForm' action="{{route('thrust.belongsToMany.store', [$resourceName, $object->id, $belongsToManyField->field]) }}" method="POST">
-        {{ csrf_field() }}
-        <select id="id" name="id" @if($belongsToManyField->searchable) class="searchable" @endif >
-            @if (!$ajaxSearch)
-                @foreach($belongsToManyField->getOptions($object) as $possible)
-                    <option value='{{$possible->id}}'> {{ $possible->name }} </option>
-                @endforeach
-            @endif
-        </select>
-        @foreach($belongsToManyField->pivotFields as $field)
-            {!! $field->displayInEdit(null, true)  !!}
-        @endforeach
-        <button class="secondary">{{__('thrust::messages.add') }} </button>
-    </form>
-</div>
+@if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'edit', $object))
+    <div class="mt4">
+        <form id='belongsToManyForm' action="{{route('thrust.belongsToMany.store', [$resourceName, $object->id, $belongsToManyField->field]) }}" method="POST">
+            {{ csrf_field() }}
+            <select id="id" name="id" @if($belongsToManyField->searchable) class="searchable" @endif >
+                @if (!$ajaxSearch)
+                    @foreach($belongsToManyField->getOptions($object) as $possible)
+                        <option value='{{$possible->id}}'> {{ $possible->name }} </option>
+                    @endforeach
+                @endif
+            </select>
+            @foreach($belongsToManyField->pivotFields as $field)
+                @if(!$field->shouldHide($object, 'index'))
+                    {!! $field->displayInEdit(null, true)  !!}
+                @endif
+            @endforeach
+            <button class="secondary">{{__('thrust::messages.add') }} </button>
+        </form>
+    </div>
+@endif
 
 <script>
+
+    $("{{config('thrust.popupId', '#popup')}} .thrust-toggle").each(function(index, el){
+        $(el).addClass('ajax-get');
+    });
+    
     addListeners();
     // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
     @if ($searchable && !$ajaxSearch)

@@ -2,8 +2,9 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\ResourceFilters\Search;
+use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\ResourceFilters\Search;
 
 class BelongsToMany extends Relationship
 {
@@ -12,11 +13,15 @@ class BelongsToMany extends Relationship
     public $indexTextCallback = null;
     public $pivotFields       = [];
     public $objectFields      = [];
+    public $withCount      = false;
     public $icon              = null;
     public $hideName;
 
     public $sortable     = false;
     public $sortField    = 'order';
+
+    public $relatedSortable   = false;
+    public $relatedSortField  = 'order';
 
     public function displayInIndex($object)
     {
@@ -30,10 +35,27 @@ class BelongsToMany extends Relationship
         ]);
     }
 
+    public function displayInEdit($object, $inline = false)
+    {
+        $this->withLink = false;
+        return view('thrust::fields.info', [
+            'title'  => $this->getTitle(),
+            'value'  => $this->displayInIndex($object),
+            'inline' => $inline,
+        ]);
+    }
+
     public function sortable($sortable = true, $sortField = 'order')
     {
         $this->sortable  = $sortable;
-        $this->sortField = 'order';
+        $this->sortField = $sortField;
+        return $this;
+    }
+
+    public function relatedSortable($relatedSortable = true, $relatedSortField = 'order')
+    {
+        $this->relatedSortable  = $relatedSortable;
+        $this->relatedSortField = $relatedSortField;
         return $this;
     }
 
@@ -77,7 +99,7 @@ class BelongsToMany extends Relationship
     public function getTitle($forHeader = false)
     {
         if ($forHeader && $this->withoutIndexHeader) return "";
-        return $this->title ?? trans_choice(config('thrust.translationsPrefix') . str_singular($this->field), 2);
+        return $this->title ?? trans_choice(config('thrust.translationsPrefix') . Str::singular($this->field), 2);
     }
 
     public function getIndexText($object)
@@ -88,7 +110,10 @@ class BelongsToMany extends Relationship
         if ($this->icon) {
             return "";
         }
-        return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
+        if ($this->withCount) {
+            return $this->getRelation($object)->count();
+        }
+        return ($this->sortable ? $object->{$this->field}()->orderBy($this->sortField)->get() : $object->{$this->field})->pluck($this->relationDisplayField)->implode(', ');
     }
 
     public function getOptions($object)
@@ -102,24 +127,29 @@ class BelongsToMany extends Relationship
     public function relatedQuery($object, $allowDuplicates = true)
     {
         $query = parent::relatedQuery($object, $allowDuplicates);
-        if ($this->sortable) {
-            return $query->orderBy($this->sortField);
+        if ($this->relatedSortable) {
+            return $query->orderBy($this->relatedSortField);
         }
         return $query;
     }
 
     public function search($object, $search)
     {
-        return Search::apply($this->getRelation($object), $search, [$this->relationDisplayField]);
+        return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
 
-    public function displayInEdit($object, $inline = false)
+    public function onlyCount(){
+        $this->withCount = true;
+        return $this;
+    }
+
+    public function mapRequest($data)
     {
-        $this->withLink = false;
-        return view('thrust::fields.info', [
-            'title'  => $this->getTitle(),
-            'value'  => $this->displayInIndex($object),
-            'inline' => $inline,
-        ]);
+        collect($this->pivotFields)->filter(function ($field) use ($data) {
+            return isset($data[$field->field]);
+        })->each(function ($field) use (&$data) {
+            $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
+        });
+        return $data;
     }
 }

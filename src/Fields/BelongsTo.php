@@ -67,7 +67,7 @@ class BelongsTo extends Relationship
         ]);
     }
 
-    private function getValueId($object){
+    public function getValueId($object){
         return $object->{$this->field}->{$this->getOwnerKey($object)} ?? null;
     }
 }

@@ -15,7 +15,7 @@ class ThrustServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         $this->publishes([
-            __DIR__.'/../config/thrust.php' => config_path('thrust.php')
+            __DIR__.'/config/thrust.php' => config_path('thrust.php')
         ], 'config');
     }
 

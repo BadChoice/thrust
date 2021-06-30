@@ -2,8 +2,9 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\Fields\Traits\Visibility;
+use Illuminate\Support\Str;
 use BadChoice\Thrust\Html\Validation;
+use BadChoice\Thrust\Fields\Traits\Visibility;
 
 abstract class Field
 {
@@ -70,7 +71,11 @@ abstract class Field
     public function getTitle($forHeader = false)
     {
         if ($forHeader && $this->withoutIndexHeader) return "";
-        return $this->title ?? trans_choice(config('thrust.translationsPrefix').$this->field, 1);
+        $translationKey = $this->field;
+        if (Str::contains($this->field, '[')){
+            $translationKey = str_replace("]","",str_replace("[",".", $this->field));
+        }
+        return $this->title ?? trans_choice(config('thrust.translationsPrefix').$translationKey, 1);
     }
 
     public function getDescription()
@@ -83,7 +88,11 @@ abstract class Field
         if (! $object) {
             return null;
         }
-        if (str_contains($this->field, '.')) {
+        if (Str::contains($this->field, '.')) {
+            return data_get($object, $this->field);
+        }
+        if (Str::contains($this->field, '[')){
+            $this->field = str_replace("]","",str_replace("[",".", $this->field));
             return data_get($object, $this->field);
         }
         return $object->{$this->field};
@@ -151,7 +160,7 @@ abstract class Field
     }
 
     public function getSortableHeaderClass(){
-        if (str_contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
+        if (Str::contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
         return 'sortableHeader';
     }
 }

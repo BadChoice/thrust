@@ -2,16 +2,18 @@
 
 namespace BadChoice\Thrust;
 
-use BadChoice\Thrust\Actions\Delete;
-use BadChoice\Thrust\Actions\MainAction;
-use BadChoice\Thrust\Contracts\FormatsNewObject;
-use BadChoice\Thrust\Contracts\Prunable;
-use BadChoice\Thrust\Fields\Edit;
-use BadChoice\Thrust\Fields\Panel;
-use BadChoice\Thrust\Fields\Relationship;
-use BadChoice\Thrust\ResourceFilters\Filters;
-use BadChoice\Thrust\ResourceFilters\Search;
+use BadChoice\Thrust\Helpers\Translation;
+use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceFilters\Sort;
+use BadChoice\Thrust\ResourceFilters\Search;
+use BadChoice\Thrust\ResourceFilters\Filters;
+use BadChoice\Thrust\Fields\Relationship;
+use BadChoice\Thrust\Fields\Panel;
+use BadChoice\Thrust\Fields\Edit;
+use BadChoice\Thrust\Contracts\Prunable;
+use BadChoice\Thrust\Contracts\FormatsNewObject;
+use BadChoice\Thrust\Actions\MainAction;
+use BadChoice\Thrust\Actions\Delete;
 
 abstract class Resource
 {
@@ -48,6 +50,12 @@ abstract class Resource
      * It goes along with the default Laravel resource Policy if any
      */
     public static $gate;
+
+
+    /**
+     * @var string when resource is update will show a confirmation alert with the message specified
+     */
+    public $updateConfirmationMessage = '';
 
 
     /**
@@ -190,7 +198,7 @@ abstract class Resource
         })->toArray();
     }
 
-    private function mapRequest($data)
+    public function mapRequest($data)
     {
         $this->fieldsFlattened()->filter(function ($field) use ($data) {
             return isset($data[$field->field]);
@@ -255,22 +263,35 @@ abstract class Resource
     public function query()
     {
         $query = $this->getBaseQuery();
-        if (request('search')) {
-            Search::apply($query, request('search'), static::$search);
-        }
 
-        if (static::$sortable) {
-            Sort::apply($query, static::$sortField, 'ASC');
-        } elseif (request('sort') && $this->sortFieldIsValid(request('sort'))) {
-            Sort::apply($query, request('sort'), request('sort_order'));
-        } else {
-            Sort::apply($query, static::$defaultSort, static::$defaultOrder);
-        }
+        $this->applySearch($query);
+
+        $this->applySort($query);
 
         if (request('filters')) {
             Filters::applyFromRequest($query, request('filters'));
         }
         return $query;
+    }
+
+    protected function applySearch(&$query)
+    {
+        if (request('search')) {
+            Search::apply($query, request('search'), static::$search);
+        }
+    }
+
+    private function applySort(&$query)
+    {
+        if (request('sort') && $this->sortFieldIsValid(request('sort'))) {
+            return Sort::apply($query, request('sort'), request('sort_order'));
+        } 
+        
+        if (static::$sortable) {
+            return Sort::apply($query, static::$sortField, 'ASC');
+        }
+
+        return Sort::apply($query, static::$defaultSort, static::$defaultOrder);
     }
 
     public function rows()
@@ -283,8 +304,8 @@ abstract class Resource
 
     public function getDescription()
     {
-        $description = trans_choice(config('thrust.translationsDescriptionsPrefix') . str_singular($this->name()), 1);
-        if (! str_contains($description, config('thrust.translationsDescriptionsPrefix'))) {
+        $description = trans_choice(config('thrust.translationsDescriptionsPrefix') . Str::singular($this->name()), 1);
+        if (! Str::contains($description, config('thrust.translationsDescriptionsPrefix'))) {
             return $description;
         }
         return '';
@@ -310,11 +331,24 @@ abstract class Resource
 
     private function fetchRows()
     {
-        if (request('search')) {
-            $this->alreadyFetchedRows = $this->query()->paginate(200);
-        }else {
-            $this->alreadyFetchedRows = $this->query()->paginate($this->pagination);
-        }
+        $this->alreadyFetchedRows = $this->query()->paginate($this->getPagination());
         return $this->alreadyFetchedRows;
+    }
+
+    protected function getPagination(){
+        if (request('search')) {
+            return 200;
+        }
+        return min(100, request('pagination') ?? $this->pagination);
+    }
+
+    public function sortableIsActive()
+    {
+        return static::$sortable && !request('sort');
+    }
+
+    public function getUpdateConfirmationMessage()
+    {
+        return Translation::useTranslationPrefix($this->updateConfirmationMessage, $this->updateConfirmationMessage);
     }
 }

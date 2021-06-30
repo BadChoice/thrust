@@ -1,6 +1,7 @@
 @component('thrust::components.formField', ["field" => $field, "title" => $title, "description" => $description ?? null, "inline" => $inline])
     <input type="hidden" name="{{$field}}" value="">
-    <template id="template-{{$field}}">
+    <script type="template/html" id="template-{{$field}}">
+{{--    <template id="template-{{$field}}">--}}
         <div id="keyValue-template" class="mb2 keyValueField-{{$field}}" style="height:30px">
             <div class="inline" id="keyValueFields-template">
                 <div class="inline" id="key">
@@ -14,8 +15,8 @@
                 <a class="button secondary" onclick="keyValueRemove(this)">@icon(times)</a>
             </span>
         </div>
-    </template>
-
+{{--    </template>--}}
+    </script>
     <div id="keyValue-{{$field}}">
         @if (! empty($value))
             @foreach($value as $v)

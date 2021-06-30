@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Metrics;
 
+use BadChoice\Thrust\Helpers\Titleable;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Cache;
 
 abstract class Metric
 {
+    use Titleable;
+
     protected $dateField = 'created_at';
     protected $result;
     protected $cacheFor = 0;
@@ -106,10 +109,6 @@ abstract class Metric
     protected function getCacheKey()
     {
         return $this->uriKey() . '-' . $this->getRangeKey();
-    }
-
-    public function getTitle(){
-        return ucwords(strtolower(str_replace('-', ' ', $this->uriKey())));
     }
 
     public function getSize(){

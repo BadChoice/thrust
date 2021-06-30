@@ -7,6 +7,7 @@ class Text extends Field
     protected $displayInIndexCallback = null;
     protected $editableHint           = false;
     protected $attributes             = '';
+    protected $shouldAllowScripts     = false;
 
     public function editableHint($editableHint = true)
     {
@@ -40,7 +41,7 @@ class Text extends Field
             'title'           => $this->getTitle(),
             'type'            => $this->getFieldType(),
             'field'           => $this->field,
-            'value'           => $this->getValue($object),
+            'value'           => htmlspecialchars_decode($this->getValue($object)),
             'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
             'attributes'      => $this->getFieldAttributes(),
             'description'     => $this->getDescription(),
@@ -68,6 +69,17 @@ class Text extends Field
         if (! $object) {
             return null;
         }
-        return strip_tags(parent::getValue($object));
+        return htmlspecialchars(parent::getValue($object));
+    }
+
+    public function allowScripts()
+    {
+        $this->shouldAllowScripts = true;
+        return $this;
+    }
+
+    public function mapAttributeFromRequest($value)
+    {
+        return parent::mapAttributeFromRequest(!$this->shouldAllowScripts ? strip_tags($value) : $value);
     }
 }

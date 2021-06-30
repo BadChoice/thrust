@@ -3,7 +3,7 @@
         e.preventDefault();
         var selected = getSelectedRowsIds();
         if (selected.length == 0){
-            return alert("{{ __("thrust::messages.noRowsSelected") }}");
+            return alert("{!! __("thrust::messages.noRowsSelected") !!}");
         }
 
         $(this).attr('href', $(this).attr('href') + "&ids=" + selected);
@@ -11,12 +11,12 @@
     });
 
 
-    function runAction(actionClass, needsConfirmation, confirmationMessage){
+    function runAction(actionClass, needsConfirmation, needsSelection, confirmationMessage){
         var selected = getSelectedRowsIds();
-        console.log(actionClass, selected, needsConfirmation);
+        console.log(actionClass, selected, needsConfirmation, needsSelection);
 
-        if (selected.length == 0){
-            return alert("{{ __("thrust::messages.noRowsSelected") }}");
+        if (needsSelection == 1 && selected.length == 0){
+            return alert("{!! __("thrust::messages.noRowsSelected") !!}");
         }
 
         if (! needsConfirmation || confirm(confirmationMessage)){

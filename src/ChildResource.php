@@ -2,9 +2,12 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\ResourceManager;
+
 abstract class ChildResource extends Resource
 {
     public static $parentRelation;
+    public static $parentChildsRelation;
     protected $parentId;
 
     public function __construct()
@@ -27,6 +30,13 @@ abstract class ChildResource extends Resource
         return $query;
     }
 
+    protected function applySearch(&$query)
+    {
+        if($this->parentId) return;
+
+        parent::applySearch($query);
+    }
+
     public function parentForeignKey()
     {
         $relation = (new static::$model)->{static::$parentRelation}();
@@ -42,5 +52,11 @@ abstract class ChildResource extends Resource
             return  (new static::$model)->{static::$parentRelation}()->getRelated()->query()->find($object);
         }
         return $object->{static::$parentRelation};
+    }
+
+    public function getParentHasManyUrlParams($object)
+    {
+        $parent = $this->parent($object);
+        return $this::$parentChildsRelation && $parent ? [app(ResourceManager::class)->resourceNameFromModel($parent), $parent->id, static::$parentChildsRelation] : null; 
     }
 }

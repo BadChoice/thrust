@@ -40,13 +40,13 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
     Route::post('{resourceName}/{id}/file/{field}', 'ThrustFileController@store')->name('thrust.file.store');
     Route::delete('{resourceName}/{id}/file/{field}', 'ThrustFileController@delete')->name('thrust.file.delete');
 
-    Route::get('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@index')->name('thrust.belongsToMany');
-    Route::post('{resourceName}/{id}/belongsToMany/{field}', 'ThrustBelongsToManyController@store')->name('thrust.belongsToMany.store');
-    Route::get('{resourceName}/{id}/belongsToMany/{field}/search/{search}', 'ThrustBelongsToManyController@search')->name('thrust.belongsToMany.search');
-    Route::post('{resourceName}/{id}/belongsToMany/{field}/updateOrder', 'ThrustBelongsToManyController@updateOrder')->name('thrust.belongsToMany.updateOrder');
-    Route::delete('{resourceName}/{id}/belongsToMany/{field}/{detachId}', 'ThrustBelongsToManyController@delete')->name('thrust.belongsToMany.delete');
+    Route::get('{resourceName}/{id}/belongsToMany/{relationship}', 'ThrustBelongsToManyController@index')->name('thrust.belongsToMany');
+    Route::post('{resourceName}/{id}/belongsToMany/{relationship}', 'ThrustBelongsToManyController@store')->name('thrust.belongsToMany.store');
+    Route::get('{resourceName}/{id}/belongsToMany/{relationship}/search/{search}', 'ThrustBelongsToManyController@search')->name('thrust.belongsToMany.search');
+    Route::post('{resourceName}/{id}/belongsToMany/{relationship}/updateOrder', 'ThrustBelongsToManyController@updateOrder')->name('thrust.belongsToMany.updateOrder');
+    Route::delete('{resourceName}/{id}/belongsToMany/{relationship}/{detachId}', 'ThrustBelongsToManyController@delete')->name('thrust.belongsToMany.delete');
 
-    Route::get('{resourceName}/{id}/hasMany/{field}', 'ThrustHasManyController@index')->name('thrust.hasMany');
+    Route::get('{resourceName}/{id}/hasMany/{relationship}', 'ThrustHasManyController@index')->name('thrust.hasMany');
 
     Route::get('{resourceName}/{id}/related/{relationship}', 'ThrustRelationshipController@search')->name('thrust.relationship.search');
 

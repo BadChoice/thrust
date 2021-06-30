@@ -37,6 +37,6 @@ class Decimal extends Text
 
     protected function getFieldAttributes()
     {
-        return 'step=any';
+        return $this->attributes . ' step=any';
     }
 }

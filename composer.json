@@ -3,8 +3,8 @@
     "description": "A simple resource crud generator",
     "type": "library",
     "require": {
-        "laravel/framework": ">=5.5",
-        "intervention/image": "2.*",
+        "laravel/framework": "^7.4",
+        "intervention/image": "^2.5",
         "psr/container": "^1.0"
     },
     "license": "MIT",

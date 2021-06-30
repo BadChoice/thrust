@@ -2,10 +2,15 @@
 
 namespace BadChoice\Thrust\Filters;
 
+use BadChoice\Thrust\Helpers\Iconable;
+use BadChoice\Thrust\Helpers\Titleable;
 use Illuminate\Http\Request;
 
 abstract class Filter
 {
+    use Titleable;
+    use Iconable;
+
     /**
      * @param Request $request
      * @param $query
@@ -19,11 +24,6 @@ abstract class Filter
     public function class()
     {
         return get_class($this);
-    }
-
-    public function title()
-    {
-        return niceTitle(collect(explode('\\', get_class($this)))->last());
     }
 
     public function filterValue($filtersApplied)
