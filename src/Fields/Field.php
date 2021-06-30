@@ -30,7 +30,7 @@ abstract class Field
 
     public static function make($dbField, $title = null)
     {
-        $field        = new static;
+        $field        = app(static::class);
         $field->field = $dbField;
         $field->title = $title;
         return $field;
