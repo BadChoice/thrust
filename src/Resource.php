@@ -91,7 +91,7 @@ abstract class Resource
 
     public function fieldsFlattened()
     {
-        return collect($this->getFields())->map->fieldsFlattened()->flatten();
+        return collect($this->getFields())->flatMap->fieldsFlattened();
     }
 
     public function fieldFor($field)
@@ -103,7 +103,7 @@ abstract class Resource
     {
         return collect($this->fields())->filter(function ($field) {
             return ($field instanceof FieldContainer);
-        })->map->panels()->flatten();
+        })->flatMap->panels();
     }
 
     public function name()
