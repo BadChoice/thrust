@@ -15,15 +15,15 @@ abstract class Field
     protected $title;
     public $validationRules;
 
-    public $showInIndex = true;
-    public $showInEdit  = true;
+    public $showInIndex  = true;
+    public $showInEdit   = true;
     public $policyAction = null;
 
     public $withDesc    = false;
     public $description = false;
 
     public $withoutIndexHeader = false;
-    public $rowClass = '';
+    public $rowClass           = '';
 
     abstract public function displayInIndex($object);
 
@@ -70,10 +70,12 @@ abstract class Field
 
     public function getTitle($forHeader = false)
     {
-        if ($forHeader && $this->withoutIndexHeader) return "";
+        if ($forHeader && $this->withoutIndexHeader) {
+            return '';
+        }
         $translationKey = $this->field;
-        if (Str::contains($this->field, '[')){
-            $translationKey = str_replace("]","",str_replace("[",".", $this->field));
+        if (Str::contains($this->field, '[')) {
+            $translationKey = str_replace(']', '', str_replace('[', '.', $this->field));
         }
         return $this->title ?? trans_choice(config('thrust.translationsPrefix').$translationKey, 1);
     }
@@ -91,8 +93,8 @@ abstract class Field
         if (Str::contains($this->field, '.')) {
             return data_get($object, $this->field);
         }
-        if (Str::contains($this->field, '[')){
-            $this->field = str_replace("]","",str_replace("[",".", $this->field));
+        if (Str::contains($this->field, '[')) {
+            $this->field = str_replace(']', '', str_replace('[', '.', $this->field));
             return data_get($object, $this->field);
         }
         return $object->{$this->field};
@@ -112,8 +114,8 @@ abstract class Field
 
     public function hide($hide = true)
     {
-        $this->showInIndex = !$hide;
-        $this->showInEdit  = !$hide;
+        $this->showInIndex = ! $hide;
+        $this->showInEdit  = ! $hide;
         return $this;
     }
 
@@ -159,8 +161,16 @@ abstract class Field
         return $this->field;
     }
 
-    public function getSortableHeaderClass(){
-        if (Str::contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
+    public function getSortableHeaderClass()
+    {
+        if (Str::contains($this->rowClass, 'text-right')) {
+            return 'sortableHeaderRight';
+        }
         return 'sortableHeader';
+    }
+
+    public function fieldsFlattened()
+    {
+        return collect([$this]);
     }
 }
