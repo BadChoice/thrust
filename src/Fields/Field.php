@@ -163,4 +163,9 @@ abstract class Field
         if (Str::contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
         return 'sortableHeader';
     }
+
+    public function fieldsFlattened()
+    {
+        return $this;
+    }
 }
