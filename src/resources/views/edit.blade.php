@@ -2,7 +2,7 @@
         <h2> {{  trans_choice(config('thrust.translationsPrefix'). Illuminate\Support\Str::singular($resourceName), 1) }} </h2>
     @else
         <div class="configForm">
-            <h2> {{ $object->{$nameField} ?? 'New' }}</h2>
+            <h2> {{ $object->{$nameField} ?? __('thrust::messages.new') }}</h2>
         </div>
     @endif
 
@@ -22,9 +22,8 @@
         @endforeach
     </div>
 
-
     @if (app(BadChoice\Thrust\ResourceGate::class)->can($resourceName, 'update', $object))
-        @include('thrust::components.saveButton')
+        @include('thrust::components.saveButton', ["updateConfirmationMessage" => $updateConfirmationMessage])
 
         @if (isset($object->id) )
             <a class="secondary button hidden" id="thrust-save-and-continue" onclick="submitAjaxForm('thrust-form-{{$object->id}}')">{{ __("thrust::messages.saveAndContinueEditing") }}</a>

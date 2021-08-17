@@ -2,17 +2,18 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceFilters\Sort;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Filters;
 use BadChoice\Thrust\Fields\Relationship;
-use BadChoice\Thrust\Fields\Panel;
 use BadChoice\Thrust\Fields\Edit;
 use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Actions\MainAction;
 use BadChoice\Thrust\Actions\Delete;
+use BadChoice\Thrust\Fields\FieldContainer;
 
 abstract class Resource
 {
@@ -52,6 +53,12 @@ abstract class Resource
 
 
     /**
+     * @var string when resource is update will show a confirmation alert with the message specified
+     */
+    public $updateConfirmationMessage = '';
+
+
+    /**
      * @var bool define if the resource is sortable and can be arranged in the index view
      */
     public static $sortable     = false;
@@ -74,7 +81,8 @@ abstract class Resource
      */
     abstract public function fields();
 
-    public function getFields(){
+    public function getFields()
+    {
         return array_merge(
             $this->fields(),
             $this->editAndDeleteFields()
@@ -83,12 +91,7 @@ abstract class Resource
 
     public function fieldsFlattened()
     {
-        return collect($this->getFields())->map(function ($field) {
-            if ($field instanceof Panel) {
-                return $field->fields;
-            }
-            return $field;
-        })->flatten();
+        return collect($this->getFields())->flatMap->fieldsFlattened();
     }
 
     public function fieldFor($field)
@@ -99,8 +102,8 @@ abstract class Resource
     public function panels()
     {
         return collect($this->fields())->filter(function ($field) {
-            return ($field instanceof Panel);
-        });
+            return ($field instanceof FieldContainer);
+        })->flatMap->panels();
     }
 
     public function name()
@@ -163,8 +166,11 @@ abstract class Resource
         return $this->can('delete', $object);
     }
 
-    public function can($ability, $object = null){
-        if (! $ability) return true;
+    public function can($ability, $object = null)
+    {
+        if (! $ability) {
+            return true;
+        }
         return app(ResourceGate::class)->can($this, $ability, $object);
     }
 
@@ -278,7 +284,7 @@ abstract class Resource
     {
         if (request('sort') && $this->sortFieldIsValid(request('sort'))) {
             return Sort::apply($query, request('sort'), request('sort_order'));
-        } 
+        }
         
         if (static::$sortable) {
             return Sort::apply($query, static::$sortField, 'ASC');
@@ -328,7 +334,8 @@ abstract class Resource
         return $this->alreadyFetchedRows;
     }
 
-    protected function getPagination(){
+    protected function getPagination()
+    {
         if (request('search')) {
             return 200;
         }
@@ -337,6 +344,11 @@ abstract class Resource
 
     public function sortableIsActive()
     {
-        return static::$sortable && !request('sort');
+        return static::$sortable && ! request('sort');
+    }
+
+    public function getUpdateConfirmationMessage()
+    {
+        return Translation::useTranslationPrefix($this->updateConfirmationMessage, $this->updateConfirmationMessage);
     }
 }
