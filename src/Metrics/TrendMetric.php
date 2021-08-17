@@ -1,27 +1,33 @@
 <?php
 
 namespace BadChoice\Thrust\Metrics;
+
 use Illuminate\Support\Facades\DB;
 
 abstract class TrendMetric extends Metric
 {
     protected $dateField = 'created_at';
-    private $byDays = false;
+    private $byDays      = false;
 
     public function metricTypeName()
     {
         return 'trend';
     }
 
+    public function value()
+    {
+        $this->getResult()->last();
+    }
+
     public function result()
     {
         if ($this->byDays) {
-            return $this->getEmptyDays()->merge($this->result->mapWithKeys(function($row){
+            return $this->getEmptyDays()->merge($this->result->mapWithKeys(function ($row) {
                 return [$row->date => $this->applyFormat($row->count)];
             }));
         }
-        return $this->result->mapWithKeys(function($row){
-            return [wordwrap($row->date, 4, " ", true) => $this->applyFormat($row->count)];
+        return $this->result->mapWithKeys(function ($row) {
+            return [wordwrap($row->date, 4, ' ', true) => $this->applyFormat($row->count)];
         });
     }
 
@@ -104,7 +110,7 @@ abstract class TrendMetric extends Metric
 
     public function doQueryByHours($class, $operation, $field)
     {
-        $this->range = 90;
+        $this->range  = 90;
         $this->result = $this->applyRange($class)
             ->groupBy(DB::raw("Hour({$this->dateField})"))
             ->orderBy(DB::raw("Hour({$this->dateField})"))
@@ -113,7 +119,6 @@ abstract class TrendMetric extends Metric
         $this->byDays = false;
         return $this;
     }
-
 
     private function getEmptyDays()
     {
