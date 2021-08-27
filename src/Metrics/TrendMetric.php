@@ -122,9 +122,8 @@ abstract class TrendMetric extends Metric
 
     protected function resultAsInteger() : self
     {
-        $this->result->transform(function ($result) {
-            $result->count = $result->count / 100;
-            return $result;
+        $this->result->each(function ($result) {
+            $result->count /= 100;
         });
         return $this;
     }
