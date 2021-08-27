@@ -14,7 +14,7 @@ abstract class TrendMetric extends Metric
         return 'trend';
     }
 
-    public function value()
+    public function displayValue()
     {
         $this->getResult()->last();
     }
@@ -117,6 +117,15 @@ abstract class TrendMetric extends Metric
             ->select(DB::raw("{$operation}(`{$field}`) as count"), DB::raw("Hour({$this->dateField}) as date"))
             ->get();
         $this->byDays = false;
+        return $this;
+    }
+
+    protected function resultAsInteger() : self
+    {
+        $this->result->transform(function ($result) {
+            $result->count = $result->count / 100;
+            return $result;
+        });
         return $this;
     }
 

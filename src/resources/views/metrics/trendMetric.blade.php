@@ -1,7 +1,7 @@
 <div class="thrust-panel thrust-trend-metric m2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
     <h4 class="ml2 lighter-gray">{{ $metric->getTitle() }}</h4>
-    <h1 class="ml2 mt-2 mb-3"> {!! $metric->value() !!}</h1>
+    <h1 class="ml2 mt-2 mb-3"> {!! $metric->displayValue() !!}</h1>
     <canvas id="{{$metric->uriKey()}}" width="400" height="100"></canvas>
     <script>
         new Chart('{{$metric->uriKey()}}', {
