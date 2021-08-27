@@ -12,7 +12,7 @@
             @foreach($fields as $field)
                 <th class="{{$field->rowClass}}">
                     <div class='{{$field->getSortableHeaderClass()}}'>{{ $field->getTitle(true) }}
-                    @if ($field->sortable && !request('search'))
+                    @if ($field->sortableInIndex() && !request('search'))
                         <div class='sortArrows'>
                             <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'desc')}}' class='sortUp'>▲</a>
                             <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'asc')}}'  class='sortDown'>▼</a>
