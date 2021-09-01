@@ -167,14 +167,15 @@ function ajaxGet(url, escaping){
 
     $.get(url, function(){})
         .done(function(data) {
-            if(data) {
-                if(escaping) {
-                    return escaping(data)
-                }
-                $(".loadingImage").hide();
-                showMessage("done");
-                reloadPopup();
+            if(!data) {
+                return;
             }
+            if(escaping) {
+                return escaping(data)
+            }
+            $(".loadingImage").hide();
+            showMessage("done");
+            reloadPopup();
         })
         .fail(function(result) {
             console.log(result);
