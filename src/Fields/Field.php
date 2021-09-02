@@ -173,4 +173,9 @@ abstract class Field
     {
         return collect([$this]);
     }
+
+    public function sortableInIndex()
+    {
+        return $this->sortable;
+    }
 }
