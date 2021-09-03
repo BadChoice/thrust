@@ -159,7 +159,7 @@ function callAjax(url, data){
         });
 }
 
-function ajaxGet(url, escaping){
+function ajaxGet(url, callback){
 
     if(window.location.href.toString().search("public") != - 1){
         url =  "/revo-retail/public" + url;
@@ -170,8 +170,8 @@ function ajaxGet(url, escaping){
             if(!data) {
                 return;
             }
-            if(escaping) {
-                return escaping(data)
+            if(callback) {
+                return callback(data)
             }
             $(".loadingImage").hide();
             showMessage("done");
