@@ -22,8 +22,9 @@ abstract class Field
     public $withDesc    = false;
     public $description = false;
 
-    public $withoutIndexHeader = false;
-    public $rowClass           = '';
+    public $withoutIndexHeader  = false;
+    public $with                = [];
+    public $rowClass            = '';
 
     abstract public function displayInIndex($object);
 
@@ -31,9 +32,9 @@ abstract class Field
 
     public static function make($dbField, $title = null)
     {
-        $field        = app(static::class);
-        $field->field = $dbField;
-        $field->title = $title;
+        $field         = app(static::class);
+        $field->field   = $dbField;
+        $field->title  = $title;
         return $field;
     }
 
@@ -65,6 +66,12 @@ abstract class Field
     {
         $this->withDesc    = $withDesc;
         $this->description = $description;
+        return $this;
+    }
+
+    public function with(array $with) : self
+    {
+        $this->with = $with;
         return $this;
     }
 

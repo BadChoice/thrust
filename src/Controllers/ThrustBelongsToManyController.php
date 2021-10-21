@@ -2,8 +2,10 @@
 
 namespace BadChoice\Thrust\Controllers;
 
-use Illuminate\Routing\Controller;
 use BadChoice\Thrust\Facades\Thrust;
+use BadChoice\Thrust\Fields\BelongsToMany;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Routing\Controller;
 
 class ThrustBelongsToManyController extends Controller
 {
@@ -12,13 +14,13 @@ class ThrustBelongsToManyController extends Controller
         $resource           = Thrust::make($resourceName);
         $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
-        $explodedPivotClass  = explode('\\', $object->$relationship()->getPivotClass());
+        $explodedPivotClass = explode('\\', $object->$relationship()->getPivotClass());
         return view('thrust::belongsToManyIndex', [
             'resourceName'            => $resourceName,
             'pivotResourceName'       => end($explodedPivotClass),
             'object'                  => $object,
             'title'                   => $object->{$resource->nameField},
-            'children'                => ($belongsToManyField->sortable ? $object->{$relationship}()->orderBy($belongsToManyField->sortField) : $object->{$relationship}())->paginate(100),
+            'children'                => $this->belongsToManyFields($belongsToManyField, $relationship, $object)->paginate(100),
             'belongsToManyField'      => $belongsToManyField,
             'relationshipDisplayName' => $belongsToManyField->relationDisplayField,
             'searchable'              => $belongsToManyField->searchable,
@@ -77,5 +79,13 @@ class ThrustBelongsToManyController extends Controller
             $object->pivot->update(['order' => $idsSorted[$object->pivot->id]]);
         });
         return response()->json('OK', 200);
+    }
+
+    protected function belongsToManyFields(BelongsToMany $belongsToManyField, string $relationship, Model $object) : \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        $query = $object->{$relationship}()->with($belongsToManyField->with);
+        return $belongsToManyField->sortable
+            ? $query->orderBy($belongsToManyField->sortField)
+            : $query;
     }
 }
