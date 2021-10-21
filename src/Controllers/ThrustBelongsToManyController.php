@@ -4,6 +4,7 @@ namespace BadChoice\Thrust\Controllers;
 
 use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\Fields\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany as BelongsToManyBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 
@@ -81,7 +82,7 @@ class ThrustBelongsToManyController extends Controller
         return response()->json('OK', 200);
     }
 
-    protected function belongsToManyFields(BelongsToMany $belongsToManyField, string $relationship, Model $object) : \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    protected function belongsToManyFields(BelongsToMany $belongsToManyField, string $relationship, Model $object) : BelongsToManyBuilder
     {
         $query = $object->{$relationship}()->with($belongsToManyField->with);
         return $belongsToManyField->sortable
