@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceManager;
 use BadChoice\Thrust\ResourceFilters\Search;
@@ -113,7 +114,11 @@ class BelongsToMany extends Relationship
         if ($this->withCount) {
             return $this->getRelation($object)->count();
         }
-        return ($this->sortable ? $object->{$this->field}()->orderBy($this->sortField)->get() : $object->{$this->field})->pluck($this->relationDisplayField)->implode(', ');
+
+        if ($this->sortable)  {
+            return $object->{$this->field}->sortBy($this->sortField)->pluck($this->relationDisplayField)->implode(', ');
+        }
+        return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
     }
 
     public function getOptions($object)
@@ -126,7 +131,7 @@ class BelongsToMany extends Relationship
 
     public function relatedQuery($object, $allowDuplicates = true)
     {
-        $query = parent::relatedQuery($object, $allowDuplicates);
+        $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with);
         if ($this->relatedSortable) {
             return $query->orderBy($this->relatedSortField);
         }
