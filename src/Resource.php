@@ -51,6 +51,11 @@ abstract class Resource
      */
     public static $gate;
 
+    /**
+     * @var Class that defines the policy relation, over the $model.
+     */
+    public static $policy;
+
 
     /**
      * @var string when resource is update will show a confirmation alert with the message specified
