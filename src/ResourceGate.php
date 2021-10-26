@@ -20,7 +20,7 @@ class ResourceGate
 
     public function can($resource, $ability, $object = null)
     {
-        $valid    = true;
+        $valid = true;
         try{
             $resource = Thrust::make($resource);
             if ($resource::$gate) {
@@ -28,13 +28,16 @@ class ResourceGate
             }
             $policy = $this->policyFor($resource);
             if ($policy) {
-                $valid = auth()->user()->can($ability, $object ?? $resource::$model) && $valid;
+                if (!(new $policy())->$ability(auth()->user(), $object ?? $resource::$model)){
+                    $valid = false;
+                    throw new AuthorizationException("This action is unauthorized.");
+                }
             }
         } catch(\Exception $e) {}
         return $valid;
     }
 
     public function policyFor($resource){
-        return Gate::getPolicyFor($resource::$model);
+        return $resource::$policy ?? Gate::getPolicyFor($resource::$model);
     }
 }
