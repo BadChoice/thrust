@@ -28,13 +28,19 @@ class ResourceGate
             }
             $policy = $this->policyFor($resource);
             if ($policy) {
-                if (!(new $policy())->$ability(auth()->user(), $object ?? $resource::$model)){
-                    $valid = false;
-                    throw new AuthorizationException("This action is unauthorized.");
-                }
+                $valid = $this->checkPolicyValidation($resource, $ability, $object, $policy);
             }
         } catch(\Exception $e) {}
         return $valid;
+    }
+
+    public function checkPolicyValidation($resource, $ability, $object, $policy): bool
+    {
+        $policyInstance = new $policy;
+        if (method_exists($policyInstance, 'before') && $policyInstance->before(auth()->user(), $ability, $object) !== null) {
+            return $policyInstance->before(auth()->user(), $ability, $object);
+        }
+        return $policyInstance->$ability(auth()->user(), $object ?? $resource::$model);
     }
 
     public function policyFor($resource){
