@@ -33,10 +33,11 @@
                         <div class="inline" id="key">
 
                             @if(! $keyValueField->keyOptions) 
-                                <input @if($fixed) disabled @endif type='text' id='{{$field.'['.$loop->iteration.'][key]'}}' value='{{$v->key}}' name='{{$field.'['.$loop->iteration.'][key]'}}' placeholder='key' style='width:132px'>
+                                <input @if($fixed) readonly="readonly" @endif type='text' id='{{$field.'['.$loop->iteration.'][key]'}}' value='{{$v->key}}' name='{{$field.'['.$loop->iteration.'][key]'}}' placeholder='key' style='width:132px'>
                             @else
                                 @if($fixed)
-                                    <input disabled type='text' id='{{$field.'['.$loop->iteration.'][key]'}}' value='{{$keyValueField->keyOptions[$v->key]}}' name='{{$field.'['.$loop->iteration.'][key]'}}' placeholder='key' style='width:132px'>
+                                    <input type="hidden" id='{{$field.'['.$loop->iteration.'][key]'}}' value='{{$v->key}}' name='{{$field.'['.$loop->iteration.'][key]'}}' placeholder='key' style='width:132px'>
+                                    <label style='width:132px'> {{$keyValueField->keyOptions[$v->key]}}</label>
                                 @else
                                     <select id='{{$field.'['.$loop->iteration.'][key]'}}' name='{{$field.'['.$loop->iteration.'][key]'}}' style='width:132px'>{!! $keyValueField->generateOptions($keyValueField->keyOptions, $v->key) !!}</select>
                                 @endif
