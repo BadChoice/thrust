@@ -2,11 +2,14 @@
 
 namespace BadChoice\Thrust\Fields;
 
-class KeyValue extends Field {
-
-    public $showInEdit = false;
-    protected $keyOptions = null;
-    protected $valueOptions = null;
+class KeyValue extends Field
+{
+    public $showInEdit   = false;
+    public $keyOptions   = null;
+    public $valueOptions = null;
+    public $searchable   = false;
+    public $multiple     = false;
+    public $fixed        = false;
 
     public function keyOptions($keyOptions)
     {
@@ -22,7 +25,7 @@ class KeyValue extends Field {
 
     public function displayInIndex($object)
     {
-        return "";
+        return '';
     }
 
     public function displayInEdit($object, $inline = false)
@@ -32,34 +35,44 @@ class KeyValue extends Field {
             'inline'        => $inline,
             'field'         => $this->field,
             'keyValueField' => $this,
-//            'searchable'  => $this->searchable,
+            'searchable'    => $this->searchable,
             'value'         => $this->getValue($object),
-//            'options'     => $this->getOptions(),
             'description'   => $this->getDescription(),
+            'multiple'      => $this->multiple,
+            'fixed'         => $this->fixed,
         ])->render();
     }
 
-
-    public function generateKeyField($iteration, $key = null){
-        if (! $this->keyOptions) {
-            return "<input type='text' id='$this->field[$iteration][key]' value='$key' name='$this->field[$iteration][key]' placeholder='key' style='width:132px'>";
-        }
-        $options = $this->generateOptions($this->keyOptions, $key);
-        return "<select id='$this->field[$iteration][key]' name='$this->field[$iteration][key]' style='width:132px'>{$options}</select>";
+    public function multiple($multiple = true)
+    {
+        $this->multiple = $multiple;
+        return $this;
     }
 
-    public function generateValueField($iteration, $value = null){
-        if (! $this->valueOptions) {
-            return "<input type='text' id='$this->field[$iteration][value]' value='$value' name='$this->field[$iteration][value]' placeholder='value' style='width:132px'>";
-        }
-        $options = $this->generateOptions($this->valueOptions, $value);
-        return "<select id='$this->field[$iteration][value]' name='$this->field[$iteration][value]' style='width:132px'>{$options}</select>";
+    public function searchable($searchable = true)
+    {
+        $this->searchable = $searchable;
+        return $this;
     }
 
-    private function generateOptions($array, $selected){
-        return collect($array)->map(function($value, $key) use($selected) {
-            $selected = $key == $selected ? " selected " : "";
+    public function fixedEntries($fixed = true)
+    {
+        $this->fixed = $fixed;
+        return $this;
+    }
+
+    public function generateOptions($array, $selected)
+    {
+        return collect($array)->map(function ($value, $key) use ($selected) {
+            $selected = $this->isSelected($key, $selected) ? ' selected ' : '';
             return "<option value='$key' {$selected}>$value</option>";
-        })->implode("");
+        })->implode('');
+    }
+
+    protected function isSelected($key, $selected) : bool
+    {
+        return is_array($selected)
+            ? in_array($key, $selected)
+            : $key == $selected;
     }
 }

@@ -2,13 +2,21 @@
     <input type="hidden" name="{{$field}}" value="">
     <script type="template/html" id="template-{{$field}}">
 {{--    <template id="template-{{$field}}">--}}
-        <div id="keyValue-template" class="mb2 keyValueField-{{$field}}" style="height:30px">
+        <div id="keyValue-template" class="mb2 keyValueField-{{$field}}" style="height:auto">
             <div class="inline" id="keyValueFields-template">
                 <div class="inline" id="key">
-                    {!! $keyValueField->generateKeyField('template') !!}
+                    @if(! $keyValueField->keyOptions) 
+                        <input type='text' id='{{$field.'[template][null]'}}' value='' name='{{$field.'[template][null]'}}' placeholder='key' style='width:132px'>
+                    @else
+                        <select id='{{$field.'[template][null]'}}' name='{{$field.'[template][null]'}}' style='width:132px'>{!! $keyValueField->generateOptions($keyValueField->keyOptions, null) !!}</select>
+                    @endif
                 </div>
                 <div class="inline" id="value">
-                    {!! $keyValueField->generateValueField('template') !!}
+                    @if(! $keyValueField->valueOptions)
+                        <input type='text' id='{{$field.'[template][null]'}}' value='' name='{{$field.'[template][null]'}}' placeholder='value' style='width:132px'>
+                    @else
+                        <select @if($searchable) class="searchable" @endif @if($multiple) multiple @endif id='{{$field.'[template][null]'}}' name='{{$field.'[template][null]'}}' style='width:132px'>{!! $keyValueField->generateOptions($keyValueField->valueOptions, null) !!}</select>
+                    @endif
                 </div>
             </div>
             <span>
@@ -20,25 +28,42 @@
     <div id="keyValue-{{$field}}">
         @if (! empty($value))
             @foreach($value as $v)
-                <div id="keyValue-{{$loop->iteration}}" class="mb2 keyValueField-{{$field}}" style="height:30px">
+                <div id="keyValue-{{$loop->iteration}}" class="mb2 keyValueField-{{$field}}" style="height:auto">
                     <div class="inline" id="keyValueFields-{{$loop->iteration}}">
                         <div class="inline" id="key">
-                            {!! $keyValueField->generateKeyField($loop->iteration, $v->key) !!}
+
+                            @if(! $keyValueField->keyOptions) 
+                                <input @if($fixed) disabled @endif type='text' id='{{$field.'['.$loop->iteration.'][key]'}}' value='{{$v->key}}' name='{{$field.'['.$loop->iteration.'][key]'}}' placeholder='key' style='width:132px'>
+                            @else
+                                @if($fixed)
+                                    <input disabled type='text' id='{{$field.'['.$loop->iteration.'][key]'}}' value='{{$keyValueField->keyOptions[$v->key]}}' name='{{$field.'['.$loop->iteration.'][key]'}}' placeholder='key' style='width:132px'>
+                                @else
+                                    <select id='{{$field.'['.$loop->iteration.'][key]'}}' name='{{$field.'['.$loop->iteration.'][key]'}}' style='width:132px'>{!! $keyValueField->generateOptions($keyValueField->keyOptions, $v->key) !!}</select>
+                                @endif
+                            @endif
                         </div>
                         <div class="inline" id="value">
-                            {!! $keyValueField->generateValueField($loop->iteration, $v->value) !!}
+                            @if(! $keyValueField->valueOptions)
+                                <input type='text' id='{{$field.'['.$loop->iteration.'][value]'}}' value='{{$v->value}}' name='{{$field.'['.$loop->iteration.'][value]'}}' placeholder='value' style='width:132px'>
+                            @else
+                                <select @if($searchable) class="searchable" @endif @if($multiple) multiple @endif id='{{$field.'['.$loop->iteration.'][value]'}}' name='{{$field.'['.$loop->iteration.'][value]'}}@if($multiple)[]@endif' style='width:132px'>{!! $keyValueField->generateOptions($keyValueField->valueOptions, $v->value) !!}</select>
+                            @endif
                         </div>
                     </div>
-                    <span>
-                        <a class="button secondary" onclick="keyValueRemove(this)">@icon(times)</a>
-                    </span>
+                    @if(!$fixed)
+                        <span>
+                            <a class="button secondary" onclick="keyValueRemove(this)">@icon(times)</a>
+                        </span>
+                    @endif
                 </div>
             @endforeach
         @endif
     </div>
-    <div>
-        <a class="button secondary" onclick="keyValueAdd('{{$field}}')" class="pointer"> @icon(plus) {{ __('admin.add') }}</a>
-    </div>
+    @if(! $fixed)
+        <div>
+            <a class="button secondary" onclick="keyValueAdd('{{$field}}')" class="pointer"> @icon(plus) {{ __('admin.add') }}</a>
+        </div>
+    @endif
 
     @push('edit-scripts')
         <script>
@@ -66,6 +91,8 @@
                 newKeyValue.find('div').first('div').find('div').last().find('select').last().prop('id', fieldName + '['+ n +'][value]');
                 newKeyValue.find('div').first('div').find('div').last().find('select').last().prop('name', fieldName + '['+ n +'][value]');
                 $('#keyValue-' + fieldName).append(newKeyValue);
+
+                initSelect2()
             }
         </script>
     @endpush
