@@ -69,9 +69,9 @@ abstract class Field
         return $this;
     }
 
-    public function with(array $with) : self
+    public function with($with): self
     {
-        $this->with = $with;
+        $this->with = is_array($with) ? $with : func_get_args();
         return $this;
     }
 
