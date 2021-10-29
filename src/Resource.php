@@ -62,6 +62,7 @@ abstract class Resource
      * @var bool define if the resource is sortable and can be arranged in the index view
      */
     public static $sortable     = false;
+    public static $sortTooltip;
     public static $sortField    = 'order';
     public static $defaultSort  = 'id';
     public static $defaultOrder = 'ASC';
