@@ -328,7 +328,7 @@ abstract class Resource
         return [Edit::make('edit'), Fields\Delete::make('delete')];
     }
 
-    private function fetchRows()
+    protected function fetchRows()
     {
         $this->alreadyFetchedRows = $this->query()->paginate($this->getPagination());
         return $this->alreadyFetchedRows;
