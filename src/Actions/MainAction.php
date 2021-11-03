@@ -43,7 +43,7 @@ class MainAction
         return route('thrust.create', $resourceName);
     }
 
-    protected function getTitle() : string
+    protected function getTitle()
     {
         return __('thrust::messages.' . $this->title);
     }
