@@ -351,4 +351,9 @@ abstract class Resource
     {
         return Translation::useTranslationPrefix($this->updateConfirmationMessage, $this->updateConfirmationMessage);
     }
+
+    public function generateMultipleFields()
+    {
+        return [];
+    }
 }

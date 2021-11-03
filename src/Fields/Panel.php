@@ -16,6 +16,8 @@ class Panel extends FieldContainer
 
     public $policyAction = null;
 
+    public $excludeOnMultiple = false;
+
     public static function make($fields, $title = null)
     {
         $panel         = new static;
