@@ -8,7 +8,6 @@ use BadChoice\Thrust\ResourceGate;
 use BadChoice\Thrust\Html\Edit;
 use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class ThrustController extends Controller
 {
@@ -76,13 +75,13 @@ class ThrustController extends Controller
     public function storeMultiple($resourceName)
     {
         $resource = Thrust::make($resourceName);
+        request()->validate($resource->getValidationRules(null, true));
         $amount   = request()->input('amount'); // amount to create
         $request  = request()->except('amount');
 
         DB::beginTransaction();
         for ($i = 0; $i < $amount; ++$i) {
             $request = array_merge($request, $resource->generateMultipleFields());
-            Validator::make($request, $resource->getValidationRules(null))->validate();
 
             try {
                 $resource->create($request);
