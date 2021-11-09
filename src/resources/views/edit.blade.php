@@ -10,7 +10,7 @@
         <form action="{{route('thrust.update', [$resourceName, $object->id] )}}" id='thrust-form-{{$object->id}}' method="POST">
         {{ method_field('PUT') }}
     @else
-        <form action="{{route('thrust.store', [$resourceName] )}}" method="POST">
+        <form action="{{route($multiple ? 'thrust.store.multiple' : 'thrust.store', [$resourceName] )}}" method="POST">
     @endif
     {{ csrf_field() }}
     <div class="thrust-tabs"><ul id="thrust-tabs-list"></ul></div>
@@ -20,6 +20,7 @@
                     {!! $field->displayInEdit($object) !!}
             @endif
         @endforeach
+        @includeWhen($multiple, 'thrust::quantityInput')
     </div>
 
     @if (app(BadChoice\Thrust\ResourceGate::class)->can($resourceName, 'update', $object))

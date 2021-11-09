@@ -20,4 +20,7 @@ return [
     'deactivate'             => 'Désactiver',
     'clearSorting'           => 'Effacer le tri',
     'clearSelection'         => 'Effacer la sélection',
+    'amount'                 => 'Quantité',
+    'amountDesc'             => 'Nombre de copies à créer.',
+    'createMultiple'         => 'Création multiple',
 ];
