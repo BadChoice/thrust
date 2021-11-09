@@ -9,9 +9,9 @@ class ThrustBelongsToManyController extends Controller
 {
     public function index($resourceName, $id, $relationship)
     {
-        $resource           = Thrust::make($resourceName);
-        $object             = $resource->find($id);
-        $belongsToManyField = $resource->fieldFor($relationship);
+        $resource            = Thrust::make($resourceName);
+        $object              = $resource->find($id);
+        $belongsToManyField  = $resource->fieldFor($relationship);
         $explodedPivotClass  = explode('\\', $object->$relationship()->getPivotClass());
         return view('thrust::belongsToManyIndex', [
             'resourceName'            => $resourceName,
@@ -30,10 +30,10 @@ class ThrustBelongsToManyController extends Controller
 
     public function store($resourceName, $id, $relationship)
     {
-        $resource = Thrust::make($resourceName);
-        $object   = $resource->find($id);
+        $resource           = Thrust::make($resourceName);
+        $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
-        if (! $belongsToManyField->allowDuplicates && $object->{$relationship}->contains(request('id'))){
+        if (! $belongsToManyField->allowDuplicates && $object->{$relationship}->contains(request('id'))) {
             return back()->withMessage('already exists and duplicates not allowed');
         }
         $object->{$relationship}()->attach(request('id'), $belongsToManyField->mapRequest(request()->except(['id', '_token'])));
@@ -42,8 +42,8 @@ class ThrustBelongsToManyController extends Controller
 
     public function delete($resourceName, $id, $relationship, $pivotId)
     {
-        $resource = Thrust::make($resourceName);
-        $object   = $resource->find($id);
+        $resource       = Thrust::make($resourceName);
+        $object         = $resource->find($id);
         $relationObject = $object->{$relationship}()->wherePivot('id', $pivotId)->first();
         $relationObject->pivot->delete();
         return back()->withMessage('deleted');
@@ -52,17 +52,19 @@ class ThrustBelongsToManyController extends Controller
     public function search($resourceName, $id, $relationship, $searchText)
     {
         request()->merge(['search' => $searchText]);
-        $resource           = Thrust::make($resourceName);
-        $object             = $resource->find($id);
-        $belongsToManyField = $resource->fieldFor($relationship);
-        $children           = $belongsToManyField->search($object, $searchText)->get();
-        return view('thrust::belongsToManyTable',[
-            'resourceName'       => $resourceName,
-            'object'             => $object,
-            'belongsToManyField' => $belongsToManyField,
-            "relationshipDisplayName" => $belongsToManyField->relationDisplayField,
-            'children'           => $children,
-            'sortable'           => false,
+        $resource            = Thrust::make($resourceName);
+        $object              = $resource->find($id);
+        $belongsToManyField  = $resource->fieldFor($relationship);
+        $children            = $belongsToManyField->search($object, $searchText)->get();
+        $explodedPivotClass  = explode('\\', $object->$relationship()->getPivotClass());
+        return view('thrust::belongsToManyTable', [
+            'resourceName'            => $resourceName,
+            'object'                  => $object,
+            'belongsToManyField'      => $belongsToManyField,
+            'relationshipDisplayName' => $belongsToManyField->relationDisplayField,
+            'children'                => $children,
+            'sortable'                => false,
+            'pivotResourceName'       => end($explodedPivotClass),
         ]);
     }
 
