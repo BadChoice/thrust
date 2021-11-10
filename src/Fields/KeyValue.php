@@ -75,4 +75,14 @@ class KeyValue extends Field
             ? in_array($key, $selected)
             : $key == $selected;
     }
+
+    public function mapAttributeFromRequest($value)
+    {
+        return collect($value)->map(function ($entry) {
+            if (! isset($entry['value'])) {
+                $entry['value'] = null;
+            }
+            return $entry;
+        });
+    }
 }
