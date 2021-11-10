@@ -26,6 +26,8 @@ abstract class Field
     public $with                = [];
     public $rowClass            = '';
 
+    public $excludeOnMultiple = false;
+
     abstract public function displayInIndex($object);
 
     abstract public function displayInEdit($object, $inline = false);
@@ -155,6 +157,12 @@ abstract class Field
     public function policyAction($policyAction)
     {
         $this->policyAction = $policyAction;
+        return $this;
+    }
+
+    public function excludeOnMultiple($exclude = true)
+    {
+        $this->excludeOnMultiple = $exclude;
         return $this;
     }
 

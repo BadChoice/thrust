@@ -16,6 +16,8 @@ class Panel extends FieldContainer
 
     public $policyAction = null;
 
+    public $excludeOnMultiple = false;
+
     public static function make($fields, $title = null)
     {
         $panel         = new static;
@@ -40,7 +42,7 @@ class Panel extends FieldContainer
     {
         $html = '<div class="'. $this->panelClass .'" id="panel_'.$this->getId().'" title="'. $this->title .'">';
         $html .= $this->getTitle();
-        return $html . collect($this->fields)->where('showInEdit', true)->reduce(function ($carry, $field) use ($object) {
+        return $html . collect($this->fields)->filter->shouldShow($object, 'edit')->where('showInEdit', true)->reduce(function ($carry, $field) use ($object) {
             return $carry . ($field->shouldHide($object, 'edit') ? '' : $field->displayInEdit($object));
         }) .'</div>';
     }

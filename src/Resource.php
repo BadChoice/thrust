@@ -192,9 +192,14 @@ abstract class Resource
         return $object;
     }
 
-    public function getValidationRules($objectId)
+    public function getValidationRules($objectId, $multiple = false)
     {
         $fields = $this->fieldsFlattened()->where('showInEdit', true);
+        if ($multiple) {
+            $fields = $fields->reject(function ($field) {
+                return $field->excludeOnMultiple;
+            });
+        }
         return $fields->mapWithKeys(function ($field) use ($objectId) {
             return [$field->field => str_replace('{id}', $objectId, $field->validationRules)];
         })->filter(function ($value) {
@@ -355,5 +360,10 @@ abstract class Resource
     public function getUpdateConfirmationMessage()
     {
         return Translation::useTranslationPrefix($this->updateConfirmationMessage, $this->updateConfirmationMessage);
+    }
+
+    public function generateMultipleFields()
+    {
+        return [];
     }
 }
