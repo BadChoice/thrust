@@ -24,6 +24,7 @@ class ThrustHasManyController extends Controller
             'parent_id'               => $id,
             'isChild'                 => $resource instanceof ChildResource && $backHasManyURLParams,
             'hasManyBackUrlParams'    => $backHasManyURLParams,
+            'description'             => $childResource->getDescription(),
 //            "object"                  => $object,
 //            "title"                   => $object->{$resource->nameField},
 //            "children"                => $object->{$relationship},

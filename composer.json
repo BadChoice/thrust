@@ -1,9 +1,9 @@
 {
-    "name": "badchoice/thrust",
+    "name": "revosystems/thrust",
     "description": "A simple resource crud generator",
     "type": "library",
     "require": {
-        "laravel/framework": "^7.4",
+        "laravel/framework": "8.x",
         "intervention/image": "^2.5",
         "psr/container": "^1.0"
     },

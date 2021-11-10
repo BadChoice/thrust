@@ -22,8 +22,9 @@ abstract class Field
     public $withDesc    = false;
     public $description = false;
 
-    public $withoutIndexHeader = false;
-    public $rowClass           = '';
+    public $withoutIndexHeader  = false;
+    public $with                = [];
+    public $rowClass            = '';
 
     public $excludeOnMultiple = false;
 
@@ -33,9 +34,9 @@ abstract class Field
 
     public static function make($dbField, $title = null)
     {
-        $field        = app(static::class);
-        $field->field = $dbField;
-        $field->title = $title;
+        $field         = app(static::class);
+        $field->field   = $dbField;
+        $field->title  = $title;
         return $field;
     }
 
@@ -67,6 +68,12 @@ abstract class Field
     {
         $this->withDesc    = $withDesc;
         $this->description = $description;
+        return $this;
+    }
+
+    public function with($with): self
+    {
+        $this->with = is_array($with) ? $with : func_get_args();
         return $this;
     }
 
