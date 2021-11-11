@@ -24,7 +24,9 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
 
     Route::get('{resourceName}', 'ThrustController@index')->name('thrust.index');
     Route::post('{resourceName}', 'ThrustController@store')->name('thrust.store');
+    Route::post('{resourceName}/multiple', 'ThrustController@storeMultiple')->name('thrust.store.multiple');
     Route::get('{resourceName}/create', 'ThrustController@create')->name('thrust.create');
+    Route::get('{resourceName}/create/multiple', 'ThrustController@createMultiple')->name('thrust.create.multiple');
     Route::get('{resourceName}/{id}/edit', 'ThrustController@edit')->name('thrust.edit');
     Route::get('{resourceName}/{id}/editInline', 'ThrustController@editInline')->name('thrust.editInline');
     Route::put('{resourceName}/{id}', 'ThrustController@update')->name('thrust.update');

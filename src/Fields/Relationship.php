@@ -95,4 +95,9 @@ abstract class Relationship extends Field
     {
         return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
+
+    public function sortableInIndex()
+    {
+        return false;
+    }
 }

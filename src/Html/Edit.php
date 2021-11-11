@@ -18,11 +18,16 @@ class Edit
         $this->resourceName = $resourceName;
     }
 
-    public function getEditFields()
+    public function getEditFields($multiple = false)
     {
-        $fields = collect($this->resource->getFields())->filter(function($field){
+        $fields = collect($this->resource->getFields())->filter(function ($field) {
             return $field->showInEdit && $this->resource->can($field->policyAction);
         });
+        if ($multiple) {
+            $fields = $fields->reject(function ($field) {
+                return $field->excludeOnMultiple;
+            });
+        }
         if ($this->resource::$sortable) {
             $fields->prepend(Hidden::make($this->resource::$sortField));
         }
@@ -61,19 +66,20 @@ class Edit
         });
     }
 
-    public function show($id, $fullPage = false)
+    public function show($id, $fullPage = false, $multiple = false)
     {
         view()->share('fullPage', $fullPage);
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
         return view('thrust::edit', [
-            'nameField'     => $this->resource->nameField,
-            'resourceName'  => $this->resourceName ? : $this->resource->name(),
-            'fields'        => $this->getEditFields(),
-            'object'        => $object,
-            'hideVisibility'      => $this->getPanelHideVisibilityJson(),
-            'showVisibility'      => $this->getPanelShowVisibilityJson(),
-            'fullPage'            => $fullPage,
-            'updateConfirmationMessage' => $this->resource->getUpdateConfirmationMessage()
+            'nameField'                 => $this->resource->nameField,
+            'resourceName'              => $this->resourceName ? : $this->resource->name(),
+            'fields'                    => $this->getEditFields($multiple),
+            'object'                    => $object,
+            'hideVisibility'            => $this->getPanelHideVisibilityJson(),
+            'showVisibility'            => $this->getPanelShowVisibilityJson(),
+            'fullPage'                  => $fullPage,
+            'updateConfirmationMessage' => $this->resource->getUpdateConfirmationMessage(),
+            'multiple'                  => $multiple
         ])->render();
     }
 

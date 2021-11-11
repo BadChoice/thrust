@@ -4,11 +4,10 @@ namespace BadChoice\Thrust\Fields;
 
 use BadChoice\Thrust\Fields\Traits\Visibility;
 
-class Panel
+class Panel extends FieldContainer
 {
     use Visibility;
 
-    public $fields;
     public $showInEdit = true;
     public $title;
     public $icon;
@@ -16,6 +15,8 @@ class Panel
     public $panelClass = 'formPanel';
 
     public $policyAction = null;
+
+    public $excludeOnMultiple = false;
 
     public static function make($fields, $title = null)
     {
@@ -41,7 +42,7 @@ class Panel
     {
         $html = '<div class="'. $this->panelClass .'" id="panel_'.$this->getId().'" title="'. $this->title .'">';
         $html .= $this->getTitle();
-        return $html . collect($this->fields)->where('showInEdit', true)->reduce(function ($carry, Field $field) use ($object) {
+        return $html . collect($this->fields)->filter->shouldShow($object, 'edit')->where('showInEdit', true)->reduce(function ($carry, $field) use ($object) {
             return $carry . ($field->shouldHide($object, 'edit') ? '' : $field->displayInEdit($object));
         }) .'</div>';
     }
@@ -53,7 +54,6 @@ class Panel
         }
         return implode('', ['<h4>', icon($this->icon ?? ''), ' ', $this->title, '</h4>']);
     }
-
 
     public function getId()
     {
@@ -68,5 +68,10 @@ class Panel
     public function shouldHide($object, $state)
     {
         return false;
+    }
+
+    public function panels()
+    {
+        return parent::panels()->push($this);
     }
 }

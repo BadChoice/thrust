@@ -20,4 +20,7 @@ return [
     'deactivate'             => 'Desactivar',
     'clearSorting'           => 'Esborrar l\'ordenació',
     'clearSelection'         => 'Esborrar la selecció',
+    'amount'                 => 'Quantitat',
+    'amountDesc'             => 'Nombre de còpies a crear.',
+    'createMultiple'         => 'Creació múltiple',
 ];
