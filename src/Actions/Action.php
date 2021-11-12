@@ -14,7 +14,7 @@ abstract class Action
     use Iconable;
 
     public $needsConfirmation   = true;
-    public $actionConfirmationMessage = 'Are you sure';
+    public $confirmationMessage = 'Are you sure';
     public $main                = false;
     public $needsSelection      = true;
 
@@ -55,8 +55,8 @@ abstract class Action
         return $this;
     }
 
-    public function getActionConfirmationMessage()
+    public function getConfirmationMessage(): string
     {
-        return Translation::useTranslationPrefix(Str::camel($this->actionConfirmationMessage), $this->actionConfirmationMessage ? $this->actionConfirmationMessage.'?' : $this->actionConfirmationMessage);
+        return Translation::translate($this->confirmationMessage);
     }
 }

@@ -182,7 +182,7 @@ abstract class Field
 
     public function getDeleteConfirmationMessage()
     {
-        return Translation::useTranslationPrefix(Str::camel($this->deleteConfirmationMessage), $this->deleteConfirmationMessage ? $this->deleteConfirmationMessage.'?' : $this->deleteConfirmationMessage);
+        return Translation::translate($this->deleteConfirmationMessage);
     }
 
     public function fieldsFlattened()
