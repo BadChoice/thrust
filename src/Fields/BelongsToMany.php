@@ -2,20 +2,19 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceManager;
 use BadChoice\Thrust\ResourceFilters\Search;
 
 class BelongsToMany extends Relationship
 {
-    public $allowDuplicates   = false;
+    public $allowDuplicates              = false;
     public $excludeNonDuplicatesInSearch = true;
-    public $indexTextCallback = null;
-    public $pivotFields       = [];
-    public $objectFields      = [];
-    public $withCount      = false;
-    public $icon              = null;
+    public $indexTextCallback            = null;
+    public $pivotFields                  = [];
+    public $objectFields                 = [];
+    public $withCount                    = false;
+    public $icon                         = null;
     public $hideName;
 
     public $sortable     = false;
@@ -23,6 +22,8 @@ class BelongsToMany extends Relationship
 
     public $relatedSortable   = false;
     public $relatedSortField  = 'order';
+
+    public $pivotState = null;
 
     public function displayInIndex($object)
     {
@@ -80,7 +81,7 @@ class BelongsToMany extends Relationship
 
     public function allowDuplicates($allowDuplicates = true, $excludeNonDuplicatesInSearch = true)
     {
-        $this->allowDuplicates = $allowDuplicates;
+        $this->allowDuplicates              = $allowDuplicates;
         $this->excludeNonDuplicatesInSearch = $excludeNonDuplicatesInSearch;
         return $this;
     }
@@ -99,7 +100,9 @@ class BelongsToMany extends Relationship
 
     public function getTitle($forHeader = false)
     {
-        if ($forHeader && $this->withoutIndexHeader) return "";
+        if ($forHeader && $this->withoutIndexHeader) {
+            return '';
+        }
         return $this->title ?? trans_choice(config('thrust.translationsPrefix') . Str::singular($this->field), 2);
     }
 
@@ -109,21 +112,28 @@ class BelongsToMany extends Relationship
             return call_user_func($this->indexTextCallback, $object);
         }
         if ($this->icon) {
-            return "";
+            return '';
         }
         if ($this->withCount) {
             return $this->getRelation($object)->count();
         }
 
-        if ($this->sortable)  {
-            return $object->{$this->field}->sortBy($this->sortField)->pluck($this->relationDisplayField)->implode(', ');
+        $related = $object->{$this->field};
+        if ($this->sortable) {
+            $related = $related->sortBy($this->sortField);
         }
-        return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
+
+        return $related->map(function ($child) {
+            $stateStyle = ($this->pivotState && ! $child->pivot->{$this->pivotState})
+                ? "style='color:red; opacity:0.5; text-decoration-line:line-through;'"
+                : '';
+            return "<span {$stateStyle}>{$child->{$this->relationDisplayField}}</span>";
+        })->implode('<br>');
     }
 
     public function getOptions($object)
     {
-        if (! $this->allowDuplicates && ! $this->excludeNonDuplicatesInSearch){
+        if (! $this->allowDuplicates && ! $this->excludeNonDuplicatesInSearch) {
             return $this->relatedQuery($object, true)->get();
         }
         return $this->relatedQuery($object, $this->allowDuplicates)->get();
@@ -143,7 +153,8 @@ class BelongsToMany extends Relationship
         return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
 
-    public function onlyCount(){
+    public function onlyCount()
+    {
         $this->withCount = true;
         return $this;
     }
@@ -156,5 +167,11 @@ class BelongsToMany extends Relationship
             $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
         });
         return $data;
+    }
+
+    public function withPivotState(string $state = 'active') : self
+    {
+        $this->pivotState = $state;
+        return $this;
     }
 }
