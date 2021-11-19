@@ -13,6 +13,9 @@ class Hidden extends Text
 
     public function displayInEdit($object, $inline = false)
     {
-        return "<input type='hidden' name='{$this->field}' value='{$this->getValue($object)}'>";
+        $form = $inline
+            ? "form=\"{$this->getFormId($object)}\""
+            : '';
+        return "<input type='hidden' name='{$this->field}' value='{$this->getValue($object)}' {$form}>";
     }
 }

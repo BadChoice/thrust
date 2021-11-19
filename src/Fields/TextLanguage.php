@@ -6,12 +6,13 @@ class TextLanguage extends Text
 {
     protected $displayInIndexCallback = null;
     protected $languages;
-    public $showInIndex = false;
-    public $showInEdit  = true;
-    public $isTextArea  = false;
+    public $showInIndex  = false;
+    public $showInEdit   = true;
+    public $isTextArea   = false;
     public $textAreaRows = 5;
 
-    public function languages($languages){
+    public function languages($languages)
+    {
         $this->languages = $languages;
         return $this;
     }
@@ -30,6 +31,7 @@ class TextLanguage extends Text
             'description'     => $this->getDescription(),
             'isTextArea'      => $this->isTextArea,
             'textAreaRows'    => $this->textAreaRows,
+            'formId'          => $this->getFormId($object),
         ])->render();
     }
 
@@ -40,7 +42,7 @@ class TextLanguage extends Text
 
     public function isTextArea($rows = null)
     {
-        $this->isTextArea = true;
+        $this->isTextArea   = true;
         $this->textAreaRows = $rows == null ? $this->textAreaRows : $rows;
         return $this;
     }

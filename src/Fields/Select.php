@@ -17,7 +17,8 @@ class Select extends Field
         return $this;
     }
 
-    public function forceIntValue($forceIntValue = true){
+    public function forceIntValue($forceIntValue = true)
+    {
         $this->forceIntValue = $forceIntValue;
         return $this;
     }
@@ -59,6 +60,7 @@ class Select extends Field
             'options'     => $this->getOptions(),
             'description' => $this->getDescription(),
             'attributes'  => $this->getFieldAttributes(),
+            'formId'      => $this->getFormId($object),
         ])->render();
     }
 

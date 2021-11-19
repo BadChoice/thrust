@@ -30,6 +30,7 @@ class Color extends Text
             'description' => $this->getDescription(),
             'title'       => $this->getTitle(),
             'inline'      => $inline,
+            'formId'      => $this->getFormId($object),
         ]);
     }
 

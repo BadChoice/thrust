@@ -34,9 +34,9 @@ abstract class Field
 
     public static function make($dbField, $title = null)
     {
-        $field         = app(static::class);
+        $field          = app(static::class);
         $field->field   = $dbField;
-        $field->title  = $title;
+        $field->title   = $title;
         return $field;
     }
 
@@ -192,5 +192,12 @@ abstract class Field
     public function sortableInIndex()
     {
         return $this->sortable;
+    }
+
+    public function getFormId($object) : string
+    {
+        return $object
+            ? "thrust-form-{$object->id}"
+            : 'belongsToManyForm';
     }
 }

@@ -22,12 +22,14 @@ class TextArea extends Field
     public function displayInEdit($object, $inline = false)
     {
         return view('thrust::fields.textarea', [
+            'inline'          => $inline,
             'title'           => $this->getTitle(),
             'field'           => $this->field,
             'value'           => $this->getValue($object),
             'validationRules' => $this->getHtmlValidation($object, 'textarea'),
             'attributes'      => $this->getFieldAttributes(),
             'description'     => $this->getDescription(),
+            'formId'          => $this->getFormId($object),
         ])->render();
     }
 
@@ -35,7 +37,6 @@ class TextArea extends Field
     {
         return htmlspecialchars($object->{$this->field});
     }
-
 
     public function allowScripts()
     {
@@ -45,7 +46,7 @@ class TextArea extends Field
 
     public function mapAttributeFromRequest($value)
     {
-        return parent::mapAttributeFromRequest(!$this->shouldAllowScripts ? strip_tags($value) : $value);
+        return parent::mapAttributeFromRequest(! $this->shouldAllowScripts ? strip_tags($value) : $value);
     }
 
     public function attributes($attributes)
