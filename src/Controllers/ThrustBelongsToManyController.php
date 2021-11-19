@@ -7,6 +7,7 @@ use BadChoice\Thrust\Fields\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as BelongsToManyBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
+use BadChoice\Thrust\Html\Edit;
 
 class ThrustBelongsToManyController extends Controller
 {
@@ -82,6 +83,17 @@ class ThrustBelongsToManyController extends Controller
             $object->pivot->update(['order' => $idsSorted[$object->pivot->id]]);
         });
         return response()->json('OK', 200);
+    }
+
+    public function editInLine($resourceName, $id, $relationship, $pivotId)
+    {
+        $resource           = Thrust::make($resourceName);
+        $object             = $resource->find($id);
+        $belongsToManyField = $resource->fieldFor($relationship);
+        $explodedPivotClass = explode('\\', $object->$relationship()->getPivotClass());
+        $pivotResourceName  = end($explodedPivotClass);
+        
+        return (new Edit(Thrust::make($pivotResourceName)))->showBelongsToManyInline($pivotId, $belongsToManyField);
     }
 
     protected function belongsToManyFields(BelongsToMany $belongsToManyField, string $relationship, Model $object) : BelongsToManyBuilder

@@ -47,6 +47,7 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
     Route::get('{resourceName}/{id}/belongsToMany/{relationship}/search/{search}', 'ThrustBelongsToManyController@search')->name('thrust.belongsToMany.search');
     Route::post('{resourceName}/{id}/belongsToMany/{relationship}/updateOrder', 'ThrustBelongsToManyController@updateOrder')->name('thrust.belongsToMany.updateOrder');
     Route::delete('{resourceName}/{id}/belongsToMany/{relationship}/{detachId}', 'ThrustBelongsToManyController@delete')->name('thrust.belongsToMany.delete');
+    Route::get('{resourceName}/{id}/belongsToMany/{relationship}/{pivotId}/editInline', 'ThrustBelongsToManyController@editInline')->name('thrust.belongsToMany.editInline');
 
     Route::get('{resourceName}/{id}/hasMany/{relationship}', 'ThrustHasManyController@index')->name('thrust.hasMany');
 

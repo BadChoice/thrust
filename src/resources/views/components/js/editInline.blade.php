@@ -13,6 +13,16 @@
         $('#sort_'+id).find("td input,td select").each(function() {
             $(this).attr("form", "thrust-form-" + id);
         });
-        $("#thrust-form-"+id).submit();
+
+        form = $("#thrust-form-"+id);
+        if($('#thrust-form-'+id, '{{config('thrust.popupId', '#popup')}}').length == 1) {
+            var data = {}
+            for(value of new FormData(form[0])) {
+                data[value[0]] = value[1]
+            }
+            callAjax(form.attr('action'), data)
+            return
+        }
+        form.submit();
     }
 </script>

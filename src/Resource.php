@@ -86,17 +86,19 @@ abstract class Resource
      */
     abstract public function fields();
 
-    public function getFields()
+    public function getFields(?bool $inline = false)
     {
         return array_merge(
             $this->fields(),
-            $this->editAndDeleteFields()
+            $inline
+                ? []
+                : $this->editAndDeleteFields()
         );
     }
 
-    public function fieldsFlattened()
+    public function fieldsFlattened(?bool $inline = false)
     {
-        return collect($this->getFields())->flatMap->fieldsFlattened();
+        return collect($this->getFields($inline))->flatMap->fieldsFlattened();
     }
 
     public function fieldFor($field)
