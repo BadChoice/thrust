@@ -23,6 +23,9 @@ class BelongsToMany extends Relationship
     public $relatedSortable   = false;
     public $relatedSortField  = 'order';
 
+    public $relatedQueryOrderField     = 'id';
+    public $relatedQueryOrderDirection = 'asc';
+
     public function displayInIndex($object)
     {
         return view('thrust::fields.belongsToMany', [
@@ -132,7 +135,8 @@ class BelongsToMany extends Relationship
 
     public function relatedQuery($object, $allowDuplicates = true)
     {
-        $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with)->orderBy('name', 'asc');
+        $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with)
+            ->orderBy($this->relatedQueryOrderField, $this->relatedQueryOrderDirection);
         if ($this->relatedSortable) {
             return $query->orderBy($this->relatedSortField);
         }
@@ -158,5 +162,12 @@ class BelongsToMany extends Relationship
             $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
         });
         return $data;
+    }
+
+    public function orderRelatedQueryBy(string $field, string $direction = 'asc') : self
+    {
+        $this->relatedQueryOrderField     = $field;
+        $this->relatedQueryOrderDirection = $direction;
+        return $this;
     }
 }
