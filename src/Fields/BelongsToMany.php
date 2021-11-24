@@ -2,27 +2,27 @@
 
 namespace BadChoice\Thrust\Fields;
 
-use BadChoice\Thrust\Facades\Thrust;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceManager;
 use BadChoice\Thrust\ResourceFilters\Search;
 
 class BelongsToMany extends Relationship
 {
-    public $allowDuplicates   = false;
+    public $allowDuplicates              = false;
     public $excludeNonDuplicatesInSearch = true;
-    public $indexTextCallback = null;
-    public $pivotFields       = [];
-    public $objectFields      = [];
-    public $withCount      = false;
-    public $icon              = null;
+    public $indexTextCallback            = null;
+    public $pivotFields                  = [];
+    public $objectFields                 = [];
+    public $withCount                    = false;
+    public $icon                         = null;
     public $hideName;
 
     public $sortable     = false;
     public $sortField    = 'order';
 
     public $relatedSortable   = false;
-    public $relatedSortField  = 'order';
+    public $relatedSortField  = 'id';
+    public $relatedSortOrder  = 'asc';
 
     public function displayInIndex($object)
     {
@@ -80,7 +80,7 @@ class BelongsToMany extends Relationship
 
     public function allowDuplicates($allowDuplicates = true, $excludeNonDuplicatesInSearch = true)
     {
-        $this->allowDuplicates = $allowDuplicates;
+        $this->allowDuplicates              = $allowDuplicates;
         $this->excludeNonDuplicatesInSearch = $excludeNonDuplicatesInSearch;
         return $this;
     }
@@ -99,7 +99,9 @@ class BelongsToMany extends Relationship
 
     public function getTitle($forHeader = false)
     {
-        if ($forHeader && $this->withoutIndexHeader) return "";
+        if ($forHeader && $this->withoutIndexHeader) {
+            return '';
+        }
         return $this->title ?? trans_choice(config('thrust.translationsPrefix') . Str::singular($this->field), 2);
     }
 
@@ -109,13 +111,13 @@ class BelongsToMany extends Relationship
             return call_user_func($this->indexTextCallback, $object);
         }
         if ($this->icon) {
-            return "";
+            return '';
         }
         if ($this->withCount) {
             return $this->getRelation($object)->count();
         }
 
-        if ($this->sortable)  {
+        if ($this->sortable) {
             return $object->{$this->field}->sortBy($this->sortField)->pluck($this->relationDisplayField)->implode(', ');
         }
         return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
@@ -123,7 +125,7 @@ class BelongsToMany extends Relationship
 
     public function getOptions($object)
     {
-        if (! $this->allowDuplicates && ! $this->excludeNonDuplicatesInSearch){
+        if (! $this->allowDuplicates && ! $this->excludeNonDuplicatesInSearch) {
             return $this->relatedQuery($object, true)->get();
         }
         return $this->relatedQuery($object, $this->allowDuplicates)->get();
@@ -131,7 +133,8 @@ class BelongsToMany extends Relationship
 
     public function relatedQuery($object, $allowDuplicates = true)
     {
-        $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with);
+        $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with)
+            ->orderBy($this->relatedSortField, $this->relatedSortOrder);
         if ($this->relatedSortable) {
             return $query->orderBy($this->relatedSortField);
         }
@@ -143,7 +146,8 @@ class BelongsToMany extends Relationship
         return Search::apply($this->getRelation($object), $search, $this->searchFields ?? [$this->relationDisplayField]);
     }
 
-    public function onlyCount(){
+    public function onlyCount()
+    {
         $this->withCount = true;
         return $this;
     }
@@ -156,5 +160,12 @@ class BelongsToMany extends Relationship
             $data[$field->field] = $field->mapAttributeFromRequest($data[$field->field]);
         });
         return $data;
+    }
+
+    public function sortRelatedBy(string $field, string $order = 'asc') : self
+    {
+        $this->relatedSortField     = $field;
+        $this->relatedSortOrder     = $order;
+        return $this;
     }
 }
