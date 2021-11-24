@@ -4,7 +4,9 @@ namespace BadChoice\Thrust\Actions;
 
 use BadChoice\Thrust\Helpers\Iconable;
 use BadChoice\Thrust\Helpers\Titleable;
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 abstract class Action
 {
@@ -12,7 +14,7 @@ abstract class Action
     use Iconable;
 
     public $needsConfirmation   = true;
-    public $confirmationMessage = 'Are you sure?';
+    public $confirmationMessage = 'Are you sure';
     public $main                = false;
     public $needsSelection      = true;
 
@@ -51,5 +53,10 @@ abstract class Action
     {
         $this->selectedTargets = $targets;
         return $this;
+    }
+
+    public function getConfirmationMessage(): string
+    {
+        return Translation::translate($this->confirmationMessage);
     }
 }

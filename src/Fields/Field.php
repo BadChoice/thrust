@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\Html\Validation;
 use BadChoice\Thrust\Fields\Traits\Visibility;
@@ -27,6 +28,8 @@ abstract class Field
     public $rowClass            = '';
 
     public $excludeOnMultiple = false;
+
+    public $deleteConfirmationMessage = 'Are you sure';
 
     abstract public function displayInIndex($object);
 
@@ -182,6 +185,11 @@ abstract class Field
             return 'sortableHeaderRight';
         }
         return 'sortableHeader';
+    }
+
+    public function getDeleteConfirmationMessage()
+    {
+        return Translation::translate($this->deleteConfirmationMessage);
     }
 
     public function fieldsFlattened()
