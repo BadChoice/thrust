@@ -21,10 +21,8 @@ class BelongsToMany extends Relationship
     public $sortField    = 'order';
 
     public $relatedSortable   = false;
-    public $relatedSortField  = 'order';
-
-    public $relatedOrderField     = 'id';
-    public $relatedOrderDirection = 'asc';
+    public $relatedSortField  = 'id';
+    public $relatedSortOrder  = 'asc';
 
     public function displayInIndex($object)
     {
@@ -136,7 +134,7 @@ class BelongsToMany extends Relationship
     public function relatedQuery($object, $allowDuplicates = true)
     {
         $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with)
-            ->orderBy($this->relatedOrderField, $this->relatedOrderDirection);
+            ->orderBy($this->relatedSortField, $this->relatedSortOrder);
         if ($this->relatedSortable) {
             return $query->orderBy($this->relatedSortField);
         }
@@ -164,10 +162,10 @@ class BelongsToMany extends Relationship
         return $data;
     }
 
-    public function orderRelatedBy(string $field, string $direction = 'asc') : self
+    public function sortRelatedBy(string $field, string $order = 'asc') : self
     {
-        $this->relatedOrderField     = $field;
-        $this->relatedOrderDirection = $direction;
+        $this->relatedSortField     = $field;
+        $this->relatedSortOrder     = $order;
         return $this;
     }
 }
