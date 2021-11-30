@@ -21,7 +21,8 @@ class BelongsToMany extends Relationship
     public $sortField    = 'order';
 
     public $relatedSortable   = false;
-    public $relatedSortField  = 'order';
+    public $relatedSortField  = 'id';
+    public $relatedSortOrder  = 'asc';
 
     public $withEdit = false;
 
@@ -134,7 +135,8 @@ class BelongsToMany extends Relationship
 
     public function relatedQuery($object, $allowDuplicates = true)
     {
-        $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with);
+        $query = parent::relatedQuery($object, $allowDuplicates)->with($this->with)
+            ->orderBy($this->relatedSortField, $this->relatedSortOrder);
         if ($this->relatedSortable) {
             return $query->orderBy($this->relatedSortField);
         }
@@ -171,5 +173,12 @@ class BelongsToMany extends Relationship
     public function canEdit() : bool
     {
         return count($this->pivotFields) !== 0 && $this->withEdit;
+    }
+    
+    public function sortRelatedBy(string $field, string $order = 'asc') : self
+    {
+        $this->relatedSortField     = $field;
+        $this->relatedSortOrder     = $order;
+        return $this;
     }
 }

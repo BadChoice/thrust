@@ -12,7 +12,7 @@
 </div>
 <div id="popup-results"></div>
 
-@if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'edit', $object))
+@if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'create'))
     <div class="mt4">
         <form id='belongsToManyForm' action="{{route('thrust.belongsToMany.store', [$resourceName, $object->id, $belongsToManyField->field]) }}" method="POST">
             {{ csrf_field() }}
