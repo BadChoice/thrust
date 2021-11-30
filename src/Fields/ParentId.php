@@ -19,9 +19,6 @@ class ParentId extends Text
 
     public function displayInEdit($object, $inline = false)
     {
-        $form = $inline
-            ? "form=\"{$this->getFormId($object)}\""
-            : '';
-        return "<input type='hidden' name='{$this->field}' value='{$this->getValue($object)}' {$form}>";
+        return "<input type='hidden' name='{$this->field}' value='{$this->getValue($object)}'>";
     }
 }

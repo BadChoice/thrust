@@ -14,7 +14,6 @@ class CheckSwitch extends Check
             'value'       => $this->getValue($object),
             'inline'      => $inline,
             'description' => $this->getDescription(),
-            'formId'      => $this->getFormId($object),
         ]);
     }
 }

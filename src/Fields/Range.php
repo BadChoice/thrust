@@ -35,7 +35,6 @@ class Range extends Text
             'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
             'attributes'      => $this->getFieldAttributes(),
             'description'     => $this->getDescription(),
-            'formId'          => $this->getFormId($object),
         ])->render();
     }
 

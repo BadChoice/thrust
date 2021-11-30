@@ -28,7 +28,6 @@ class MultipleSelect extends Select
             'options'     => $this->getOptions(),
             'description' => $this->getDescription(),
             'clearable'   => $this->clearable,
-            'formId'      => $this->getFormId($object),
         ])->render();
     }
 

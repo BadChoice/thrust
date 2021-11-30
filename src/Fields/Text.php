@@ -45,7 +45,6 @@ class Text extends Field
             'validationRules' => $this->getHtmlValidation($object, $this->getFieldType()),
             'attributes'      => $this->getFieldAttributes(),
             'description'     => $this->getDescription(),
-            'formId'          => $this->getFormId($object),
         ])->render();
     }
 
@@ -81,6 +80,6 @@ class Text extends Field
 
     public function mapAttributeFromRequest($value)
     {
-        return parent::mapAttributeFromRequest(! $this->shouldAllowScripts ? strip_tags($value) : $value);
+        return parent::mapAttributeFromRequest(!$this->shouldAllowScripts ? strip_tags($value) : $value);
     }
 }

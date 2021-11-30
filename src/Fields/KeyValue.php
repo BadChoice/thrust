@@ -40,7 +40,6 @@ class KeyValue extends Field
             'description'   => $this->getDescription(),
             'multiple'      => $this->multiple,
             'fixed'         => $this->fixed,
-            'formId'        => $this->getFormId($object),
         ])->render();
     }
 
