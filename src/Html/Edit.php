@@ -37,9 +37,14 @@ class Edit
         return $fields;
     }
 
-    public function getIndexFields()
+    public function getIndexFields(?bool $inline = false)
     {
-        return $this->resource->fieldsFlattened()->where('showInIndex', true);
+        return $this->resource->fieldsFlattened($inline)->where('showInIndex', true);
+    }
+
+    public function getEditInlineFields()
+    {
+        return $this->getIndexFields(true);
     }
 
     public function getPanelHideVisibilityJson()
@@ -89,9 +94,22 @@ class Edit
         return view('thrust::editInline', [
             'nameField'     => $this->resource->nameField,
             'resourceName'  => $this->resource->name(),
-            'fields'        => $this->getIndexFields(),
+            'fields'        => $this->getEditInlineFields(),
             'sortable'      => $this->resource::$sortable,
             'object'        => $object,
+        ])->render();
+    }
+
+    public function showBelongsToManyInline($id, $belongsToManyField)
+    {
+        $object = is_numeric($id) ? $this->resource->find($id) : $id;
+        return view('thrust::belongsToManyEditInline', [
+            'nameField'          => $this->resource->nameField,
+            'resourceName'       => $this->resource->name(),
+            'fields'             => $this->getEditInlineFields(),
+            'sortable'           => $this->resource::$sortable,
+            'object'             => $object,
+            'belongsToManyField' => $belongsToManyField,
         ])->render();
     }
 }

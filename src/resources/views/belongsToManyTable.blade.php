@@ -17,6 +17,9 @@
         @endif
     @endforeach
     <th></th>
+    @if ($belongsToManyField->canEdit())
+        <th></th>
+    @endif
     </thead>
     <tbody class="@if ($sortable) sortableChild @endif">
     @foreach ($children as $row)
@@ -39,6 +42,9 @@
             @endforeach
             @if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'delete', $row->pivot))
                 <td class="action"> <a class="delete-resource" data-delete="confirm resource" href="{{route('thrust.belongsToMany.delete', [$resourceName, $object->id, $belongsToManyField->field, $row->pivot->id])}}"></a></td>
+            @endif
+            @if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'edit', $row->pivot) && $belongsToManyField->canEdit())
+                <td class="action"> <a class='edit thrust-edit' id="edit_{{$row->pivot->id}}"></a></td>
             @endif
         </tr>
     @endforeach

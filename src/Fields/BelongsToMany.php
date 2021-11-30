@@ -24,6 +24,8 @@ class BelongsToMany extends Relationship
     public $relatedSortField  = 'id';
     public $relatedSortOrder  = 'asc';
 
+    public $withEdit = false;
+
     public function displayInIndex($object)
     {
         return view('thrust::fields.belongsToMany', [
@@ -162,6 +164,17 @@ class BelongsToMany extends Relationship
         return $data;
     }
 
+    public function withEdit(?bool $edit = true) : self
+    {
+        $this->withEdit = $edit;
+        return $this;
+    }
+
+    public function canEdit() : bool
+    {
+        return count($this->pivotFields) !== 0 && $this->withEdit;
+    }
+    
     public function sortRelatedBy(string $field, string $order = 'asc') : self
     {
         $this->relatedSortField     = $field;
