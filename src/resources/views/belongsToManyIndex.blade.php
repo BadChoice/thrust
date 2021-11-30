@@ -93,6 +93,8 @@
 
     function belongsToManyEditInline(id){
         var url = "{{route('thrust.belongsToMany.editInline', [$resourceName, $object->id, $belongsToManyField->field, 1])}}".replace("1", id);
-        $('#sort_'+id).load(url);
+        $(`#sort_${id}`).load(url, () => {
+           $(`#sort_${id} input, #sort_${id} textarea, #sort_${id} select`).each((index, el)=>{ el.setAttribute('form', `thrust-form-${id}`)})
+        });
     }
 </script>

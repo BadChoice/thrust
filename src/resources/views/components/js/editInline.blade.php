@@ -6,7 +6,9 @@
 
     function editInline(id){
         var url = "{{route('thrust.editInline', [$resourceName, 1])}}".replace("1", id);
-        $('#sort_'+id).load(url);
+        $('#sort_'+id).load(url, () => {
+           $(`#sort_${id} input, #sort_${id} textarea, #sort_${id} select`).each((index, el)=>{ el.setAttribute('form', `thrust-form-${id}`)})
+        });
     }
 
     function submitInlineForm(id){
