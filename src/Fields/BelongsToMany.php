@@ -132,7 +132,7 @@ class BelongsToMany extends Relationship
             : ', ';
 
         return $related->map(function ($child) {
-            return "<span {$this->activeAttributes($child)}>{$child->{$this->relationDisplayField}}</span>";
+            return "<span {$this->activeAttributes($child)}>".strip_tags($child->{$this->relationDisplayField}).'</span>';
         })->implode($glue);
     }
 
