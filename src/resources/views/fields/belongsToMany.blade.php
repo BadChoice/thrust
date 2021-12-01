@@ -5,9 +5,9 @@
         @elseif( strlen($value) == 0)
             --
         @else
-            {{ $value }}
+            {!! $value !!}
         @endif
     </a>
 @else
-    {{ $value }}
+    {!! $value !!}
 @endif

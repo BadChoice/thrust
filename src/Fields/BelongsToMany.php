@@ -26,6 +26,9 @@ class BelongsToMany extends Relationship
 
     public $withEdit = false;
 
+    public $pivotActiveField = null;
+    public $displayMultipleLines = false;
+
     public function displayInIndex($object)
     {
         return view('thrust::fields.belongsToMany', [
@@ -119,10 +122,18 @@ class BelongsToMany extends Relationship
             return $this->getRelation($object)->count();
         }
 
+        $related = $object->{$this->field};
         if ($this->sortable) {
-            return $object->{$this->field}->sortBy($this->sortField)->pluck($this->relationDisplayField)->implode(', ');
+            $related = $related->sortBy($this->sortField);
         }
-        return $object->{$this->field}->pluck($this->relationDisplayField)->implode(', ');
+
+        $glue = $this->displayMultipleLines
+            ? '<br>'
+            : ', ';
+
+        return $related->map(function ($child) {
+            return "<span {$this->activeAttributes($child)}>".strip_tags($child->{$this->relationDisplayField}).'</span>';
+        })->implode($glue);
     }
 
     public function getOptions($object)
@@ -154,6 +165,12 @@ class BelongsToMany extends Relationship
         return $this;
     }
 
+    public function displayInMultipleLines(bool $displayMultipleLines = false) : self
+    {
+        $this->displayMultipleLines = $displayMultipleLines;
+        return $this;
+    }
+
     public function mapRequest($data)
     {
         collect($this->pivotFields)->filter(function ($field) use ($data) {
@@ -164,6 +181,12 @@ class BelongsToMany extends Relationship
         return $data;
     }
 
+    public function withPivotActiveField(string $activeField = 'active', bool $displayMultipleLines = false) : self
+    {
+        $this->pivotActiveField = $activeField;
+        return $this->displayInMultipleLines($displayMultipleLines);
+    }
+    
     public function withEdit(?bool $edit = true) : self
     {
         $this->withEdit = $edit;
@@ -180,5 +203,13 @@ class BelongsToMany extends Relationship
         $this->relatedSortField     = $field;
         $this->relatedSortOrder     = $order;
         return $this;
+    }
+
+    protected function activeAttributes($child): string
+    {
+        if(!$this->pivotActiveField || $child->pivot->{$this->pivotActiveField}) {
+            return '';
+        }
+        return "style='color:red; opacity:0.5; text-decoration-line:line-through;'";
     }
 }
