@@ -18,7 +18,9 @@
         </span>
         <br><br>
         @include('thrust::components.mainActions')
-        {!! $description ?? "" !!}
+        <div class="thrust-title-description">
+            {!! $description ?? "" !!}
+        </div>
 
         @include('thrust::components.search')
         <div class="pb1 text-right thrust-actions">
