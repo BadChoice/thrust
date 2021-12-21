@@ -23,7 +23,7 @@
         </div>
 
         @include('thrust::components.search')
-        <div class="pb1 text-right thrust-actions">
+        <div class="thrust-actions">
             @include('thrust::components.filters')
             @include('thrust::components.actions')
         </div>
