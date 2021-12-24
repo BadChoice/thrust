@@ -63,7 +63,6 @@ class ThrustController extends Controller
 
     public function store($resourceName)
     {
-        return response()->json(["id" => 12, "name" => "hello"]);
         $resource = Thrust::make($resourceName);
         request()->validate($resource->getValidationRules(null));
         try {
