@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use BadChoice\Thrust\ResourceGate;
@@ -65,10 +66,12 @@ class ThrustController extends Controller
         $resource = Thrust::make($resourceName);
         request()->validate($resource->getValidationRules(null));
         try {
-            $resource->create(request()->all());
+            $result = $resource->create(request()->all());
         } catch (\Exception $e) {
+            if (request()->ajax()) { return response()->json(["error" => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);}
             return back()->withErrors(['message' => $e->getMessage()]);
         }
+        if (request()->ajax()) { return response()->json($result);}
         return back()->withMessage(__('thrust::messages.created'));
     }
 

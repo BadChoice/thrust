@@ -61,6 +61,7 @@ class BelongsTo extends Relationship
                 'allowNull'     => $this->allowNull,
                 'inline'        => $inline,
                 'description'   => $this->getDescription(),
+                'inlineCreation' => $this->inlineCreation,
             ]);
         }
         return view('thrust::fields.select', [
@@ -71,6 +72,7 @@ class BelongsTo extends Relationship
             'options'       => $this->getOptions($object),
             'inline'        => $inline,
             'description'   => $this->getDescription(),
+            'inlineCreation' => $this->inlineCreation
         ]);
     }
 

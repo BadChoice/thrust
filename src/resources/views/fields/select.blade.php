@@ -4,4 +4,7 @@
             <option @if((! $key && $key === 0) || $key == $value) selected @endif value="{{$key}}">{{$optionValue}}</option>
         @endforeach
     </select>
+    @if(isset($inlineCreation) && $inlineCreation)
+       @include('thrust::fields.inlineCreation')
+    @endif
 @endcomponent
