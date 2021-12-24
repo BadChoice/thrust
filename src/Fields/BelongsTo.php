@@ -7,10 +7,17 @@ use BadChoice\Thrust\ResourceManager;
 class BelongsTo extends Relationship
 {
     protected $allowNull = false;
+    protected $inlineCreation = false;
 
-    public function allowNull($allowNull = true)
+    public function allowNull($allowNull = true) : self
     {
         $this->allowNull = $allowNull;
+        return $this;
+    }
+
+    public function inlineCreation($inlineCreation = true) : self
+    {
+        $this->inlineCreation = $inlineCreation;
         return $this;
     }
 
