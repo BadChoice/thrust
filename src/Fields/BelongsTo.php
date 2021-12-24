@@ -62,6 +62,7 @@ class BelongsTo extends Relationship
                 'inline'        => $inline,
                 'description'   => $this->getDescription(),
                 'inlineCreation' => $this->inlineCreation,
+                'inlineCreationData' => $this->inlineCreationData($object)
             ]);
         }
         return view('thrust::fields.select', [
@@ -72,11 +73,19 @@ class BelongsTo extends Relationship
             'options'       => $this->getOptions($object),
             'inline'        => $inline,
             'description'   => $this->getDescription(),
-            'inlineCreation' => $this->inlineCreation
+            'inlineCreation' => $this->inlineCreation,
+            'inlineCreationData' => $this->inlineCreationData($object)
         ]);
     }
 
     public function getValueId($object){
         return $object->{$this->field}->{$this->getOwnerKey($object)} ?? null;
+    }
+
+    protected function inlineCreationData($object){
+        return [
+            "relationResource"     => collect(explode("\\", get_Class($this->getRelation($object)->getRelated())))->last(),
+            "relationDisplayField" => $this->relationDisplayField,
+        ];
     }
 }
