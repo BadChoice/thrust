@@ -2,7 +2,9 @@
     <select id="{{$field}}" name="{{$field}}">
         <option value="{{$value}}" selected>{{$name}}</option>
     </select>
-
+    @if(isset($inlineCreation) && $inlineCreation)
+        @include('thrust::fields.inlineCreation')
+    @endif
     @push('edit-scripts')
         <script>
             new RVAjaxSelect2('{{ route('thrust.relationship.search', [$resourceName, $id ?? 0, $relationship]) }}?allowNull={{$allowNull}}',{

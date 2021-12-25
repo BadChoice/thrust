@@ -1,6 +1,6 @@
 <a class="button secondary thrust-inline-creation-button" onclick="thrustCreateInline{{$field}}()"><i class="fa fa-plus" aria-hidden="true"></i></a>
 <div class="thrust-inline-creation hidden" id="inline-creation-{{$field}}"></div>
-@push('edit-scripts')
+{{--@push('edit-scripts')--}}
     <script>
         function thrustCreateInline{{$field}}() {
             $("#inline-creation-{{$field}}").toggle('fast')
@@ -23,4 +23,4 @@
             })
         }
     </script>
-@endpush
+{{--@endpush--}}
