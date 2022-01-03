@@ -5,7 +5,7 @@
         @if ($path && $exists)
             <span>{{ basename($path) }} @icon(pencil)</span>
         @else
-            <span class="button secondary"> @icon(file) </span>
+            <span class="button secondary thrust-file-button"> @icon(file) </span>
         @endif
     @if($withLink)
     </a>

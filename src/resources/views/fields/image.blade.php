@@ -5,11 +5,11 @@
         @if ($path && $exists)
             <img src='{{ asset($path) }}' class='{{$classes}}' style='{{$style}}'>
         @elseif($path)
-            <span class="button secondary"> @icon(warning) </span>
+            <span class="button secondary thrust-file-button"> @icon(warning) </span>
         @elseif($gravatar)
             {!! $gravatar !!}
         @else
-            <span class="button secondary"> @icon(photo) </span>
+            <span class="button secondary thrust-file-button"> @icon(photo) </span>
         @endif
     @if($withLink)
     </a>
