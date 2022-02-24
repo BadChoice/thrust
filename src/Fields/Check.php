@@ -7,12 +7,14 @@ use BadChoice\Thrust\Facades\Thrust;
 class Check extends Text
 {
     protected $withLink = true;
+    protected $withLinkPolicyAction = null;
     protected $asSwitch = false;
     public $rowClass    = 'action';
 
-    public function withLink($withLink = true)
+    public function withLink($withLink = true, $policyAction = null)
     {
         $this->withLink = $withLink;
+        $this->withLinkPolicyAction = $policyAction;
         return $this;
     }
 
@@ -24,12 +26,14 @@ class Check extends Text
 
     public function displayInIndex($object)
     {
+        $resourceName = Thrust::resourceNameFromModel($object);
+        $resource = Thrust::make($resourceName);
         return view('thrust::fields.checkIndex', [
-            'resourceName' => Thrust::resourceNameFromModel($object),
+            'resourceName' => $resourceName,
             'value'        => $object->{$this->field},
             'id'           => $object->id,
             'field'        => $this->field,
-            'withLinks'    => $this->withLink,
+            'withLinks'    => $this->shouldShowLinks($resource, $object),
             'asSwitch'     => $this->asSwitch,
             'description'  => $this->getDescription()
         ]);
@@ -44,5 +48,12 @@ class Check extends Text
             'inline' => $inline,
             'description' => $this->getDescription(),
         ]);
+    }
+
+    protected function shouldShowLinks($resource, $object): bool
+    {
+        if (!$this->withLink) { return false; }
+        if (!$this->withLinkPolicyAction) { return true; }
+        return $resource->can($this->withLinkPolicyAction, $object);
     }
 }
