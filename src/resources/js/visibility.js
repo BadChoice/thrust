@@ -14,7 +14,7 @@ function setupFormFieldVisibility(panel_id, visibility, type) {
     });
 }
 
-function showOrHideFormVisibility(panel_id, visibility, animated, type) {
+function showOrHideFormVisibility(id, visibility, animated, type) {
     var animationSpeed = animated ? 'fast' : 0;
 
     // console.log("Panel id: " + panel_id);
@@ -24,22 +24,22 @@ function showOrHideFormVisibility(panel_id, visibility, animated, type) {
     if (visibility["values"].includes(parseInt($("#" + visibility["field"]).val()))) {
         if (type == 'show') {
             console.log("show");
-            $("#panel_" + panel_id).show(animationSpeed);
-            $("#panel_" + panel_id + " :input").removeAttr("disabled");
+            $("#" + id).show(animationSpeed);
+            $("#" + id + " :input").removeAttr("disabled");
         } else {
             console.log("hide");
-            $("#panel_" + panel_id).hide(animationSpeed);
-            $("#panel_" + panel_id + " :input").attr("disabled", "true");
+            $("#" + id).hide(animationSpeed);
+            $("#" + id + " :input").attr("disabled", "true");
         }
     } else {
         if (type == 'show') {
             console.log("hide in else");
-            $("#panel_" + panel_id).hide(animationSpeed);
-            $("#panel_" + panel_id + " :input").attr("disabled", "true");
+            $("#" + id).hide(animationSpeed);
+            $("#" + id + " :input").attr("disabled", "true");
         } else {
             console.log("show in else");
-            $("#panel_" + panel_id).show(animationSpeed);
-            $("#panel_" + panel_id + " :input").removeAttr("disabled");
+            $("#" + id).show(animationSpeed);
+            $("#" + id + " :input").removeAttr("disabled");
         }
     }
 }

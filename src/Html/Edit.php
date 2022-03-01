@@ -52,8 +52,8 @@ class Edit
         return collect($this->resource->panels())->filter(function ($panel) {
             return $panel->hideEdit->field != null;
         })->mapWithKeys(function ($panel) {
-            return [$panel->getId() => [
-                'field' => $panel->hideEdit->field,
+            return ['panel_' . $panel->getId() => [
+                'field' =>  $panel->hideEdit->field,
                 'values' => $panel->hideEdit->values]
             ];
         });
@@ -64,7 +64,7 @@ class Edit
         return collect($this->resource->panels())->filter(function ($panel) {
             return $panel->showEdit->field != null;
         })->mapWithKeys(function ($panel) {
-            return [$panel->getId() => [
+            return ['panel_' . $panel->getId() => [
                 'field' => $panel->showEdit->field,
                 'values' => $panel->showEdit->values]
             ];
