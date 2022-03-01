@@ -17,28 +17,25 @@ function setupFormFieldVisibility(panel_id, visibility, type) {
 function showOrHideFormVisibility(id, visibility, animated, type) {
     var animationSpeed = animated ? 'fast' : 0;
 
-    // console.log("Panel id: " + panel_id);
-    // console.log(visibility["values"]);
-    // console.log($("#" + visibility["field"]).val());
+    var element = $("#" + id);
+    if (!id.includes('panel')) {
+        element = element.parent().parent();
+    }
 
     if (visibility["values"].includes(parseInt($("#" + visibility["field"]).val()))) {
         if (type == 'show') {
-            console.log("show");
-            $("#" + id).show(animationSpeed);
+            element.show(animationSpeed);
             $("#" + id + " :input").removeAttr("disabled");
         } else {
-            console.log("hide");
-            $("#" + id).hide(animationSpeed);
+            element.hide(animationSpeed);
             $("#" + id + " :input").attr("disabled", "true");
         }
     } else {
         if (type == 'show') {
-            console.log("hide in else");
-            $("#" + id).hide(animationSpeed);
+            element.hide(animationSpeed);
             $("#" + id + " :input").attr("disabled", "true");
         } else {
-            console.log("show in else");
-            $("#" + id).show(animationSpeed);
+            element.show(animationSpeed);
             $("#" + id + " :input").removeAttr("disabled");
         }
     }
