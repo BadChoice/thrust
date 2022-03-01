@@ -4,10 +4,8 @@ namespace BadChoice\Thrust\Html;
 
 use BadChoice\Thrust\ChildResource;
 use BadChoice\Thrust\Fields\Field;
-use BadChoice\Thrust\Fields\FieldContainer;
 use BadChoice\Thrust\Fields\Hidden;
 use BadChoice\Thrust\Fields\ParentId;
-use BadChoice\Thrust\Fields\Traits\Visibility;
 use BadChoice\Thrust\Resource;
 
 class Edit
