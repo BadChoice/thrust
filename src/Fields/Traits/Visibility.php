@@ -15,20 +15,22 @@ trait Visibility
         return $this->visibilities[$value];
     }
 
-    function hideWhen($field, $value=true, $where=null){
+    function hideWhen($field, $values = [true], $where = null){
+        if (!is_array($values)) { $values = [$values]; }
         if ($where == null || $where == 'index')
-            $this->hideIndex->hideWhen($field, $value);
+            $this->hideIndex->hideWhen($field, $values);
         if ($where == null || $where == 'edit')
-            $this->hideEdit->hideWhen($field, $value);
+            $this->hideEdit->hideWhen($field, $values);
 
         return $this;
     }
 
-    function showWhen($field, $value=true, $where=null){
+    function showWhen($field, $values = [true], $where=null){
+        if (!is_array($values)) { $values = [$values]; }
         if ($where == null || $where == 'index')
-            $this->showIndex->showWhen($field, $value);
+            $this->showIndex->showWhen($field, $values);
         if ($where == null || $where == 'edit')
-            $this->showEdit->showWhen($field, $value);
+            $this->showEdit->showWhen($field, $values);
 
         return $this;
     }

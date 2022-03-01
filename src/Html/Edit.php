@@ -54,7 +54,7 @@ class Edit
         })->mapWithKeys(function ($panel) {
             return [$panel->getId() => [
                 'field' => $panel->hideEdit->field,
-                'value' => $panel->hideEdit->value]
+                'values' => $panel->hideEdit->values]
             ];
         });
     }
@@ -66,7 +66,7 @@ class Edit
         })->mapWithKeys(function ($panel) {
             return [$panel->getId() => [
                 'field' => $panel->showEdit->field,
-                'value' => $panel->showEdit->value]
+                'values' => $panel->showEdit->values]
             ];
         });
     }
