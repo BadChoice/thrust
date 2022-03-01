@@ -13,7 +13,7 @@ class Show
 
     public function showWhen($field, $values = true)
     {
-        if (!is_array($values)) {$values = [$values]; }
+        $values = collect($values)->all();
         $this->field    = $field;
         $this->values    = $values;
     }

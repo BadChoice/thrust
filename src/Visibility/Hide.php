@@ -13,7 +13,7 @@ class Hide
 
     public function hideWhen($field, $values = [true])
     {
-        if (!is_array($values)) {$values = [$values]; }
+        $values = collect($values)->all();
         $this->field    = $field;
         $this->values    = $values;
     }

@@ -18,7 +18,7 @@ trait Visibility
     }
 
     function hideWhen($field, $values = [true], $where = null){
-        if (!is_array($values)) { $values = [$values]; }
+        $values = collect($values)->all();
         if ($where == null || $where == 'index')
             $this->hideIndex->hideWhen($field, $values);
         if ($where == null || $where == 'edit')
@@ -28,7 +28,7 @@ trait Visibility
     }
 
     function showWhen($field, $values = [true], $where=null){
-        if (!is_array($values)) { $values = [$values]; }
+        $values = collect($values)->all();
         if ($where == null || $where == 'index')
             $this->showIndex->showWhen($field, $values);
         if ($where == null || $where == 'edit')
