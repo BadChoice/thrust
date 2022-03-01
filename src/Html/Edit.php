@@ -49,7 +49,7 @@ class Edit
 
     public function getPanelHideVisibilityJson()
     {
-        return $this->resource->panels()->filter(function ($panel) {
+        return collect($this->resource->panels())->filter(function ($panel) {
             return $panel->hideEdit->field != null;
         })->mapWithKeys(function ($panel) {
             return [$panel->getId() => [
@@ -61,7 +61,7 @@ class Edit
 
     public function getPanelShowVisibilityJson()
     {
-        return $this->resource->panels()->filter(function ($panel) {
+        return collect($this->resource->panels())->filter(function ($panel) {
             return $panel->showEdit->field != null;
         })->mapWithKeys(function ($panel) {
             return [$panel->getId() => [
