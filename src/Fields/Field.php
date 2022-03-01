@@ -22,6 +22,7 @@ abstract class Field
 
     public $withDesc    = false;
     public $description = false;
+    public $tooltip     = null;
 
     public $withoutIndexHeader  = false;
     public $with                = [];
@@ -72,6 +73,15 @@ abstract class Field
         $this->withDesc    = $withDesc;
         $this->description = $description;
         return $this;
+    }
+
+    public function tooltip($tooltip) {
+        $this->tooltip = $tooltip;
+        return $this;
+    }
+
+    public function getTooltip() {
+        return $this->tooltip;
     }
 
     public function with($with): self

@@ -10,26 +10,10 @@
                 <th class="hide-mobile">  </th>
             @endif
             @foreach($fields as $field)
-                <th class="{{$field->rowClass}}">
-                    <div class='{{$field->getSortableHeaderClass()}}'>
-                    @if ($field->sortableInIndex() && !request('search'))
-                        @if(request('sort') == $field->field)
-                            @if(strtolower(request('sort_order')) == 'asc')
-                                <a class="rounded bg-gray-200 p-1" href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'desc')}}'  class='sortDown'> {{ $field->getTitle(true) }} ▼</a>
-                            @else
-                                <a class="rounded bg-gray-200 p-1" href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'asc')}}' class='sortUp'> {{ $field->getTitle(true) }} ▲</a>
-                            @endif
-                        @else
-                            <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'asc')}}' class='sortUp'>{{ $field->getTitle(true) }}</a>
-                        @endif
-                    @else
-                        {{ $field->getTitle(true) }}
-                    @endif
-                    </div>
+                <th class="{{ $field->rowClass }}">
+                    @include('thrust::fieldHeader')
                 </th>
             @endforeach
-{{--            <th class="action text-right" colspan="2" >--}}
-{{--            </th>--}}
         </thead>
 
         <tbody class="@if($sortable) sortable @endif">

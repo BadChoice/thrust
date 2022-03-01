@@ -3,6 +3,7 @@
 namespace BadChoice\Thrust\Fields;
 
 use BadChoice\Thrust\Fields\Traits\Visibility;
+use Illuminate\Support\Str;
 
 class Panel extends FieldContainer
 {
@@ -57,7 +58,7 @@ class Panel extends FieldContainer
 
     public function getId()
     {
-        return $this->panelId ?? $this->title;
+        return $this->panelId ?? Str::slug($this->title);
     }
 
     public function shouldShow($object, $state)

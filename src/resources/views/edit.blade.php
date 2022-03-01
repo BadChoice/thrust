@@ -17,7 +17,7 @@
     <div class="configForm">
         @foreach($fields as $field)
             @if (! $field->shouldHide($object, 'edit') && $field->shouldShow($object, 'edit'))
-                    {!! $field->displayInEdit($object) !!}
+                {!! $field->displayInEdit($object) !!}
             @endif
         @endforeach
         @includeWhen($multiple, 'thrust::quantityInput')

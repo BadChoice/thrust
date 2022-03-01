@@ -3,6 +3,7 @@
 namespace BadChoice\Thrust\Html;
 
 use BadChoice\Thrust\ChildResource;
+use BadChoice\Thrust\Fields\Field;
 use BadChoice\Thrust\Fields\Hidden;
 use BadChoice\Thrust\Fields\ParentId;
 use BadChoice\Thrust\Resource;
@@ -47,30 +48,6 @@ class Edit
         return $this->getIndexFields(true);
     }
 
-    public function getPanelHideVisibilityJson()
-    {
-        return collect($this->resource->panels())->filter(function ($panel) {
-            return $panel->hideEdit->field != null;
-        })->mapWithKeys(function ($panel) {
-            return [$panel->getId() => [
-                'field' => $panel->hideEdit->field,
-                'value' => $panel->hideEdit->value]
-            ];
-        });
-    }
-
-    public function getPanelShowVisibilityJson()
-    {
-        return collect($this->resource->panels())->filter(function ($panel) {
-            return $panel->showEdit->field != null;
-        })->mapWithKeys(function ($panel) {
-            return [$panel->getId() => [
-                'field' => $panel->showEdit->field,
-                'value' => $panel->showEdit->value]
-            ];
-        });
-    }
-
     public function show($id, $fullPage = false, $multiple = false)
     {
         view()->share('fullPage', $fullPage);
@@ -80,8 +57,8 @@ class Edit
             'resourceName'              => $this->resourceName ? : $this->resource->name(),
             'fields'                    => $this->getEditFields($multiple),
             'object'                    => $object,
-            'hideVisibility'            => $this->getPanelHideVisibilityJson(),
-            'showVisibility'            => $this->getPanelShowVisibilityJson(),
+            'hideVisibility'            => Field::getPanelHideVisibilityJson($this->resource),
+            'showVisibility'            => Field::getPanelShowVisibilityJson($this->resource),
             'fullPage'                  => $fullPage,
             'updateConfirmationMessage' => $this->resource->getUpdateConfirmationMessage(),
             'multiple'                  => $multiple

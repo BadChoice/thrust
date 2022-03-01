@@ -8,13 +8,14 @@ class Show
 {
 
     public $field;
-    public $value;
+    public $values;
     public $callback;
 
-    public function showWhen($field, $value = true)
+    public function showWhen($field, $values = true)
     {
+        $values = collect($values)->all();
         $this->field    = $field;
-        $this->value    = $value;
+        $this->values    = $values;
     }
 
     public function showCallback($callback){
@@ -31,6 +32,6 @@ class Show
         }
         if (! $object)
             return false;
-        return $object->{$this->field} == $this->value;
+        return in_array($object->{$this->field}, $this->values);
     }
 }
