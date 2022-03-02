@@ -55,18 +55,18 @@ trait Visibility
         return $this;
     }
 
-    function shouldHide($object, $where=null){
+    function shouldHide($object, $where = null){
         if ($where == 'index')
-            return $this->hideIndex->shouldHide($object);
+            return $this->hideIndex->shouldHide($object, true);
         if ($where == null || $where == 'edit')
             return $this->hideEdit->shouldHide($object);
 
         return $this->hideEdit->shouldHide($object) && $this->hideIndex->shouldHide($object);
     }
 
-    function shouldShow($object, $where=null){
+    function shouldShow($object, $where = null){
         if ($where == 'index')
-            return $this->showIndex->shouldShow($object);
+            return $this->showIndex->shouldShow($object, true);
         if ($where == null || $where == 'edit')
             return $this->showEdit->shouldShow($object);
 

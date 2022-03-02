@@ -22,7 +22,7 @@ class Show
         $this->callback = $callback;
     }
 
-    public function shouldShow($object)
+    public function shouldShow($object, $conditionally = false)
     {
         if ($this->callback){
             return call_user_func($this->callback, $object);
@@ -32,6 +32,9 @@ class Show
         }
         if (! $object)
             return false;
-        return in_array($object->{$this->field}, $this->values);
+        if ($conditionally) {
+            return in_array($object->{$this->field}, $this->values);
+        }
+        return true;
     }
 }

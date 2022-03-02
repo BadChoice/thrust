@@ -22,13 +22,17 @@ class Hide
         $this->callback = $callback;
     }
 
-    public function shouldHide($object)
+    public function shouldHide($object, $conditionally = false)
     {
         if ($this->field == null || $this->callback) {
             return false;
         }
         if (! $object)
             return true;
-        return in_array($object->{$this->field}, $this->values);
+        if ($conditionally){
+            return in_array($object->{$this->field}, $this->values);
+        }
+        return false;
+
     }
 }
