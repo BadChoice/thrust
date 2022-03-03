@@ -33,6 +33,13 @@ class HasMany extends Relationship
         return $this;
     }
 
+    public function withLink($link = true)
+    {
+        $this->withLink = true;
+        $this->link = $link;
+        return $this;
+    }
+
     public function useTitle($useTitle = true, $withCount = true)
     {
         $this->useTitle = $useTitle;
