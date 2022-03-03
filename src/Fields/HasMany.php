@@ -36,7 +36,9 @@ class HasMany extends Relationship
     public function withLink($link = true)
     {
         $this->withLink = true;
-        $this->link = $link;
+        if (is_string($link)) {
+            $this->link = $link;
+        }
         return $this;
     }
 
