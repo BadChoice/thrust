@@ -46,6 +46,12 @@ abstract class Resource
 
 
     /**
+    * You can make that search is performed to another resource and the result is displayed in the same page
+    */
+    public static $searchResource = null;
+
+
+    /**
      * @var Defines the global gate ability for the actions to be performed,
      * It goes along with the default Laravel resource Policy if any
      */
