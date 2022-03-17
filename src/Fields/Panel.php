@@ -53,7 +53,7 @@ class Panel extends FieldContainer
         if (! $this->title && ! $this->icon) {
             return '';
         }
-        return implode('', ['<h4>', icon($this->icon ?? ''), ' ', $this->title, '</h4>']);
+        return implode('', ['<h4>', $this->icon ? icon($this->icon) : '', ' ', $this->title, '</h4>']);
     }
 
     public function getId()
