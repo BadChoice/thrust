@@ -9,7 +9,7 @@
         {{ csrf_field() }}
         <input type="file" name="image">
         <div class="mt-4">
-            <button>{{ __("thrust::messages.save") }}</button>
+            <button class="button-with-loading">{{ __("thrust::messages.save") }}</button>
         </div>
     </form>
 </div>
