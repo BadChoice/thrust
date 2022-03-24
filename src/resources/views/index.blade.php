@@ -13,7 +13,7 @@
                 @endif
                  / {{ $parent->name }} -
             @endif
-            {{ trans_choice(config('thrust.translationsPrefix') . Illuminate\Support\Str::singular($resourceName), 2) }}
+            {{ $resource->getTitle() }}
             ({{ $resource->rows()->total() }})
         </span>
         <br><br>

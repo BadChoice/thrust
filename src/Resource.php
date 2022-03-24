@@ -319,6 +319,11 @@ abstract class Resource
         return $this->alreadyFetchedRows;
     }
 
+    public function getTitle()
+    {
+        return trans_choice(config('thrust.translationsPrefix') . Str::singular($this->name()), 2);
+    }
+
     public function getDescription()
     {
         $description = trans_choice(config('thrust.translationsDescriptionsPrefix') . Str::singular($this->name()), 1);
