@@ -1,5 +1,5 @@
     @if ($fullPage)
-	<h2>{{ $resource->getTitle() }}</h2>
+	<h2>{{ $title }}</h2>
     @else
         <div class="configForm">
             <h2> {{ $object->{$nameField} ?? __('thrust::messages.new') }}</h2>
