@@ -3,6 +3,7 @@
 namespace BadChoice\Thrust;
 
 use BadChoice\Thrust\Helpers\Translation;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\ResourceFilters\Sort;
 use BadChoice\Thrust\ResourceFilters\Search;
@@ -149,7 +150,13 @@ abstract class Resource
     {
         $object = $this->find($id);
         app(ResourceGate::class)->check($this, 'update', $object);
-        return $object->update($this->mapRequest($newData));
+        $result = $object->update($this->mapRequest($newData));
+        $this->onUpdated($object, $newData);
+        return $result;
+    }
+
+    protected function onUpdated(Model $model, $newData): void
+    {
     }
 
     public function delete($id)
