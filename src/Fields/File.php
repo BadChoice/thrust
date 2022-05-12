@@ -17,6 +17,7 @@ class File extends Field implements Prunable
     public $prunable            = true;
     public $showInEdit          = false;
     public $editClasses         = 'br1';
+    protected $classes             = '';
     public $indexStyle          = 'height:30px; width:30px; object-fit: contain; border:solid 1px #eee;';
     public $editStyle           = 'height:150px; width:300px; object-fit: contain; border:solid 1px #eee;';
     public $withLink            = true;
@@ -75,6 +76,7 @@ class File extends Field implements Prunable
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object),
             'classes'       => $this->classes,
+            'exists'        => $this->exists($object),
             'style'         => $this->indexStyle,
             'resourceName'  => Thrust::resourceNameFromModel($object),
             'id'            => $object->id,
