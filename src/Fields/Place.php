@@ -1,4 +1,8 @@
 <?php
+/**
+ * If you are going to use this field you must include the JS before using it.
+ * Thrust::placesJs('TheGoogleApiKey')
+ */
 
 namespace BadChoice\Thrust\Fields;
 
@@ -64,5 +68,10 @@ class Place extends Text
             'relatedFields'     => $this->relatedFields,
             'validationRules'   => $this->getHtmlValidation($object, $this->getFieldType()),
         ])->render();
+    }
+
+    public static function javascript(string $key): string
+    {
+        return "<script type=\"text/javascript\" src=\"https://maps.googleapis.com/maps/api/js?key={$key}&libraries=places\"></script>";
     }
 }
