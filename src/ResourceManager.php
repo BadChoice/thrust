@@ -2,6 +2,8 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Fields\Place;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Log;
 use RecursiveDirectoryIterator;
@@ -93,5 +95,10 @@ class ResourceManager
         $path = explode('\\', $class);
         $name = array_pop($path);
         return lcfirst(Str::plural($name)) ;
+    }
+
+    public function placesJs(string $key): HtmlString
+    {
+        return new HtmlString(Place::javascript($key));
     }
 }
