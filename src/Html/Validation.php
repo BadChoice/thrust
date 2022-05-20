@@ -7,9 +7,12 @@ class Validation
     protected $rules;
     protected $type;
 
-    public function __construct($rules, $type = 'text')
+    public function __construct(null|string|array $rules, $type = 'text')
     {
-        $this->rules    = collect(explode('|', $rules));
+        $this->rules    = collect(is_string($rules)
+            ? explode('|', $rules)
+            : $rules
+        );
         $this->type     = $type;
     }
 
