@@ -4,16 +4,16 @@
     @endif
 </div>
 
-<div>
+<div class="inline">
     <form action="{{ route('thrust.image.store', [$resourceName, $object->id, $fileField->field]) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="file" name="image">
-        <div class="mt-4">
+        <div>
             <button class="button-with-loading">{{ __("thrust::messages.save") }}</button>
         </div>
     </form>
 </div>
-<div class="ml-28 -mt-7">
+<div class="inline ml-28">
     <form action="{{ route('thrust.image.delete', [$resourceName, $object->id, $fileField->field]) }}" method="POST">
         {{ csrf_field() }}
         {{ method_field('delete')  }}
