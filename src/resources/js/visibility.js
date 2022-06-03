@@ -22,7 +22,7 @@ function showOrHideFormVisibility(id, visibility, animated, type) {
         element = element.parent().parent();
     }
 
-    if (visibility["values"].includes(parseInt($("#" + visibility["field"]).val()))) {
+    if (visibility["values"].some(v => v == $("#" + visibility["field"]).val())) {
         if (type == 'show') {
             element.show(animationSpeed);
             $("#" + id + " :input").removeAttr("disabled");
