@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Exceptions\CanNotDeleteException;
 use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
