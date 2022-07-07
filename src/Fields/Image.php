@@ -17,6 +17,7 @@ class Image extends File implements Prunable
 
     protected $maxHeight = 400;
     protected $maxWidth  = 400;
+    protected $square  = false;
 
     protected $maxFileSize = 1024; // 1 MB
 
@@ -31,6 +32,11 @@ class Image extends File implements Prunable
     {
         $this->maxWidth  = $width;
         $this->maxHeight = $height;
+        return $this;
+    }
+
+    public function square(){
+        $this->square = true;
         return $this;
     }
 
@@ -80,6 +86,11 @@ class Image extends File implements Prunable
             $constraint->aspectRatio();
             $constraint->upsize();
         });
+
+        if ($this->square){
+            $size = min($image->width(), $image->height());
+            $image->crop($size, $size);
+        }
 
         $filename   = Str::random(10) . '.png';
         $this->getStorage()->put($this->getPath() . $filename, (string)$image->encode('png'));
