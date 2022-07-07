@@ -82,8 +82,8 @@ class Image extends File implements Prunable
         });
 
         $filename   = Str::random(10) . '.png';
-        Storage::disk($this->storage)->put($this->getPath() . $filename, (string)$image->encode('png'));
-        Storage::disk($this->storage)->put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
+        $this->getStorage()->put($this->getPath() . $filename, (string)$image->encode('png'));
+        $this->getStorage()->put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         })->encode('png'));
@@ -93,6 +93,6 @@ class Image extends File implements Prunable
     protected function deleteFile($object)
     {
         parent::deleteFile($object);
-        Storage::disk($this->storage)->delete($this->filePath($object, $this->resizedPrefix));
+        $this->getStorage()->delete($this->filePath($object, $this->resizedPrefix));
     }
 }
