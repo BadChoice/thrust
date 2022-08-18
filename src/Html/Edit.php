@@ -58,8 +58,8 @@ class Edit
             'resourceName'              => $this->resourceName ? : $this->resource->name(),
             'fields'                    => $this->getEditFields($multiple),
             'object'                    => $object,
-            'hideVisibility'            => Field::getPanelHideVisibilityJson($this->resource),
-            'showVisibility'            => Field::getPanelShowVisibilityJson($this->resource),
+            'hideVisibility'            => Field::getPanelHideVisibilityJson(collect($this->resource->panels($object))),
+            'showVisibility'            => Field::getPanelShowVisibilityJson(collect($this->resource->panels($object))),
             'fullPage'                  => $fullPage,
             'updateConfirmationMessage' => $this->resource->getUpdateConfirmationMessage(),
             'multiple'                  => $multiple

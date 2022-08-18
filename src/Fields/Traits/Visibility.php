@@ -73,8 +73,8 @@ trait Visibility
         return $this->showEdit->shouldShow($object) && $this->showIndex->shouldShow($object);
     }
 
-    static function getPanelShowVisibilityJson($resource){
-        $fieldsVisibility = collect($resource->panels())->flatMap(function($panel) {
+    static function getPanelShowVisibilityJson($panels){
+        $fieldsVisibility = $panels->flatMap(function($panel) {
             return collect($panel->fields)->filter(function ($field) {
                 if ($field instanceof FieldContainer) { return false ;}
                 return $field->showEdit->field != null;
@@ -85,7 +85,7 @@ trait Visibility
                 'values' => $field->showEdit->values]
             ];
         });
-        $panelVisibility = collect($resource->panels())->filter(function ($panel) {
+        $panelVisibility = $panels->filter(function ($panel) {
             return $panel->showEdit->field != null;
         })->mapWithKeys(function ($panel) {
             return ['panel_' . $panel->getId() => [
@@ -97,9 +97,9 @@ trait Visibility
     }
 
 
-    static function getPanelHideVisibilityJson($resource)
+    static function getPanelHideVisibilityJson($panels)
     {
-        $fieldsVisibility = collect($resource->panels())->flatMap(function($panel) {
+        $fieldsVisibility = $panels->flatMap(function($panel) {
             return collect($panel->fields)->filter(function ($field) {
                 if ($field instanceof FieldContainer) { return false ;}
                 return $field->hideEdit->field != null;
@@ -110,7 +110,7 @@ trait Visibility
                 'values' => $field->hideEdit->values]
             ];
         });
-        $panelVisibility =  collect($resource->panels())->filter(function ($panel) {
+        $panelVisibility =  $panels->filter(function ($panel) {
             return $panel->hideEdit->field != null;
         })->mapWithKeys(function ($panel) {
             return ['panel_' . $panel->getId() => [
