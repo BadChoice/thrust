@@ -114,11 +114,12 @@ abstract class Resource
         return $this->fieldsFlattened()->where('field', $field)->first();
     }
 
-    public function panels()
+    public function panels($object)
     {
         return collect($this->fields())->filter(function ($field) {
             return ($field instanceof FieldContainer);
-        })->flatMap->panels();
+        })->each->withObject($object)
+        ->flatMap->panels($object);
     }
 
     public function name()

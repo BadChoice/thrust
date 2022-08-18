@@ -71,8 +71,8 @@ class Panel extends FieldContainer
         return false;
     }
 
-    public function panels()
+    public function panels($object)
     {
-        return parent::panels()->push($this);
+        return parent::panels($object)->push($this);
     }
 }
