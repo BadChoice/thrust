@@ -70,6 +70,14 @@ class Place extends Text
         ])->render();
     }
 
+    public function getValue($object)
+    {
+        if (! $object) {
+            return null;
+        }
+        return $object->{$this->field};
+    }
+
     public static function javascript(string $key): string
     {
         return "<script type=\"text/javascript\" src=\"https://maps.googleapis.com/maps/api/js?key={$key}&libraries=places\"></script>";
