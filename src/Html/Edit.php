@@ -7,6 +7,7 @@ use BadChoice\Thrust\Fields\Field;
 use BadChoice\Thrust\Fields\Hidden;
 use BadChoice\Thrust\Fields\ParentId;
 use BadChoice\Thrust\Resource;
+use Illuminate\Support\Str;
 
 class Edit
 {
@@ -81,6 +82,7 @@ class Edit
     public function showBelongsToManyInline($id, $belongsToManyField)
     {
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
+        $relation = Str::singular($belongsToManyField->field);
         return view('thrust::belongsToManyEditInline', [
             'nameField'          => $this->resource->nameField,
             'resourceName'       => $this->resource->name(),
@@ -88,6 +90,7 @@ class Edit
             'sortable'           => $this->resource::$sortable,
             'object'             => $object,
             'belongsToManyField' => $belongsToManyField,
+            'relatedName' => $object->{$relation}?->{$belongsToManyField->relationDisplayField},
         ])->render();
     }
 }

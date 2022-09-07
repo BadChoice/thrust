@@ -4,7 +4,7 @@
 @endif
 <form action="{{route('thrust.update', [$resourceName, $object->id] )}}" id='thrust-form-{{$object->id}}' method="POST" onkeydown="console.log(event.key)">
     @if (! $belongsToManyField->hideName)
-        <td></td>
+        <td> {{ $relatedName }} </td>
     @endif
     @foreach($belongsToManyField->objectFields as $field)
         <td></td>
