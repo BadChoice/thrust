@@ -88,4 +88,12 @@ class BelongsTo extends Relationship
             "relationDisplayField" => $this->relationDisplayField,
         ];
     }
+
+    public function sorted($field = 'order', $ascending = 'asc')
+    {
+        $this->relatedScope(function($query) use ($field, $ascending) {
+            return $query->orderBy($field,$ascending);
+        });
+        return $this;
+    }
 }
