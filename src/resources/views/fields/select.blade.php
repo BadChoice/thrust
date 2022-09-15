@@ -1,6 +1,6 @@
 @component('thrust::components.formField', ["field" => $field, "title" => $title, "description" => $description ?? null, "inline" => $inline])
     <select id="{{$field}}" name="{{$field}}" @if($searchable) class="searchable" @endif {{$attributes ?? ""}}>
-        @if ($hasCategories)
+        @if (isset($hasCategories) && $hasCategories))
             @foreach($options as $category => $values)
                 <optgroup label="{{$category}}">
                     @foreach($values as $key => $optionValue)
