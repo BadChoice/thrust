@@ -44,6 +44,10 @@ class Select extends Field
 
     public function displayInIndex($object)
     {
+        if ($this->hasCategories()){
+            $arrayWithoutCategories = collect($this->getOptions())->mapWithKeys(function($a) { return $a; })->all();
+            return $arrayWithoutCategories[$this->getValue($object)] ?? '--';
+        }
         return $this->getOptions()[$this->getValue($object)] ?? '--';
     }
 
@@ -59,6 +63,7 @@ class Select extends Field
             'options'     => $this->getOptions(),
             'description' => $this->getDescription(),
             'attributes'  => $this->getFieldAttributes(),
+            'hasCategories' => $this->hasCategories(),
         ])->render();
     }
 
@@ -79,5 +84,11 @@ class Select extends Field
     protected function getFieldAttributes()
     {
         return $this->attributes;
+    }
+
+    protected function hasCategories()
+    {
+        $options = $this->getOptions();
+        return is_array($options[array_key_first($options)]);
     }
 }
