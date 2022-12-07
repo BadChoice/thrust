@@ -24,7 +24,7 @@ class File extends Field implements Prunable
     protected $filename         = null;
     public $onlyUpload          = false;
     protected $withoutExistsCheck = false;
-    protected ?string $visibility = null;
+    protected ?string $storageVisibility = null;
 
     protected $maxFileSize = 10240; // 10 MB
 
@@ -48,15 +48,9 @@ class File extends Field implements Prunable
         return $this;
     }
 
-    public function visible() : self
+    public function storageVisibility(string $visibility = 'public') : self
     {
-        $this->visibility = 'public';
-        return $this;
-    }
-
-    public function private() : self
-    {
-        $this->visibility = 'private';
+        $this->storageVisibility = $visibility;
         return $this;
     }
 
@@ -165,7 +159,7 @@ class File extends Field implements Prunable
     {
         $this->delete($object, false);
         $filename   = Str::random(10) . "." . $file->extension();
-        $this->getStorage()->putFileAs($this->getPath(), $file, $this->filename ?? $filename, $this->visibility);
+        $this->getStorage()->putFileAs($this->getPath(), $file, $this->filename ?? $filename, $this->storageVisibility);
         $this->updateField($object, $filename);
     }
 
