@@ -15,7 +15,6 @@ class Image extends File implements Prunable
     protected $gravatarField;
     protected $gravatarDefault;
 
-    protected ?string $visibility = null;
     protected $maxHeight = 400;
     protected $maxWidth  = 400;
     protected $square  = false;
@@ -26,18 +25,6 @@ class Image extends File implements Prunable
     {
         $this->gravatarField   = $field;
         $this->gravatarDefault = $default;
-        return $this;
-    }
-
-    public function visible() : self
-    {
-        $this->visibility = 'public';
-        return $this;
-    }
-
-    public function private() : self
-    {
-        $this->visibility = 'private';
         return $this;
     }
 
