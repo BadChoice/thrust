@@ -15,6 +15,7 @@ class Image extends File implements Prunable
     protected $gravatarField;
     protected $gravatarDefault;
 
+    protected ?string $visibility = null;
     protected $maxHeight = 400;
     protected $maxWidth  = 400;
     protected $square  = false;
@@ -25,6 +26,18 @@ class Image extends File implements Prunable
     {
         $this->gravatarField   = $field;
         $this->gravatarDefault = $default;
+        return $this;
+    }
+
+    public function visible() : self
+    {
+        $this->visibility = 'public';
+        return $this;
+    }
+
+    public function private() : self
+    {
+        $this->visibility = 'private';
         return $this;
     }
 
@@ -93,11 +106,11 @@ class Image extends File implements Prunable
         }
 
         $filename   = Str::random(10) . '.png';
-        $this->getStorage()->put($this->getPath() . $filename, (string)$image->encode('png'));
+        $this->getStorage()->put($this->getPath() . $filename, (string)$image->encode('png'), $this->visibility);
         $this->getStorage()->put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
-        })->encode('png'));
+        })->encode('png'), $this->visibility);
         $this->updateField($object, $filename);
     }
 
