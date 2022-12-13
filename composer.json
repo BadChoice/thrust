@@ -7,7 +7,7 @@
         "laravel/framework": "8.x|9.x",
         "intervention/image": "^2.5",
         "psr/container": "^1.0|^2.0",
-        "illuminate/contracts": "^9.43"
+        "illuminate/contracts": "8.x|^9.43"
     },
     "license": "MIT",
     "authors": [
