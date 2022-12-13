@@ -2,6 +2,8 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use Illuminate\Support\Collection;
+
 class Select extends Field
 {
     protected $options          = [];
@@ -10,9 +12,11 @@ class Select extends Field
     protected $forceIntValue    = false;
     protected $attributes       = '';
 
-    public function options($options, $allowNull = false)
+    public function options(array|Collection $options, $allowNull = false)
     {
-        $this->options   = $options;
+        $this->options = is_array($options)
+            ? $options
+            : $options->toArray();
         $this->allowNull = $allowNull;
         return $this;
     }
