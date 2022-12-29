@@ -17,12 +17,8 @@ final class HistoryTrackTest extends TestCase
             'model_type' => 'App\\Models\\Invoice',
             'model_id' => 25,
             'event' => HistoryTrackEvent::UPDATED,
-            'old' => [
-                'total' => 45,
-            ],
-            'new' => [
-                'total' => 60,
-            ],
+            'old' => ['total' => 45],
+            'new' => ['total' => 60],
             'ip' => '215.6.18.147',
         ]);
 
@@ -35,10 +31,10 @@ final class HistoryTrackTest extends TestCase
         $this->assertEquals(5, $historyTrack->user_id);
         $this->assertEquals('App\\Models\\Invoice', $historyTrack->model_type);
         $this->assertEquals(25, $historyTrack->model_id);
-        $this->assertEquals(HistoryTrackEvent::UPDATED, $historyTrack->event);
-        $this->assertEquals(45, $historyTrack->old->get('total'));
-        $this->assertEquals(60, $historyTrack->new->get('total'));
+        $this->assertEquals(HistoryTrackEvent::UPDATED, $historyTrack->event, 'The EVENT attribute is not an Enum');
+        $this->assertEquals(45, $historyTrack->old->get('total'), 'The OLD attribute is not a Collection');
+        $this->assertEquals(60, $historyTrack->new->get('total'), 'The NEW attribute is not a Collection');
         $this->assertEquals('215.6.18.147', $historyTrack->ip);
-        $this->assertInstanceOf(CarbonImmutable::class, $historyTrack->created_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $historyTrack->created_at, 'The CREATED_AT attribute is not an Immutable Datetime');
     }
 }
