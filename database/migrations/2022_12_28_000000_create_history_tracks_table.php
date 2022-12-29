@@ -20,7 +20,7 @@ return new class extends Migration
             $table->ulid('id');
             $table->string('user_name', 100);
             $table->unsignedBigInteger('user_id');
-            $table->nullableMorphs('model');
+            $table->morphs('model');
             $table->enum('event', ['created', 'updated', 'deleted']);
             $table->text('old')->nullable();
             $table->text('new')->nullable();
