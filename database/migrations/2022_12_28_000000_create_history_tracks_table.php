@@ -18,8 +18,8 @@ return new class extends Migration
         }
         Schema::create('history_tracks', function (Blueprint $table) {
             $table->ulid('id');
-            $table->string('user_name', 100);
-            $table->unsignedBigInteger('user_id');
+            $table->string('author_name', 100);
+            $table->nullableMorphs('author');
             $table->morphs('model');
             $table->enum('event', ['created', 'updated', 'deleted']);
             $table->text('old')->nullable();
