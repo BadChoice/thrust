@@ -5,6 +5,7 @@ namespace Tests\Models;
 use BadChoice\Thrust\Models\Enums\HistoryTrackEvent;
 use BadChoice\Thrust\Models\HistoryTrack;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 final class HistoryTrackTest extends TestCase
@@ -31,9 +32,12 @@ final class HistoryTrackTest extends TestCase
         $this->assertEquals(5, $historyTrack->user_id);
         $this->assertEquals('App\\Models\\Invoice', $historyTrack->model_type);
         $this->assertEquals(25, $historyTrack->model_id);
-        $this->assertEquals(HistoryTrackEvent::UPDATED, $historyTrack->event, 'The EVENT attribute is not an Enum');
-        $this->assertEquals(45, $historyTrack->old->get('total'), 'The OLD attribute is not a Collection');
-        $this->assertEquals(60, $historyTrack->new->get('total'), 'The NEW attribute is not a Collection');
+        $this->assertInstanceOf(HistoryTrackEvent::class, $historyTrack->event, 'The EVENT attribute is not an Enum');
+        $this->assertEquals(HistoryTrackEvent::UPDATED, $historyTrack->event);
+        $this->assertInstanceOf(Collection::class, $historyTrack->old, 'The OLD attribute is not a Collection');
+        $this->assertEquals(45, $historyTrack->old->get('total'));
+        $this->assertInstanceOf(Collection::class, $historyTrack->new, 'The NEW attribute is not a Collection');
+        $this->assertEquals(60, $historyTrack->new->get('total'));
         $this->assertEquals('215.6.18.147', $historyTrack->ip);
         $this->assertInstanceOf(CarbonImmutable::class, $historyTrack->created_at, 'The CREATED_AT attribute is not an Immutable Datetime');
     }
