@@ -6,6 +6,7 @@ use BadChoice\Thrust\Models\Enums\HistoryTrackEvent;
 use BadChoice\Thrust\Models\HistoryTrack;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
+use LogicException;
 use Tests\TestCase;
 
 final class HistoryTrackTest extends TestCase
@@ -40,5 +41,24 @@ final class HistoryTrackTest extends TestCase
         $this->assertEquals(60, $historyTrack->new->get('total'));
         $this->assertEquals('215.6.18.147', $historyTrack->ip);
         $this->assertInstanceOf(CarbonImmutable::class, $historyTrack->created_at, 'The CREATED_AT attribute is not an Immutable Datetime');
+    }
+
+    public function testItIsImmutable(): void
+    {
+        $historyTrack = HistoryTrack::create([
+            'user_name' => 'Joan',
+            'user_id' => 5,
+            'model_type' => 'App\\Models\\Invoice',
+            'model_id' => 25,
+            'event' => HistoryTrackEvent::UPDATED,
+        ]);
+
+        try {
+            $historyTrack->update(['user_name' => 'Josep']);
+        } catch(LogicException $e) {
+            $this->assertStringContainsString('cannot be updated', $e->getMessage());
+        }
+
+        $this->assertDatabaseMissing('history_tracks', ['user_name' => 'Josep']);
     }
 }
