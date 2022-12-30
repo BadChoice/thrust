@@ -9,6 +9,10 @@
         "psr/container": "^1.0|^2.0",
         "illuminate/contracts": "8.x|^9.43"
     },
+    "require-dev": {
+        "orchestra/testbench": "^7.17",
+        "nunomaduro/collision": "^6.3"
+    },
     "license": "MIT",
     "authors": [
         {
@@ -23,6 +27,17 @@
         "psr-4": {
             "BadChoice\\Thrust\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests",
+            "App\\": "tests/skeleton"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php vendor/bin/testbench package:discover --ansi"
+        ]
     },
     "extra": {
         "laravel": {

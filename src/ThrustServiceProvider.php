@@ -17,6 +17,10 @@ class ThrustServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/thrust.php' => config_path('thrust.php')
         ], 'config');
+
+        $this->publishes([
+            __DIR__ . '/../database/migrations' => database_path('migrations/tenants')
+        ], 'thrust-migrations');
     }
 
     public function register()
