@@ -2,7 +2,7 @@
 
 namespace BadChoice\Thrust\Models\Enums;
 
-enum HistoryTrackEvent: string
+enum DatabaseActionEvent: string
 {
     case CREATED = 'created';
     case UPDATED = 'updated';

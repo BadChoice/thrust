@@ -13,22 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('history_tracks')) {
-            return;
-        }
-        Schema::create('history_tracks', function (Blueprint $table) {
+        Schema::create('database_actions', function (Blueprint $table) {
             $table->ulid('id');
             $table->string('author_name', 100);
             $table->nullableMorphs('author');
             $table->morphs('model');
             $table->enum('event', ['created', 'updated', 'deleted']);
-            $table->text('old')->nullable();
-            $table->text('new')->nullable();
+            $table->text('original')->nullable();
+            $table->text('current')->nullable();
             $table->ipAddress('ip')->nullable();
             $table->timestamp('created_at')->useCurrent();
 
             $table->primary('id');
-            $table->index('user_id');
+            $table->index('author_name');
         });
     }
 
@@ -39,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('history_tracks');
+        Schema::dropIfExists('database_actions');
     }
 };
