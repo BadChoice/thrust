@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Console\Commands\PruneDatabaseActions;
 use Illuminate\Support\ServiceProvider;
 
 class ThrustServiceProvider extends ServiceProvider
@@ -21,6 +22,12 @@ class ThrustServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations/tenants')
         ], 'thrust-migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PruneDatabaseActions::class,
+            ]);
+        }
     }
 
     public function register()
