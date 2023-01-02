@@ -17,7 +17,7 @@ class ResourceManager
 
     public function __construct()
     {
-        $this->findResources();
+        $this->bootstrap();
         if (static::$servingCallback) {
             call_user_func(static::$servingCallback);
         }
@@ -28,12 +28,26 @@ class ResourceManager
         static::$servingCallback = $servingCallback;
     }
 
+    private function bootstrap(): void
+    {
+        $cache = base_path('/bootstrap/cache/thrust.php');
+        if (file_exists($cache)) {
+            $this->resources = collect(require $cache);
+            return;
+        }
+        $this->findResources();
+    }
+
     private function findResources()
     {
-        if (config('thrust.recursiveResourcesSearch')){
-            return $this->findResourcesRecursive();
+        if (! file_exists(app_path($this->resourcesFolder))) {
+            $this->resources = collect();
+            return;
         }
-        return $this->findResourcesInThrust();
+        if (config('thrust.recursiveResourcesSearch')){
+            $this->findResourcesRecursive();
+        }
+        $this->findResourcesInThrust();
     }
 
     public function findResourcesInThrust()
@@ -100,5 +114,13 @@ class ResourceManager
     public function placesJs(string $key): HtmlString
     {
         return new HtmlString(Place::javascript($key));
+    }
+
+    public function resources(bool $fresh = false): array
+    {
+        if ($fresh) {
+            $this->findResources();
+        }
+        return $this->resources->all();
     }
 }

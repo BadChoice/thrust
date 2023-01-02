@@ -2,6 +2,8 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Console\Commands\Cache;
+use BadChoice\Thrust\Console\Commands\Clear;
 use BadChoice\Thrust\Console\Commands\Prune;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,8 @@ class ThrustServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
+                Cache::class,
+                Clear::class,
                 Prune::class,
             ]);
         }
