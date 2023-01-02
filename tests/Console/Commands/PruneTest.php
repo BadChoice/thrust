@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-final class PruneDatabaseActionsTest extends TestCase
+final class PruneTest extends TestCase
 {
     public function testItPrunesDatabaseActionsOlderThanFifteenDays(): void
     {
         $this
             ->seedDatabase(days: 30)
-            ->artisan('thrust:prune-db-actions')
+            ->artisan('thrust:prune')
             ->assertSuccessful();
 
         $this->assertDatabaseCount('database_actions', 15);
@@ -22,7 +22,7 @@ final class PruneDatabaseActionsTest extends TestCase
     {
         $this
             ->seedDatabase(days: 20)
-            ->artisan('thrust:prune-db-actions', ['--days' => 5])
+            ->artisan('thrust:prune', ['--days' => 5])
             ->assertSuccessful();
 
         $this->assertDatabaseCount('database_actions', 5);

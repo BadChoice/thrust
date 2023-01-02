@@ -5,9 +5,9 @@ namespace BadChoice\Thrust\Console\Commands;
 use BadChoice\Thrust\Models\DatabaseAction;
 use Illuminate\Console\Command;
 
-class PruneDatabaseActions extends Command
+class Prune extends Command
 {
-    protected $signature = 'thrust:prune-db-actions
+    protected $signature = 'thrust:prune
                 {--days= : The days that will be preserved}';
 
     protected $description = 'Prune all database actions older than X days [15 by default]';

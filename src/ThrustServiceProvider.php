@@ -2,7 +2,7 @@
 
 namespace BadChoice\Thrust;
 
-use BadChoice\Thrust\Console\Commands\PruneDatabaseActions;
+use BadChoice\Thrust\Console\Commands\Prune;
 use Illuminate\Support\ServiceProvider;
 
 class ThrustServiceProvider extends ServiceProvider
@@ -25,7 +25,7 @@ class ThrustServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                PruneDatabaseActions::class,
+                Prune::class,
             ]);
         }
     }
