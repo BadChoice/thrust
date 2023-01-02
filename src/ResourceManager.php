@@ -123,4 +123,14 @@ class ResourceManager
         }
         return $this->resources->all();
     }
+
+    public function models(): array
+    {
+        return $this->resources
+            ->filter(fn (string $class) => is_subclass_of($class, Resource::class))
+            ->map(fn (string $resource) => $resource::$model)
+            ->values()
+            ->unique()
+            ->all();
+    }
 }
