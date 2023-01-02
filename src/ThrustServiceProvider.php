@@ -4,6 +4,8 @@ namespace BadChoice\Thrust;
 
 use BadChoice\Thrust\Console\Commands\Cache;
 use BadChoice\Thrust\Console\Commands\Clear;
+use BadChoice\Thrust\Console\Commands\Optimize;
+use BadChoice\Thrust\Console\Commands\OptimizeClear;
 use BadChoice\Thrust\Console\Commands\Prune;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,6 +31,8 @@ class ThrustServiceProvider extends ServiceProvider
             $this->commands([
                 Cache::class,
                 Clear::class,
+                Optimize::class,
+                OptimizeClear::class,
                 Prune::class,
             ]);
         }
