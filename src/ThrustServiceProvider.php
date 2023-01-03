@@ -2,6 +2,11 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Console\Commands\Cache;
+use BadChoice\Thrust\Console\Commands\Clear;
+use BadChoice\Thrust\Console\Commands\Optimize;
+use BadChoice\Thrust\Console\Commands\OptimizeClear;
+use BadChoice\Thrust\Console\Commands\Prune;
 use Illuminate\Support\ServiceProvider;
 
 class ThrustServiceProvider extends ServiceProvider
@@ -21,6 +26,16 @@ class ThrustServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations/tenants')
         ], 'thrust-migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Cache::class,
+                Clear::class,
+                Optimize::class,
+                OptimizeClear::class,
+                Prune::class,
+            ]);
+        }
     }
 
     public function register()

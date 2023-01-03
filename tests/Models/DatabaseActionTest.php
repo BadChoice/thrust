@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 final class DatabaseActionTest extends TestCase
 {
-    public function testItIsPersistedAndCasted(): void
+    public function testItIsPersistedWithCastedAttributes(): void
     {
         DatabaseAction::create([
             'author_name' => 'Joan',
@@ -99,7 +99,7 @@ final class DatabaseActionTest extends TestCase
         $this->assertEquals(22, $actionWithRelatedAuthor->author->age);
     }
 
-    public function testItMayHaveARelatedModel(): void
+    public function testItHasARelatedModelThatMayExists(): void
     {
         $actionWithoutRelatedModel = DatabaseAction::create([
             'author_name' => 'Joan',
