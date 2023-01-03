@@ -157,6 +157,12 @@ abstract class Resource
         return $result;
     }
 
+    public function updateOrCreate($data)
+    {
+        app(ResourceGate::class)->check($this, 'create');
+        return static::$model::updateOrCreate($this->mapRequest($data));
+    }
+
     protected function onUpdated(Model $model, $newData): void
     {
     }
