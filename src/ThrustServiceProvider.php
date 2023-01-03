@@ -11,8 +11,6 @@ use Illuminate\Support\ServiceProvider;
 
 class ThrustServiceProvider extends ServiceProvider
 {
-    //protected $defer = true;
-
     public function boot()
     {
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'thrust');
@@ -40,13 +38,7 @@ class ThrustServiceProvider extends ServiceProvider
 
     public function register()
     {
-        app()->singleton(ResourceManager::class, function () {
-            return new ResourceManager();
-        });
-    }
-
-    public function provides()
-    {
-        return ResourceManager::class;
+        app()->singleton(ResourceManager::class, fn () => new ResourceManager);
+        app()->singleton(ThrustObserver::class, fn () => new ThrustObserver);
     }
 }

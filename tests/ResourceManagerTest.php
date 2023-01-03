@@ -6,43 +6,48 @@ use BadChoice\Thrust\ResourceManager;
 
 final class ResourceManagerTest extends TestCase
 {
+    use Concerns\CachesResources;
+
     private ResourceManager $resourceManager;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->cacheResources([
+            'employee' => 'App\\Thrust\\Employee',
             'invoice' => 'App\\Thrust\\Invoice',
+            'invoiceDuplicate' => 'App\\Thrust\\InvoiceDuplicate',
         ]);
         $this->resourceManager = new ResourceManager();
     }
 
     protected function tearDown(): void
     {
-        $this->clearCachedFile();
+        $this->clearCachedResources();
         parent::tearDown();
-    }
-
-    private function cacheResources(array $resources): bool
-    {
-        return false !== file_put_contents(
-            base_path('/bootstrap/cache/thrust.php'),
-            '<?php return ' . var_export($resources, true) . ';' . PHP_EOL,
-        );
-    }
-
-    private function clearCachedFile(): void
-    {
-        @unlink(base_path('/bootstrap/cache/thrust.php'));
     }
 
     public function testItProvidesTheCachedResources(): void
     {
-        $this->assertEquals(['invoice' => 'App\\Thrust\\Invoice'], $this->resourceManager->resources());
+        $this->assertEquals([
+            'employee' => 'App\\Thrust\\Employee',
+            'invoice' => 'App\\Thrust\\Invoice',
+            'invoiceDuplicate' => 'App\\Thrust\\InvoiceDuplicate',
+        ], $this->resourceManager->resources());
     }
 
     public function testItProvidesTheModels(): void
     {
-        $this->assertEquals(['App\\Models\\Invoice'], $this->resourceManager->models());
+        $this->assertEquals([
+            'App\\Models\\Employee',
+            'App\\Models\\Invoice',
+        ], $this->resourceManager->models());
+    }
+
+    public function testItProvidesTheObservableModels(): void
+    {
+        $this->assertEquals([
+            'App\\Models\\Invoice',
+        ], $this->resourceManager->models(observable: true));
     }
 }

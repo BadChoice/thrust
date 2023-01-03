@@ -66,6 +66,11 @@ abstract class Resource
 
 
     /**
+     * @var Determines if the underlying model must be observed and tracked into database actions.
+     */
+    public static $observes = true;
+
+    /**
      * @var string when resource is update will show a confirmation alert with the message specified
      */
     public $updateConfirmationMessage = '';
