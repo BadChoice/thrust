@@ -124,10 +124,12 @@ class ResourceManager
         return $this->resources->all();
     }
 
-    public function models(): array
+    public function models(bool $observable = false): array
     {
         return $this->resources
             ->filter(fn (string $class) => is_subclass_of($class, Resource::class))
+            ->when($observable, fn ($resources) => $resources
+                ->reject(fn (string $resource) => $resource::$observes === false))
             ->map(fn (string $resource) => $resource::$model)
             ->values()
             ->unique()
