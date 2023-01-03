@@ -42,12 +42,16 @@ class ThrustImportController extends Controller
     {
         $resource = Thrust::make($resourceName);
         app(ResourceGate::class)->check($resource, 'index');
-
         $importer = new Importer(request('csv'), $resource);
         try {
             $imported = $importer->import(request('mapping'));
         }catch(\Exception $e){
-            return redirect()->back()->with(["message" => "Import failed: {$e->getMessage()}"]);
+//            dd($e->validator->errors()->getMessages());
+            return view('thrust::importer.failed', [
+                'resource' => $resource,
+                "resourceName" => $resourceName,
+                "exception" => $e
+            ]);
         }
 
         return redirect()->route('thrust.index', $resourceName)->with(['message' => "Imported {$imported}" ]);

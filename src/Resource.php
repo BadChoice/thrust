@@ -2,20 +2,20 @@
 
 namespace BadChoice\Thrust;
 
+use BadChoice\Thrust\Actions\Delete;
+use BadChoice\Thrust\Actions\MainAction;
+use BadChoice\Thrust\Contracts\FormatsNewObject;
+use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Exceptions\CanNotDeleteException;
+use BadChoice\Thrust\Fields\Edit;
+use BadChoice\Thrust\Fields\FieldContainer;
+use BadChoice\Thrust\Fields\Relationship;
 use BadChoice\Thrust\Helpers\Translation;
+use BadChoice\Thrust\ResourceFilters\Filters;
+use BadChoice\Thrust\ResourceFilters\Search;
+use BadChoice\Thrust\ResourceFilters\Sort;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use BadChoice\Thrust\ResourceFilters\Sort;
-use BadChoice\Thrust\ResourceFilters\Search;
-use BadChoice\Thrust\ResourceFilters\Filters;
-use BadChoice\Thrust\Fields\Relationship;
-use BadChoice\Thrust\Fields\Edit;
-use BadChoice\Thrust\Contracts\Prunable;
-use BadChoice\Thrust\Contracts\FormatsNewObject;
-use BadChoice\Thrust\Actions\MainAction;
-use BadChoice\Thrust\Actions\Delete;
-use BadChoice\Thrust\Fields\FieldContainer;
 
 abstract class Resource
 {
@@ -160,7 +160,11 @@ abstract class Resource
     public function updateOrCreate($data)
     {
         app(ResourceGate::class)->check($this, 'create');
-        return static::$model::updateOrCreate($this->mapRequest($data));
+        $data = collect($this->mapRequest($data));
+        return static::$model::updateOrCreate(
+            $data->only('id')->all(),
+            $data->except('id')->all()
+        );
     }
 
     protected function onUpdated(Model $model, $newData): void

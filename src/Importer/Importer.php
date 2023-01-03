@@ -4,6 +4,7 @@ namespace BadChoice\Thrust\Importer;
 
 use BadChoice\Thrust\Resource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class Importer
 {
@@ -19,31 +20,35 @@ class Importer
     public function import($mapping) : int
     {
         $rowsMapped = $this->rowsMapped($mapping);
-
-        DB::transaction(function() use($rowsMapped){
+        $rules = $this->resource->getValidationRules(null);
+        DB::transaction(function() use($rowsMapped, $rules){
             foreach($rowsMapped as $data) {
+                Validator::make($data, $rules)->stopOnFirstFailure()->validate();
                 $this->resource->updateOrCreate($data);
             }
         });
         return count($rowsMapped);
         //TODO:  default values
-        //TODO:  validate
         //TODO: update if there is ID
         //TODO: Show row count on importer.show
     }
 
     public function rowsMapped($mapping) : array
     {
-        $rows = explode("\n", $this->csv);
         $fields = $this->fields();
         $mapping = collect($mapping)->filter()->mapWithKeys(function($csvField, $thrustField) use($fields){
            return [$thrustField => array_flip($fields)[$csvField]];
         });
-        return collect($rows)->splice(1)->map(function($row) use($mapping){
+        return collect($this->rows())->map(function($row) use($mapping){
             $row = explode(";", $row);
             return $mapping->mapWithKeys(function($index, $field) use($row){
                 return [$field => $row[$index]];
             })->all();
         })->all();
+    }
+
+    public function rows() : array
+    {
+        return collect(explode("\n", $this->csv))->splice(1)->all();
     }
 }
