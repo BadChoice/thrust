@@ -3,7 +3,6 @@
 namespace Tests\Console\Commands;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 final class PruneTest extends TestCase
@@ -35,7 +34,7 @@ final class PruneTest extends TestCase
         // this timestamp is set at database layer.
         DB::table('database_actions')->insert(
             collect(range(0, $days - 1))->map(fn (int $days) => [
-                'id' => Str::random(20),
+                'id' => $days,
                 'author_name' => 'Joan',
                 'model_type' => 'App\\Models\\Invoice',
                 'model_id' => 25,

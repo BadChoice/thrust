@@ -31,7 +31,6 @@ final class DatabaseActionTest extends TestCase
 
         $action = DatabaseAction::first();
 
-        $this->assertMatchesRegularExpression('/^[0-9A-Za-z]{26}$/', $action->id, 'The ID is not a valid ULID');
         $this->assertEquals('Joan', $action->author_name);
         $this->assertEquals('App\\Models\\Employee', $action->author_type);
         $this->assertEquals(32, $action->author_id);

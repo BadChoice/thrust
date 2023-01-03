@@ -4,18 +4,15 @@ namespace BadChoice\Thrust\Models;
 
 use BadChoice\Thrust\Models\Enums\DatabaseActionEvent;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use LogicException;
 
 class DatabaseAction extends Model
 {
-    use HasUlids;
-
     public $timestamps = false;
 
-    protected $guarded = ['id', 'created_at'];
+    protected $guarded = ['created_at'];
 
     protected $casts = [
         'event' => DatabaseActionEvent::class,

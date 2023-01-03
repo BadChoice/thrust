@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('database_actions', function (Blueprint $table) {
-            $table->ulid('id');
+            $table->id();
             $table->string('author_name', 100);
             $table->nullableMorphs('author');
             $table->morphs('model');
@@ -24,7 +24,6 @@ return new class extends Migration
             $table->ipAddress('ip')->nullable();
             $table->timestamp('created_at')->useCurrent();
 
-            $table->primary('id');
             $table->index('author_name');
         });
     }
