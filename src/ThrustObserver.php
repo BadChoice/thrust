@@ -20,6 +20,11 @@ class ThrustObserver
         'updated_at',
     ];
 
+    public function __construct()
+    {
+        $this->setAuthorNameCallback(fn ($user) => $user?->email ?? 'Nameless');
+    }
+
     public function enable(bool $value = true): void
     {
         $this->enabled = $value;
@@ -113,12 +118,9 @@ class ThrustObserver
         }
 
         $user = auth()->user();
-        $getAuthorName = isset($this->authorName)
-            ? $this->authorName
-            : fn () => 'Nameless';
 
         return [
-            'author_name' => $getAuthorName($user),
+            'author_name' => ($this->authorName)($user),
             'author_type' => $user::class,
             'author_id' => $user->id,
         ];
