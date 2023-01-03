@@ -91,6 +91,8 @@ final class ThrustObserverTest extends TestCase
         $user->password = '12345';
         $user->save();
 
+        ThrustObserver::setAuthorNameCallback(fn ($authenticated) => $authenticated->name);
+
         $this->actingAs($user);
         $invoice = Invoice::create(['total' => 45]);
 

@@ -6,10 +6,13 @@ use BadChoice\Thrust\Models\DatabaseAction;
 use BadChoice\Thrust\Models\Enums\DatabaseActionEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Closure;
 
 class ThrustObserver
 {
     protected bool $enabled = true;
+
+    protected Closure $authorName;
 
     protected array $ignore = [
         'id',
@@ -96,6 +99,11 @@ class ThrustObserver
         ]);
     }
 
+    public function setAuthorNameCallback(callable $callback): void
+    {
+        $this->authorName = Closure::fromCallable($callback);
+    }
+
     protected function author(): array
     {
         if (! auth()->check()) {
@@ -105,9 +113,12 @@ class ThrustObserver
         }
 
         $user = auth()->user();
+        $getAuthorName = isset($this->authorName)
+            ? $this->authorName
+            : fn () => 'Nameless';
 
         return [
-            'author_name' => $user->fullName ?? $user->username ?? $user->name ?? $user->email ?? 'Nameless',
+            'author_name' => $getAuthorName($user),
             'author_type' => $user::class,
             'author_id' => $user->id,
         ];
