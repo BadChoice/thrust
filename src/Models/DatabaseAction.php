@@ -52,4 +52,9 @@ class DatabaseAction extends Model
 
         return $class && class_exists($class);
     }
+
+    protected function setAuthorNameAttribute(mixed $value): void
+    {
+        $this->attributes['author_name'] = mb_substr((string) $value, 0, 100);
+    }
 }
