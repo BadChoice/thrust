@@ -4,7 +4,6 @@ namespace BadChoice\Thrust\Models;
 
 use BadChoice\Thrust\Models\Enums\DatabaseActionEvent;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use LogicException;
@@ -54,10 +53,8 @@ class DatabaseAction extends Model
         return $class && class_exists($class);
     }
 
-    protected function authorName(): Attribute
+    protected function setAuthorNameAttribute(mixed $value): void
     {
-        return Attribute::make(
-            set: fn (mixed $value) => mb_substr((string) $value, 0, 100),
-        );
+        $this->attributes['author_name'] = mb_substr((string) $value, 0, 100);
     }
 }
