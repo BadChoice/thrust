@@ -4,10 +4,11 @@ namespace Tests\Models;
 
 use App\Models\Employee;
 use App\Models\Invoice;
-use BadChoice\Thrust\Models\Enums\DatabaseActionEvent;
 use BadChoice\Thrust\Models\DatabaseAction;
+use BadChoice\Thrust\Models\Enums\DatabaseActionEvent;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use LogicException;
 use Tests\TestCase;
 
@@ -128,5 +129,16 @@ final class DatabaseActionTest extends TestCase
 
         $this->assertInstanceOf(Invoice::class, $actionWithRelatedModel->model);
         $this->assertEquals(45, $actionWithRelatedModel->model->total);
+    }
+
+    public function testAuthorNameIsLimitedTo100CharsToPreventSqlErrors(): void
+    {
+        $tooLongAuthorName = Str::random(150);
+        $shortenedAuthorName = mb_substr($tooLongAuthorName, 0, 100);
+
+        $action = new DatabaseAction();
+        $action->author_name = $tooLongAuthorName;
+
+        $this->assertEquals($shortenedAuthorName, $action->author_name);
     }
 }
