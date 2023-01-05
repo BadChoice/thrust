@@ -112,7 +112,7 @@ class ThrustObserver
             // The table is probably not found because the user have not yet
             // logged in, so we don't bother to log anything.
         } catch (Exception $e) {
-            Log::debug('An exception occurred while trying to create a DatabaseAction', $attributes);
+            Log::error('An exception occurred while trying to create a DatabaseAction', $attributes);
         }
         return null;
     }
