@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id('id');
             $table->integer('total');
-            $table->text('json')->nullable();
             $table->timestamps();
         });
     }

@@ -102,8 +102,8 @@ class ThrustObserver
             'model_type' => $model::class,
             'model_id' => $model->id,
             'event' => $event,
-            'original' => $this->preventDoubleEncoding($original),
-            'current' => $this->preventDoubleEncoding($current),
+            'original' => $original,
+            'current' => $current,
             'ip' => request()->ip(),
         ];
 
@@ -143,18 +143,5 @@ class ThrustObserver
     protected function ignored(string $key): bool
     {
         return in_array($key, $this->ignore);
-    }
-
-    protected function preventDoubleEncoding(?Collection $attributes): ?Collection
-    {
-        return $attributes?->map(function (mixed $value): mixed {
-            if (! is_string($value)) {
-                return $value;
-            }
-
-            $decoded = json_decode($value);
-
-            return json_last_error() === JSON_ERROR_NONE ? $decoded : $value;
-        });
     }
 }
