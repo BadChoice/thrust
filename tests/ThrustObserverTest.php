@@ -91,6 +91,7 @@ final class ThrustObserverTest extends TestCase
         $user->password = '12345';
         $user->save();
 
+        ThrustObserver::setAuthorModelCallback(fn () => auth()->user());
         ThrustObserver::setAuthorNameCallback(fn ($authenticated) => $authenticated->name);
 
         $this->actingAs($user);

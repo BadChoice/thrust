@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 class ThrustObserver
 {
     protected bool $enabled = true;
-
+    protected Closure $authorModel;
     protected Closure $authorName;
 
     protected array $ignore = [
@@ -26,7 +26,8 @@ class ThrustObserver
 
     public function __construct()
     {
-        $this->setAuthorNameCallback(fn ($user) => $user?->email ?? 'Nameless');
+        $this->setAuthorModelCallback(fn () => auth()->user());
+        $this->setAuthorNameCallback(fn ($author) => $author?->email ?? 'Nameless');
     }
 
     public function enable(bool $value = true): void
@@ -118,6 +119,11 @@ class ThrustObserver
         return null;
     }
 
+    public function setAuthorModelCallback(callable $callback): void
+    {
+        $this->authorModel = Closure::fromCallable($callback);
+    }
+
     public function setAuthorNameCallback(callable $callback): void
     {
         $this->authorName = Closure::fromCallable($callback);
@@ -125,18 +131,18 @@ class ThrustObserver
 
     protected function author(): array
     {
-        if (! auth()->check()) {
+        $author = ($this->authorModel)();
+
+        if (! $author instanceof Model) {
             return [
-                'author_name' => 'Unknown', // stateless (probably from the API)
+                'author_name' => 'Unknown',
             ];
         }
 
-        $user = auth()->user();
-
         return [
-            'author_name' => ($this->authorName)($user),
-            'author_type' => $user::class,
-            'author_id' => $user->id,
+            'author_name' => ($this->authorName)($author),
+            'author_type' => $author::class,
+            'author_id' => $author->id,
         ];
     }
 
