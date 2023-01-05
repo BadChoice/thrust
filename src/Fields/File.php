@@ -48,9 +48,15 @@ class File extends Field implements Prunable
         return $this;
     }
 
-    public function storageVisibility(string $visibility = 'public') : self
+    public function public() : self
     {
-        $this->storageVisibility = $visibility;
+        $this->storageVisibility = 'public';
+        return $this;
+    }
+
+    public function private() : self
+    {
+        $this->storageVisibility = 'private';
         return $this;
     }
 
