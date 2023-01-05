@@ -4,9 +4,12 @@ namespace BadChoice\Thrust;
 
 use BadChoice\Thrust\Models\DatabaseAction;
 use BadChoice\Thrust\Models\Enums\DatabaseActionEvent;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Closure;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class ThrustObserver
 {
@@ -93,7 +96,7 @@ class ThrustObserver
             return null;
         }
 
-        return DatabaseAction::create([
+        $attributes = [
             ...$this->author(),
             'model_type' => $model::class,
             'model_id' => $model->id,
@@ -101,7 +104,17 @@ class ThrustObserver
             'original' => $original,
             'current' => $current,
             'ip' => request()->ip(),
-        ]);
+        ];
+
+        try {
+            return DatabaseAction::create($attributes);
+        } catch (QueryException $e) {
+            // The table is probably not found because the user have not yet
+            // logged in, so we don't bother to log anything.
+        } catch (Exception $e) {
+            Log::debug('An exception occurred while trying to create a DatabaseAction', $attributes);
+        }
+        return null;
     }
 
     public function setAuthorNameCallback(callable $callback): void
