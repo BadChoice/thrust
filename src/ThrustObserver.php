@@ -130,6 +130,16 @@ class ThrustObserver
 
     protected function author(): array
     {
+        if (app()->runningInConsole()) {
+            $command = request()->server('argv');
+            if (is_array($command)) {
+                $command = implode(' ', $command);
+            }
+            return [
+                'author_name' => "php {$command}",
+            ];
+        }
+
         $author = ($this->authorModel)();
 
         if (! $author instanceof Model) {
