@@ -74,7 +74,7 @@ final class ThrustObserverTest extends TestCase
         $this->assertDatabaseCount('database_actions', 0);
     }
 
-    public function testModelsMayBeDisabled(): void
+    public function testModelsMayBeDisabledIndividually(): void
     {
         $this->assertFalse(\App\Thrust\Employee::$observes);
         $employee = Employee::create(['age' => 22]);
@@ -100,6 +100,37 @@ final class ThrustObserverTest extends TestCase
             'author_name' => $user->name,
             'author_type' => $user::class,
             'author_id' => $user->id,
+        ]);
+    }
+
+    public function testItDoesNotDoubleEncodeJsonAttributes(): void
+    {
+        $invoice = Invoice::create([
+            'total' => 45,
+            'json' => json_encode(['whatever' => 'value']),
+        ]);
+
+        $this->assertDatabaseMissing('database_actions', [
+            'current' => '{"total":45,"json":"{\"whatever\":\"value\"}"}',
+        ]);
+        $this->assertDatabaseHas('database_actions', [
+            'event' => 'created',
+            'current' => '{"total":45,"json":{"whatever":"value"}}',
+        ]);
+
+        $invoice->update([
+            'json' => json_encode(['whatever' => 'value 2']),
+        ]);
+        $this->assertDatabaseHas('database_actions', [
+            'event' => 'updated',
+            'original' => '{"json":{"whatever":"value"}}',
+            'current' => '{"json":{"whatever":"value 2"}}',
+        ]);
+
+        $invoice->delete();
+        $this->assertDatabaseHas('database_actions', [
+            'event' => 'deleted',
+            'original' => '{"total":45,"json":{"whatever":"value 2"}}',
         ]);
     }
 }
