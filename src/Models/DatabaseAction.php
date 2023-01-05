@@ -59,17 +59,17 @@ class DatabaseAction extends Model
         $this->attributes['author_name'] = mb_substr((string) $value, 0, 100);
     }
 
-    protected function setOriginalAttribute(Collection|array|null $value): void
+    protected function setOriginalAttribute(mixed $value): void
     {
         $this->attributes['original'] = $this->preventDoubleEncoding($value);
     }
 
-    protected function setCurrentAttribute(Collection|array|null $value): void
+    protected function setCurrentAttribute(mixed $value): void
     {
         $this->attributes['current'] = $this->preventDoubleEncoding($value);
     }
 
-    protected function preventDoubleEncoding(Collection|array|null $attributes): ?Collection
+    protected function preventDoubleEncoding(mixed $attributes): ?Collection
     {
         if ($attributes === null) {
             return null;
