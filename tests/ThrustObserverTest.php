@@ -74,7 +74,7 @@ final class ThrustObserverTest extends TestCase
         $this->assertDatabaseCount('database_actions', 0);
     }
 
-    public function testModelsMayBeDisabled(): void
+    public function testModelsMayBeDisabledIndividually(): void
     {
         $this->assertFalse(\App\Thrust\Employee::$observes);
         $employee = Employee::create(['age' => 22]);

@@ -6,6 +6,7 @@ use BadChoice\Thrust\Models\Enums\DatabaseActionEvent;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Collection;
 use LogicException;
 
 class DatabaseAction extends Model
@@ -56,5 +57,32 @@ class DatabaseAction extends Model
     protected function setAuthorNameAttribute(mixed $value): void
     {
         $this->attributes['author_name'] = mb_substr((string) $value, 0, 100);
+    }
+
+    protected function setOriginalAttribute(mixed $value): void
+    {
+        $this->attributes['original'] = $this->preventDoubleEncoding($value);
+    }
+
+    protected function setCurrentAttribute(mixed $value): void
+    {
+        $this->attributes['current'] = $this->preventDoubleEncoding($value);
+    }
+
+    protected function preventDoubleEncoding(mixed $attributes): ?Collection
+    {
+        if ($attributes === null) {
+            return null;
+        }
+
+        return collect($attributes)->map(function (mixed $value): mixed {
+            if (! is_string($value)) {
+                return $value;
+            }
+
+            $decoded = json_decode($value);
+
+            return json_last_error() === JSON_ERROR_NONE ? $decoded : $value;
+        });
     }
 }

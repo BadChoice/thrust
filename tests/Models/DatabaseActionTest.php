@@ -47,6 +47,30 @@ final class DatabaseActionTest extends TestCase
         $this->assertInstanceOf(CarbonImmutable::class, $action->created_at, 'The CREATED_AT attribute is not an Immutable Datetime');
     }
 
+    public function testItDoesNotDoubleEncodeJsonAttributes(): void
+    {
+        $attributes = [
+            'regularAttribute' => 'value',
+            'jsonAttribute' => json_encode(['key' => 'value']),
+        ];
+
+        $action = DatabaseAction::create([
+            'author_name' => 'Joan',
+            'model_type' => 'App\\Models\\Invoice',
+            'model_id' => 25,
+            'event' => DatabaseActionEvent::UPDATED,
+            'original' => $attributes,
+            'current' => $attributes,
+        ]);
+
+        $this->assertDatabaseMissing('database_actions', [
+            'current' => '{"regularAttribute":"value","jsonAttribute":"{\"key\":\"value\"}"}',
+        ]);
+        $this->assertDatabaseHas('database_actions', [
+            'current' => '{"regularAttribute":"value","jsonAttribute":{"key":"value"}}',
+        ]);
+    }
+
     public function testItIsImmutable(): void
     {
         $action = DatabaseAction::create([

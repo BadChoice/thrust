@@ -21,6 +21,7 @@ class ThrustObserver
         'id',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     public function __construct()
