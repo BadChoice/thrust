@@ -13,7 +13,7 @@ class ThrustImportController extends Controller
     public function index($resourceName)
     {
         $resource = Thrust::make($resourceName);
-        app(ResourceGate::class)->check($resource, 'store');
+        app(ResourceGate::class)->check($resource, 'create');
 
         return view('thrust::importer.index', [
             'resourceName' => $resourceName,
@@ -27,7 +27,7 @@ class ThrustImportController extends Controller
             'csv' => 'required|mimetypes:text/csv,text/plain,application/csv,text/comma-separated-values,text/anytext,application/octet-stream,application/txt'
         ]);
         $resource = Thrust::make($resourceName);
-        app(ResourceGate::class)->check($resource, 'store');
+        app(ResourceGate::class)->check($resource, 'create');
 
         $importer = new Importer(request()->file('csv')->getContent(), $resource);
 
@@ -41,7 +41,7 @@ class ThrustImportController extends Controller
     public function store($resourceName)
     {
         $resource = Thrust::make($resourceName);
-        app(ResourceGate::class)->check($resource, 'store');
+        app(ResourceGate::class)->check($resource, 'create');
         $importer = new Importer(request('csv'), $resource);
         try {
             $imported = $importer->import(request('mapping'));

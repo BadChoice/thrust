@@ -2,7 +2,7 @@
     <select name="mapping[{{$field}}]" placeholder="{{ __('thrust::pickAColumn') }}" @if ($required) required @endif >
         <option value="">--</option>
         @foreach($csvFields as $csvField)
-            <option value="{{$csvField}}">{{$csvField}}</option>
+            <option value="{{$csvField}}" @if($csvField == $field) selected @endif>{{$csvField}}</option>
         @endforeach
     </select>
     @icon(arrow-right)
