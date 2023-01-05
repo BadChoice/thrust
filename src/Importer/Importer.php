@@ -14,7 +14,9 @@ class Importer
 
     public function fields() : array
     {
-        return collect(explode(";", collect(explode("\n", $this->csv))->first()))->filter()->all();
+        $firstLine = explode("\n", $this->csv, 2)[0] ?? '';
+        $columns = explode(';', $firstLine);
+        return array_filter($columns);
     }
 
     public function import($mapping) : int
