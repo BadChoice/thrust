@@ -23,7 +23,4 @@ class Import extends MainAction
     {
         return route('thrust.import', $resourceName);
     }
-
-
-
 }
