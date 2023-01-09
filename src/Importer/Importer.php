@@ -16,6 +16,7 @@ class Importer
     {
         $firstLine = explode("\n", $this->csv, 2)[0] ?? '';
         $columns = explode(';', $firstLine);
+        $columns = array_map(fn($column) => str_replace(["\r","\n"], "", $column), $columns);
         return array_filter($columns);
     }
 
@@ -24,7 +25,7 @@ class Importer
         $rowsMapped = $this->rowsMapped($mapping);
         $rules = $this->resource->getValidationRules(null);
         DB::transaction(function() use($rowsMapped, $rules){
-            foreach($rowsMapped as $data) {
+            foreach ($rowsMapped as $data) {
                 Validator::make($data, $rules)->stopOnFirstFailure()->validate();
                 $this->resource->updateOrCreate($data);
             }

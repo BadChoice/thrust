@@ -24,8 +24,8 @@
 
         @foreach($resource->fieldsFlattened()->filter(fn($field) => $field->importable) as $thrustField)
             @include('thrust::importer.fieldMapping', [
-                'field' => $thrustField->field,
-                'title' => $thrustField->getTitle(),
+                'field' => method_exists($thrustField, 'getRelationForeignKey') ? $thrustField->getRelationForeignKey((new $resource::$model)) : $thrustField->field,
+                'title' => $thrustField->getTitle() == "" ? $thrustField->field : $thrustField->getTitle(),
                 'required' => $thrustField->isRequired(),
                 'csvFields' => $importer->fields(),
             ])

@@ -167,10 +167,10 @@ abstract class Resource
     {
         app(ResourceGate::class)->check($this, 'create');
         $data = collect($this->mapRequest($data));
-        return static::$model::updateOrCreate(
-            $data->only('id')->all(),
-            $data->except('id')->all()
-        );
+        if ($data->has('id')) {
+            return static::$model::updateOrCreate($data->only('id')->all(), $data->except('id')->all());
+        }
+        return static::$model::create($data->all());
     }
 
     protected function onUpdated(Model $model, $newData): void
