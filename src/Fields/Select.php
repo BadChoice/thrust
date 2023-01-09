@@ -85,7 +85,7 @@ class Select extends Field
             return intval(parent::getValue($object));
         }
         if ($this->forceEnumValue) {
-            return parent::getValue($object)->value;
+            return parent::getValue($object)?->value;
         }
         return parent::getValue($object);
     }
