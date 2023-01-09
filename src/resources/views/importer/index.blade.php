@@ -2,7 +2,7 @@
 @section('content')
     <div class="thrust-index-header description">
         <span class="thrust-index-title title">
-            <a href="{{route('thrust.index', $resourceName) }}">{{ $resource->getTitle() }}</a> / {{  __('thrust::import') }}
+            <a href="{{route('thrust.index', $resourceName) }}">{{ $resource->getTitle() }}</a> / {{  __('thrust::messages.import') }}
         </span>
     </div>
 
@@ -10,9 +10,9 @@
         <form action="{{route('thrust.uploadCsv', $resourceName)}}" method="POST"  enctype="multipart/form-data">
              @csrf
             <div class="flex-row space-y-4">
-                <div>{{ __('thrust::selectCsvFile') }}</div>
+                <div>{{ __('thrust::messages.selectCsvFile') }}</div>
                 <div><input type="file" required name="csv"></div>
-                <div><button class="button"> {{ __('thrust::submit') }}</button></div>
+                <div><button class="button"> {{ __('thrust::messages.next') }} @icon(arrow-right) </button></div>
             </div>
         </form>
     </div>

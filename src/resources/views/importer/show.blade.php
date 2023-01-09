@@ -2,17 +2,17 @@
 @section('content')
     <div class="thrust-index-header description">
         <span class="thrust-index-title title">
-            <a href="{{route('thrust.index', $resourceName) }}">{{ $resource->getTitle() }}</a> / {{  __('thrust::import') }}
+            <a href="{{route('thrust.index', $resourceName) }}">{{ $resource->getTitle() }}</a> / {{  __('thrust::messages.import') }}
         </span>
     </div>
 
     <div class="m-4 bg-white p-4 shadow">
 
         <div class="mb-4">
-        {{ __('thrust::rowsToImport' )}}: <b>{{ count($importer->rows()) }}</b>
+        {{ __('thrust::messages.rowsToImport' )}}: <b>{{ count($importer->rows()) }}</b>
         </div>
 
-        <form method="post" action="{{route('thrust.doImport', $resourceName)}}">
+        <form method="post" action="{{route('thrust.doImport', $resourceName)}}" enctype="multipart/form-data">
         @csrf
        <input type="hidden" name="csv" value="{{$importer->csv}}">
             @include('thrust::importer.fieldMapping', [
@@ -31,7 +31,7 @@
             ])
            @endforeach
             <div class="mt-4">
-                <button class="button"> {{ __('thrust::import') }}</button>
+                <button class="button"> {{ __('thrust::messages.import') }}</button>
             </div>
         </form>
     </div>
