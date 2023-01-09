@@ -131,6 +131,12 @@ class ThrustObserver
 
     protected function author(): array
     {
+        if (app()->runningInConsole() && ! app()->runningUnitTests()) {
+            return [
+                'author_name' => $this->runningCommand(),
+            ];
+        }
+
         $author = ($this->authorModel)();
 
         if (! $author instanceof Model) {
@@ -144,6 +150,15 @@ class ThrustObserver
             'author_type' => $author::class,
             'author_id' => $author->id,
         ];
+    }
+
+    protected function runningCommand(): string
+    {
+        $command = request()->server('argv');
+        if (is_array($command)) {
+            $command = implode(' ', $command);
+        }
+        return "php {$command}";
     }
 
     protected function ignored(string $key): bool
