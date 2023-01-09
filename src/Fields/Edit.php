@@ -10,6 +10,7 @@ class Edit extends Field {
     public $withoutIndexHeader  = true;
     public $rowClass            = 'action';
     public $policyAction        = 'update';
+    public $importable          = false;
 
     public function displayInIndex($object)
     {

@@ -31,6 +31,7 @@ abstract class Field
     public $excludeOnMultiple = false;
 
     public $deleteConfirmationMessage = 'Are you sure';
+    public $importable = true;
 
     abstract public function displayInIndex($object);
 
@@ -210,5 +211,12 @@ abstract class Field
     public function sortableInIndex()
     {
         return $this->sortable;
+    }
+
+    public function isRequired() : bool {
+        if (is_array($this->validationRules)){
+            return in_array('required', $this->validationRules);
+        }
+        return str_contains($this->validationRules, 'required');
     }
 }

@@ -23,4 +23,10 @@ return [
     'amount'                 => 'Cantidad',
     'amountDesc'             => 'Número de cópias a crear.',
     'createMultiple'         => 'Creación múltiple',
+    'import'                 => 'Importar',
+    'selectCsvFile'          => 'Seleccionar el fichero CSV',
+    'rowsToImport'           => 'Columnas a importar',
+    'next'                   => 'Siguiente',
+    'importFailed'           => 'Ha fallado la importación',
+    'retryImport'            => 'Volver a importar'
 ];
