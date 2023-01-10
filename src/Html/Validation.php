@@ -44,6 +44,8 @@ class Validation
             $this->appendRuleEmail($output);
         } elseif ($rule == 'ip') {
             $this->appendRuleIp($output);
+        } elseif ($rule == 'regex') {
+            $this->appendRuleRegex($output, $params[1]);
         }
     }
 
@@ -94,6 +96,12 @@ class Validation
     public function appendRuleNumberMax(&$output, $max)
     {
         $output .= " max='{$max}' ";
+    }
+
+    public function appendRuleRegex(&$output, $regex)
+    {
+        $pattern = str_replace('/', '', $regex);
+        $output .= " pattern='{$pattern}' title='{$pattern}' ";
     }
 }
 
