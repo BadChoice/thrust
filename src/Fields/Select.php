@@ -10,7 +10,6 @@ class Select extends Field
     protected bool $allowNull        = false;
     protected bool $searchable       = false;
     protected bool $forceIntValue    = false;
-    protected bool $isEnum    = false;
     protected $attributes       = '';
 
     public function options(array|Collection $options, bool $allowNull = false)
@@ -25,12 +24,6 @@ class Select extends Field
     public function forceIntValue(bool $forceIntValue = true): self
     {
         $this->forceIntValue = $forceIntValue;
-        return $this;
-    }
-
-    public function isEnum(bool $isEnum = true): self
-    {
-        $this->isEnum = $isEnum;
         return $this;
     }
 
@@ -81,14 +74,10 @@ class Select extends Field
 
     public function getValue($object)
     {
-        $value = parent::getValue($object);
-        if ($this->isEnum) {
-            $value = $value?->value;
-        }
         if ($this->forceIntValue) {
-            return intval($value);
+            return intval(parent::getValue($object));
         }
-        return $value;
+        return parent::getValue($object);
     }
 
     public function attributes($attributes)
