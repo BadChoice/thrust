@@ -40,6 +40,11 @@ class ThrustObserver
         $this->enabled = ! $value;
     }
 
+    public function enabled(): bool
+    {
+        return $this->enabled;
+    }
+
     public function register(): void
     {
         if (! $this->enabled) {
