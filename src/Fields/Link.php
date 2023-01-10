@@ -12,6 +12,7 @@ class Link extends Field
     protected $displayCount = false;
     protected $displayCallback;
     protected $attributes;
+    public $importable = false;
 
     public function link($link)
     {

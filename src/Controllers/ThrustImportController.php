@@ -13,6 +13,7 @@ class ThrustImportController extends Controller
     public function index($resourceName)
     {
         $resource = Thrust::make($resourceName);
+        $this->validateImportable($resource);
         app(ResourceGate::class)->check($resource, 'create');
 
         return view('thrust::importer.index', [
@@ -27,6 +28,7 @@ class ThrustImportController extends Controller
             'csv' => 'required|mimetypes:text/csv,text/plain,application/csv,text/comma-separated-values,text/anytext,application/octet-stream,application/txt'
         ]);
         $resource = Thrust::make($resourceName);
+        $this->validateImportable($resource);
         app(ResourceGate::class)->check($resource, 'create');
 
         $importer = new Importer(request()->file('csv')->getContent(), $resource);
@@ -41,6 +43,7 @@ class ThrustImportController extends Controller
     public function store($resourceName)
     {
         $resource = Thrust::make($resourceName);
+        $this->validateImportable($resource);
         app(ResourceGate::class)->check($resource, 'create');
         $importer = new Importer(request('csv'), $resource);
         try {
@@ -55,5 +58,12 @@ class ThrustImportController extends Controller
         }
 
         return redirect()->route('thrust.index', $resourceName)->with(['message' => "Imported {$imported}" ]);
+    }
+
+    protected function validateImportable($resource): void
+    {
+        if (!$resource::$importable) {
+            abort(403, "This resource is not importable");
+        }
     }
 }

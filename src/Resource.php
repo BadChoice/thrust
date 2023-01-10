@@ -3,6 +3,7 @@
 namespace BadChoice\Thrust;
 
 use BadChoice\Thrust\Actions\Delete;
+use BadChoice\Thrust\Actions\Import;
 use BadChoice\Thrust\Actions\MainAction;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Contracts\Prunable;
@@ -74,6 +75,11 @@ abstract class Resource
      * @var string when resource is update will show a confirmation alert with the message specified
      */
     public $updateConfirmationMessage = '';
+
+    /**
+     * @var bool define if a resource can be imported using thrust import features
+     */
+    public static $importable = true;
 
 
     /**
@@ -166,10 +172,10 @@ abstract class Resource
     {
         app(ResourceGate::class)->check($this, 'create');
         $data = collect($this->mapRequest($data));
-        return static::$model::updateOrCreate(
-            $data->only('id')->all(),
-            $data->except('id')->all()
-        );
+        if ($data->has('id')) {
+            return static::$model::updateOrCreate($data->only('id')->all(), $data->except('id')->all());
+        }
+        return static::$model::create($data->all());
     }
 
     protected function onUpdated(Model $model, $newData): void
@@ -251,7 +257,8 @@ abstract class Resource
 
     public function mainActions()
     {
-        return [
+        return  [
+            ...(static::$importable ? [new Import()] : []),
             MainAction::make('new'),
         ];
     }
@@ -259,7 +266,7 @@ abstract class Resource
     public function actions()
     {
         return [
-            new Delete
+            new Delete(),
         ];
     }
 

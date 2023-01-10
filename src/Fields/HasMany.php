@@ -13,6 +13,7 @@ class HasMany extends Relationship
     public $icon           = null;
     public $withCount      = false;
     public $useTitle;
+    public $importable      = false;
 
     public static function make($dbField, $title = null)
     {

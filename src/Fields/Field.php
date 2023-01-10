@@ -219,4 +219,9 @@ abstract class Field
         }
         return str_contains($this->validationRules, 'required');
     }
+
+    public function databaseField($object) : string
+    {
+        return $this->field;
+    }
 }

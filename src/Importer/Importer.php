@@ -16,6 +16,7 @@ class Importer
     {
         $firstLine = explode("\n", $this->csv, 2)[0] ?? '';
         $columns = explode(';', $firstLine);
+        $columns = array_map(fn($column) => $this->safeString($column), $columns);
         return array_filter($columns);
     }
 
@@ -24,7 +25,7 @@ class Importer
         $rowsMapped = $this->rowsMapped($mapping);
         $rules = $this->resource->getValidationRules(null);
         DB::transaction(function() use($rowsMapped, $rules){
-            foreach($rowsMapped as $data) {
+            foreach ($rowsMapped as $data) {
                 Validator::make($data, $rules)->stopOnFirstFailure()->validate();
                 $this->resource->updateOrCreate($data);
             }
@@ -42,7 +43,7 @@ class Importer
         return collect($this->rows())->map(function($row) use($mapping){
             $row = explode(";", $row);
             return $mapping->mapWithKeys(function($index, $field) use($row){
-                return [$field => $row[$index]];
+                return [$field => $this->safeString($row[$index])];
             })->all();
         })->all();
     }
@@ -50,5 +51,9 @@ class Importer
     public function rows() : array
     {
         return collect(explode("\n", $this->csv))->splice(1)->all();
+    }
+
+    private function safeString($text){
+        return str_replace(["\r","\n"], "", $text);
     }
 }
