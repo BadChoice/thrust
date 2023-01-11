@@ -5,12 +5,12 @@ namespace BadChoice\Thrust\Fields;
 class MultipleSelect extends Select
 {
     protected $options    = [];
-    protected $allowNull  = false;
-    protected $searchable = false;
-    protected $isMultiple = true;
-    protected $clearable  = false;
+    protected bool $allowNull  = false;
+    protected bool $searchable = false;
+    protected bool $isMultiple = true;
+    protected bool $clearable  = false;
 
-    public function displayInIndex($object)
+    public function displayInIndex($object): string
     {
         return collect($this->getValue($object))->map(function ($value) {
             return $this->getOptions()[$value];
@@ -31,7 +31,7 @@ class MultipleSelect extends Select
         ])->render();
     }
 
-    public function clearable($clearable = true)
+    public function clearable(bool $clearable = true): self
     {
         $this->clearable = $clearable;
         return $this;

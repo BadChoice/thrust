@@ -7,12 +7,12 @@ use Illuminate\Support\Collection;
 class Select extends Field
 {
     protected $options          = [];
-    protected $allowNull        = false;
-    protected $searchable       = false;
-    protected $forceIntValue    = false;
+    protected bool $allowNull        = false;
+    protected bool $searchable       = false;
+    protected bool $forceIntValue    = false;
     protected $attributes       = '';
 
-    public function options(array|Collection $options, $allowNull = false)
+    public function options(array|Collection $options, bool $allowNull = false)
     {
         $this->options = is_array($options)
             ? $options
@@ -21,12 +21,13 @@ class Select extends Field
         return $this;
     }
 
-    public function forceIntValue($forceIntValue = true){
+    public function forceIntValue(bool $forceIntValue = true): self
+    {
         $this->forceIntValue = $forceIntValue;
         return $this;
     }
 
-    public function searchable($searchable = true)
+    public function searchable(bool $searchable = true): self
     {
         $this->searchable = $searchable;
         return $this;
@@ -40,7 +41,7 @@ class Select extends Field
         return $this->options;
     }
 
-    public function allowNull($allowNull = true)
+    public function allowNull(bool $allowNull = true): self
     {
         $this->allowNull = $allowNull;
         return $this;
