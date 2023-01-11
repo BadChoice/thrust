@@ -94,6 +94,6 @@ class Select extends Field
     protected function hasCategories()
     {
         $options = $this->getOptions();
-        return is_array($options[array_key_first($options)]);
+        return is_array($options[array_key_first($options)] ?? null);
     }
 }
