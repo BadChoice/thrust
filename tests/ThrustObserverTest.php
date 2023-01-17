@@ -5,6 +5,7 @@ namespace Tests;
 use App\Models\Employee;
 use App\Models\Invoice;
 use BadChoice\Thrust\Facades\ThrustObserver;
+use BadChoice\Thrust\Models\DatabaseAction;
 use Illuminate\Foundation\Auth\User;
 
 final class ThrustObserverTest extends TestCase
@@ -15,8 +16,8 @@ final class ThrustObserverTest extends TestCase
     {
         parent::setUp();
         $this->cacheResources([
-            'employee' => 'App\\Thrust\\Employee',
-            'invoice' => 'App\\Thrust\\Invoice',
+            'employees' => 'App\\Thrust\\Employee',
+            'invoices' => 'App\\Thrust\\Invoice',
         ]);
         ThrustObserver::register();
     }
@@ -69,7 +70,7 @@ final class ThrustObserverTest extends TestCase
     public function testItMayBeDisabled(): void
     {
         ThrustObserver::disable();
-        $invoice = Invoice::create(['total' => 45]);
+        Invoice::create(['total' => 45]);
 
         $this->assertDatabaseCount('database_actions', 0);
     }
@@ -80,6 +81,19 @@ final class ThrustObserverTest extends TestCase
         $employee = Employee::create(['age' => 22]);
 
         $this->assertDatabaseCount('database_actions', 0);
+    }
+
+    public function testModelsMayHaveOverlookedAttributes(): void
+    {
+        $resource = new \App\Thrust\Invoice;
+        $this->assertEquals(['token'], $resource->overlooked());
+
+        $invoice = Invoice::create(['token' => 'abc', 'total' => 45]);
+
+        $trackedAttributes = DatabaseAction::first()->current->keys();
+
+        $this->assertTrue($trackedAttributes->contains('total'));
+        $this->assertTrue($trackedAttributes->doesntContain('token'));
     }
 
     public function testItMayHaveAnAuthor(): void

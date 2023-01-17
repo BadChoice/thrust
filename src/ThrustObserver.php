@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Log;
 
 class ThrustObserver
 {
+    // https://laravel.com/docs/9.x/eloquent#observers-and-database-transactions
+    public bool $afterCommit = true;
+
     protected bool $enabled = true;
     protected Closure $authorModel;
     protected Closure $authorName;
+    protected ResourceManager $manager;
 
-    protected array $ignore = [
+    protected array $overlook = [
         'id',
         'created_at',
         'updated_at',
@@ -28,6 +32,7 @@ class ThrustObserver
     {
         $this->setAuthorModelCallback(fn () => auth()->user());
         $this->setAuthorNameCallback(fn ($author) => $author?->email ?? 'Nameless');
+        $this->manager = new ResourceManager;
     }
 
     public function enable(bool $value = true): void
@@ -50,14 +55,20 @@ class ThrustObserver
         if (! $this->enabled) {
             return;
         }
-        $models = (new ResourceManager)->models(observable: true);
-        collect($models)->each(fn ($model) => $model::observe(static::class));
+        collect($this->manager->models(observable: true))
+            ->each(fn ($model) => $model::observe(static::class));
     }
 
     public function created(Model $model): void
     {
+        $this->mergeOverlookedAttributes($model);
+
         $attributes = collect($model->getDirty())
-            ->reject(fn ($value, $key) => $value === null || $this->ignored($key));
+            ->reject(fn ($value, $key) => $value === null || $this->overlooked($key));
+
+        if ($attributes->isEmpty()) {
+            return;
+        }
 
         $this->trackDatabaseAction(
             model: $model,
@@ -69,8 +80,14 @@ class ThrustObserver
 
     public function updated(Model $model): void
     {
+        $this->mergeOverlookedAttributes($model);
+
         $attributes = collect($model->getDirty())
-            ->reject(fn ($value, $key) => $this->ignored($key));
+            ->reject(fn ($value, $key) => $this->overlooked($key));
+
+        if ($attributes->isEmpty()) {
+            return;
+        }
 
         $this->trackDatabaseAction(
             model: $model,
@@ -82,8 +99,14 @@ class ThrustObserver
 
     public function deleted(Model $model): void
     {
+        $this->mergeOverlookedAttributes($model);
+
         $attributes = collect($model->getAttributes())
-            ->reject(fn ($value, $key) => $value === null || $this->ignored($key));
+            ->reject(fn ($value, $key) => $value === null || $this->overlooked($key));
+
+        if ($attributes->isEmpty()) {
+            return;
+        }
 
         $this->trackDatabaseAction(
             model: $model,
@@ -166,8 +189,18 @@ class ThrustObserver
         return "php {$command}";
     }
 
-    protected function ignored(string $key): bool
+    protected function mergeOverlookedAttributes(Model $model): void
     {
-        return in_array($key, $this->ignore);
+        $key = $this->manager->resourceNameFromModel($model::class);
+        $resource = $this->manager->resources()[$key];
+        $this->overlook = [
+            ...$this->overlook,
+            ...(new $resource)->overlooked(),
+        ];
+    }
+
+    protected function overlooked(string $key): bool
+    {
+        return in_array($key, $this->overlook);
     }
 }

@@ -14,9 +14,9 @@ final class ResourceManagerTest extends TestCase
     {
         parent::setUp();
         $this->cacheResources([
-            'employee' => 'App\\Thrust\\Employee',
-            'invoice' => 'App\\Thrust\\Invoice',
-            'invoiceDuplicate' => 'App\\Thrust\\InvoiceDuplicate',
+            'employees' => 'App\\Thrust\\Employee',
+            'invoices' => 'App\\Thrust\\Invoice',
+            'invoiceDuplicates' => 'App\\Thrust\\InvoiceDuplicate',
         ]);
         $this->resourceManager = new ResourceManager();
     }
@@ -30,9 +30,9 @@ final class ResourceManagerTest extends TestCase
     public function testItProvidesTheCachedResources(): void
     {
         $this->assertEquals([
-            'employee' => 'App\\Thrust\\Employee',
-            'invoice' => 'App\\Thrust\\Invoice',
-            'invoiceDuplicate' => 'App\\Thrust\\InvoiceDuplicate',
+            'employees' => 'App\\Thrust\\Employee',
+            'invoices' => 'App\\Thrust\\Invoice',
+            'invoiceDuplicates' => 'App\\Thrust\\InvoiceDuplicate',
         ], $this->resourceManager->resources());
     }
 

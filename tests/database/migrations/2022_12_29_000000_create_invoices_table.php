@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id('id');
+            $table->string('token')->nullable();
             $table->integer('total');
             $table->timestamps();
         });
