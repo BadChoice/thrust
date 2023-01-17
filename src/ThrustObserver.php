@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Log;
 
 class ThrustObserver
 {
+    // https://laravel.com/docs/9.x/eloquent#observers-and-database-transactions
+    public bool $afterCommit = true;
+
     protected bool $enabled = true;
     protected Closure $authorModel;
     protected Closure $authorName;
