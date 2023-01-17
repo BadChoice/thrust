@@ -65,11 +65,15 @@ abstract class Resource
      */
     public static $policy;
 
-
     /**
      * @var Determines if the underlying model must be observed and tracked into database actions.
      */
     public static $observes = true;
+
+    /**
+     * @var Enumerates the attributes from the underlying model that will be overlooked when the model is observed.
+     */
+    protected $overlook = [];
 
     /**
      * @var string when resource is update will show a confirmation alert with the message specified
@@ -409,5 +413,10 @@ abstract class Resource
     public function generateMultipleFields()
     {
         return [];
+    }
+
+    public function overlooked(): array
+    {
+        return $this->overlook;
     }
 }
