@@ -63,6 +63,10 @@ class ThrustObserver
         $attributes = collect($model->getDirty())
             ->reject(fn ($value, $key) => $value === null || $this->overlooked($key));
 
+        if ($attributes->isEmpty()) {
+            return;
+        }
+
         $this->trackDatabaseAction(
             model: $model,
             event: DatabaseActionEvent::CREATED,
@@ -78,6 +82,10 @@ class ThrustObserver
         $attributes = collect($model->getDirty())
             ->reject(fn ($value, $key) => $this->overlooked($key));
 
+        if ($attributes->isEmpty()) {
+            return;
+        }
+
         $this->trackDatabaseAction(
             model: $model,
             event: DatabaseActionEvent::UPDATED,
@@ -92,6 +100,10 @@ class ThrustObserver
 
         $attributes = collect($model->getAttributes())
             ->reject(fn ($value, $key) => $value === null || $this->overlooked($key));
+
+        if ($attributes->isEmpty()) {
+            return;
+        }
 
         $this->trackDatabaseAction(
             model: $model,
