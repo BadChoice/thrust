@@ -30,7 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests",
+            "BadChoice\\Thrust\\Tests\\": "tests",
             "App\\": "tests/skeleton"
         }
     },

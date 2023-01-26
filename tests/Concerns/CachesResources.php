@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Concerns;
+namespace BadChoice\Thrust\Tests\Concerns;
 
 trait CachesResources
 {
