@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Console\Commands;
+namespace BadChoice\Thrust\Tests\Console\Commands;
 
 use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
+use BadChoice\Thrust\Tests\TestCase;
 
 final class PruneTest extends TestCase
 {

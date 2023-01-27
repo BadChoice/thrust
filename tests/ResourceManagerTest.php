@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests;
+namespace BadChoice\Thrust\Tests;
 
 use BadChoice\Thrust\ResourceManager;
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Models;
+namespace BadChoice\Thrust\Tests\Models;
 
 use App\Models\Employee;
 use App\Models\Invoice;
@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use LogicException;
-use Tests\TestCase;
+use BadChoice\Thrust\Tests\TestCase;
 
 final class DatabaseActionTest extends TestCase
 {
