@@ -83,7 +83,7 @@ abstract class Resource
     /**
      * @var bool define if a resource can be imported using thrust import features
      */
-    public static $importable = true;
+    public static $importable = false;
 
 
     /**
@@ -262,7 +262,7 @@ abstract class Resource
     public function mainActions()
     {
         return  [
-            //...(static::$importable ? [new Import()] : []),
+            ...(static::$importable ? [new Import()] : []),
             MainAction::make('new'),
         ];
     }
