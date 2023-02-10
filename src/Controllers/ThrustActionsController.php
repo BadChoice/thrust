@@ -49,12 +49,12 @@ class ThrustActionsController extends Controller
             $response   = $action->handle(collect($action->resource->find($ids)));
         } catch (\Exception $e) {
             return request()->ajax() ?
-                response()->json(['ok' => false, 'message' => $e->getMessage()]) :
+                response()->json(['ok' => false, 'message' => $e->getMessage(), 'shouldReload' => false, 'responseAsPopup' => false]) :
                 back()->withErrors(['msg' => $e->getMessage()]);
         }
 
         if (request()->ajax()) {
-            return response()->json(['ok' => true, 'message' => $response ?? 'done']);
+            return response()->json(['ok' => true, 'message' => $response ?? 'done', 'shouldReload' => $action->shouldReload, 'responseAsPopup' => $action->responseAsPopup]);
         }
 
         return back()->withMessage($response);
