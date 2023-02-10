@@ -31,6 +31,7 @@
             "action" : actionClass,
             "ids" : selected
         }).done(function(data){
+            $('#actions-loading').hide();
             console.log("Action finished");
             //console.log(data);
             if (data["responseAsPopup"]){
