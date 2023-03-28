@@ -36,7 +36,7 @@ class Check extends Text
             'withLinks'    => $this->shouldShowLinks($resource, $object),
             'asSwitch'     => $this->asSwitch,
             'description'  => $this->getDescription()
-        ]);
+        ])->render();
     }
 
     public function displayInEdit($object, $inline = false)
@@ -47,7 +47,7 @@ class Check extends Text
             'value'  => $this->getValue($object),
             'inline' => $inline,
             'description' => $this->getDescription(),
-        ]);
+        ])->render();
     }
 
     protected function shouldShowLinks($resource, $object): bool

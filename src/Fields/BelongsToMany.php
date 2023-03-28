@@ -38,7 +38,7 @@ class BelongsToMany extends Relationship
             'id'            => $object->id,
             'icon'          => $this->icon,
             'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
-        ]);
+        ])->render();
     }
 
     public function displayInEdit($object, $inline = false)
@@ -48,7 +48,7 @@ class BelongsToMany extends Relationship
             'title'  => $this->getTitle(),
             'value'  => $this->displayInIndex($object),
             'inline' => $inline,
-        ]);
+        ])->render();
     }
 
     public function sortable($sortable = true, $sortField = 'order')
