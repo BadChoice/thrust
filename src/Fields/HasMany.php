@@ -13,6 +13,7 @@ class HasMany extends Relationship
     public $icon           = null;
     public $withCount      = false;
     public $useTitle;
+    public $importable      = false;
 
     public static function make($dbField, $title = null)
     {
@@ -30,6 +31,15 @@ class HasMany extends Relationship
 
     public function onlyCount(){
         $this->withCount = true;
+        return $this;
+    }
+
+    public function withLink($link = true)
+    {
+        $this->withLink = true;
+        if (is_string($link)) {
+            $this->link = $link;
+        }
         return $this;
     }
 

@@ -3,6 +3,8 @@
 namespace BadChoice\Thrust\Fields\Traits;
 
 
+use BadChoice\Thrust\Fields\FieldContainer;
+
 trait Visibility
 {
     public $visibilities = [];
@@ -15,20 +17,22 @@ trait Visibility
         return $this->visibilities[$value];
     }
 
-    function hideWhen($field, $value=true, $where=null){
+    function hideWhen($field, $values = [true], $where = null){
+        $values = collect($values)->all();
         if ($where == null || $where == 'index')
-            $this->hideIndex->hideWhen($field, $value);
+            $this->hideIndex->hideWhen($field, $values);
         if ($where == null || $where == 'edit')
-            $this->hideEdit->hideWhen($field, $value);
+            $this->hideEdit->hideWhen($field, $values);
 
         return $this;
     }
 
-    function showWhen($field, $value=true, $where=null){
+    function showWhen($field, $values = [true], $where=null){
+        $values = collect($values)->all();
         if ($where == null || $where == 'index')
-            $this->showIndex->showWhen($field, $value);
+            $this->showIndex->showWhen($field, $values);
         if ($where == null || $where == 'edit')
-            $this->showEdit->showWhen($field, $value);
+            $this->showEdit->showWhen($field, $values);
 
         return $this;
     }
@@ -51,21 +55,69 @@ trait Visibility
         return $this;
     }
 
-    function shouldHide($object, $where=null){
+    function shouldHide($object, $where = null){
         if ($where == 'index')
-            return $this->hideIndex->shouldHide($object);
+            return $this->hideIndex->shouldHide($object, true);
         if ($where == null || $where == 'edit')
             return $this->hideEdit->shouldHide($object);
 
         return $this->hideEdit->shouldHide($object) && $this->hideIndex->shouldHide($object);
     }
 
-    function shouldShow($object, $where=null){
+    function shouldShow($object, $where = null){
         if ($where == 'index')
-            return $this->showIndex->shouldShow($object);
+            return $this->showIndex->shouldShow($object, true);
         if ($where == null || $where == 'edit')
             return $this->showEdit->shouldShow($object);
 
         return $this->showEdit->shouldShow($object) && $this->showIndex->shouldShow($object);
+    }
+
+    static function getPanelShowVisibilityJson($panels){
+        $fieldsVisibility = $panels->flatMap(function($panel) {
+            return collect($panel->fields)->filter(function ($field) {
+                if ($field instanceof FieldContainer) { return false ;}
+                return $field->showEdit->field != null;
+            });
+        })->mapWithKeys(function ($field) {
+            return [$field->field => [
+                'field' =>  $field->showEdit->field,
+                'values' => $field->showEdit->values]
+            ];
+        });
+        $panelVisibility = $panels->filter(function ($panel) {
+            return $panel->showEdit->field != null;
+        })->mapWithKeys(function ($panel) {
+            return ['panel_' . $panel->getId() => [
+                'field' => $panel->showEdit->field,
+                'values' => $panel->showEdit->values]
+            ];
+        });
+        return $fieldsVisibility->merge($panelVisibility);
+    }
+
+
+    static function getPanelHideVisibilityJson($panels)
+    {
+        $fieldsVisibility = $panels->flatMap(function($panel) {
+            return collect($panel->fields)->filter(function ($field) {
+                if ($field instanceof FieldContainer) { return false ;}
+                return $field->hideEdit->field != null;
+            });
+        })->mapWithKeys(function ($field) {
+            return [$field->field => [
+                'field' =>  $field->hideEdit->field,
+                'values' => $field->hideEdit->values]
+            ];
+        });
+        $panelVisibility =  $panels->filter(function ($panel) {
+            return $panel->hideEdit->field != null;
+        })->mapWithKeys(function ($panel) {
+            return ['panel_' . $panel->getId() => [
+                'field' =>  $panel->hideEdit->field,
+                'values' => $panel->hideEdit->values]
+            ];
+        });
+        return $fieldsVisibility->merge($panelVisibility);
     }
 }

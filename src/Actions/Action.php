@@ -14,6 +14,12 @@ abstract class Action
     use Iconable;
 
     public $needsConfirmation   = true;
+
+    /* If when finishing the action, the page should be reloaded*/
+    public $shouldReload        = true;
+    
+    /*If the response should be show in a popup*/
+    public $responseAsPopup     = false;
     public $confirmationMessage = 'Are you sure';
     public $main                = false;
     public $needsSelection      = true;

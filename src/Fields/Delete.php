@@ -10,6 +10,7 @@ class Delete extends Field {
     public $withoutIndexHeader  = true;
     public $rowClass            = 'action';
     public $policyAction        = 'delete';
+    public $importable          = false;
 
     public function displayInIndex($object)
     {

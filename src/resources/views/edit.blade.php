@@ -1,5 +1,5 @@
     @if ($fullPage)
-        <h2> {{  trans_choice(config('thrust.translationsPrefix'). Illuminate\Support\Str::singular($resourceName), 1) }} </h2>
+	<h2>{{ $title }}</h2>
     @else
         <div class="configForm">
             <h2> {{ $object->{$nameField} ?? __('thrust::messages.new') }}</h2>
@@ -17,7 +17,7 @@
     <div class="configForm">
         @foreach($fields as $field)
             @if (! $field->shouldHide($object, 'edit') && $field->shouldShow($object, 'edit'))
-                    {!! $field->displayInEdit($object) !!}
+                {!! $field->displayInEdit($object) !!}
             @endif
         @endforeach
         @includeWhen($multiple, 'thrust::quantityInput')
@@ -39,7 +39,6 @@
         @include('thrust::components.js.saveAndContinue')
     @endif
     <script>
-        // $('#popup > select > .searchable').select2({ width: '325', dropdownAutoWidth : true });
         $('.searchable').select2({
             width: '300px',
             dropdownAutoWidth : true,
@@ -56,18 +55,34 @@
     </script>
 
     <script>
-        $(".formTab").each(function(idx, element){
-            $("#thrust-tabs-list").append("<li class='thrust-tab-header' onclick='showTab(this, \"#" + $(element).attr("id") +"\")'>" + $(element).attr('title') + "</li>")
-        });
-        $(".thrust-tab-header").first().addClass('active');
-        $(".formTab").first().addClass('active');
+        Array.from(document.getElementsByClassName('formTab')).forEach(function(element){
+            document.getElementById('thrust-tabs-list').insertAdjacentHTML('beforeend', "<li class='thrust-tab-header " + element.id + "' onclick='showTab(this, \"" + element.id +"\")'>" + element.title + "</li>")
+        })
 
-        function showTab(header, element){
-            $(".formTab").hide();
-            $(element).show();
-            $('.thrust-tab-header').removeClass('active');
-            $(header).addClass('active')
+        document.getElementsByClassName('thrust-tab-header').item(0)?.classList?.add('active')
+        document.getElementsByClassName('formTab').item(0)?.classList?.add('active')
+
+        function showTab(header, tabId){
+            const newTab = document.getElementById(tabId)
+            const oldTab = document.getElementsByClassName('formTab active').item(0)
+
+            oldTab.style.display = 'none'
+            oldTab.classList.remove('active')
+            newTab.style.display = 'block'
+            newTab.classList.add('active')
+
+            document.getElementsByClassName('thrust-tab-header active').item(0).classList.remove('active')
+            header.classList.add('active')
         }
+
+        Array.from(document.getElementsByTagName('input')).forEach(function(elem){
+            elem.addEventListener('invalid', () => {
+                const tab = elem.closest('.formTab')
+                if (tab) {
+                    showTab(document.getElementsByClassName('thrust-tab-header ' + tab.id).item(0), tab.id)
+                }
+            })
+        })
     </script>
 @endpush
 

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+php vendor/bin/testbench package:test

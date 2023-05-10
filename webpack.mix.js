@@ -9,7 +9,6 @@ mix
         'src/resources/js/visibility.js',
         'src/resources/js/select2.min.js',
         'src/resources/js/scrollsaver.min.js',
-        'src/resources/js/places.js',
         'src/resources/js/jquery.popupoverlay.js',
     ], 'src/resources/js/thrust.min.js');
 

@@ -1,20 +1,20 @@
 <?php $filters = $resource->filters() ?>
 @if ($filters && count($filters) > 0)
-    <div class="dropdown inline">
-        <button class="secondary"> @icon(filter) @icon(caret-down)</button>
+    <div x-data = "{isOpen : false}">
+        <button class="secondary relative" x-on:click="isOpen = !isOpen"> @icon(filter) @icon(caret-down)</button>
+        <?php $filtersApplied = $resource->filtersApplied(); ?>
+        <div class="thrust-filters-dropdown absolute" x-show="isOpen" x-transition x-cloak x-on:click.away = "isOpen = false">
+            <form id="filtersForm" class="thrust-filters-form">
+            @foreach (collect($filters) as $filter)
+                <div>
+                    <div> {!! $filter->getIcon() !!} {!! $filter->getTitle() !!}</div>
+                    <div class="text-left">
+                        {!! $filter->display($filtersApplied) !!}
+                    </div>
+                </div>
+            @endforeach
+            <button class="secondary">{{ __("thrust::messages.apply") }}</button>
+            </form>
+        </div>
     </div>
-    <?php $filtersApplied = $resource->filtersApplied(); ?>
-    <ul class="dropdown-container filters" style="right:70px; margin-top:0px">
-        <form id="filtersForm">
-        @foreach (collect($filters) as $filter)
-            <li> {!! $filter->getIcon() !!} {!! $filter->getTitle() !!}</li>
-            <li class="text-left">
-                {!! $filter->display($filtersApplied) !!}
-            </li>
-        @endforeach
-            <div class="text-center mt3">
-                <button class="secondary w100">{{ __("thrust::messages.apply") }}</button>
-            </div>
-        </form>
-    </ul>
 @endif

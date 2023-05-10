@@ -3,6 +3,7 @@
 namespace BadChoice\Thrust\Fields;
 
 use BadChoice\Thrust\Fields\Traits\Visibility;
+use Illuminate\Support\Str;
 
 class Panel extends FieldContainer
 {
@@ -52,12 +53,12 @@ class Panel extends FieldContainer
         if (! $this->title && ! $this->icon) {
             return '';
         }
-        return implode('', ['<h4>', icon($this->icon ?? ''), ' ', $this->title, '</h4>']);
+        return implode('', ['<h4>', $this->icon ? icon($this->icon) : '', ' ', $this->title, '</h4>']);
     }
 
     public function getId()
     {
-        return $this->panelId ?? $this->title;
+        return $this->panelId ?? Str::slug($this->title);
     }
 
     public function shouldShow($object, $state)
@@ -70,8 +71,8 @@ class Panel extends FieldContainer
         return false;
     }
 
-    public function panels()
+    public function panels($object)
     {
-        return parent::panels()->push($this);
+        return parent::panels($object)->push($this);
     }
 }

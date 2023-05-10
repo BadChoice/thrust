@@ -34,6 +34,10 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
     Route::get('{resourceName}/search/{search}', 'ThrustSearchController@index')->name('thrust.search');
     Route::get('{resourceName}/export', 'ThrustExportController@index')->name('thrust.export');
 
+    Route::get('{resourceName}/import', 'ThrustImportController@index')->name('thrust.import');
+    Route::post('{resourceName}/import/csv', 'ThrustImportController@uploadCsv')->name('thrust.uploadCsv');
+    Route::post('{resourceName}/import', 'ThrustImportController@store')->name('thrust.doImport');
+
     Route::get('{resourceName}/{id}/image/{field}', 'ThrustImageController@edit')->name('thrust.image.edit');
     Route::post('{resourceName}/{id}/image/{field}', 'ThrustImageController@store')->name('thrust.image.store');
     Route::delete('{resourceName}/{id}/image/{field}', 'ThrustImageController@delete')->name('thrust.image.delete');
@@ -47,6 +51,7 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
     Route::get('{resourceName}/{id}/belongsToMany/{relationship}/search/{search}', 'ThrustBelongsToManyController@search')->name('thrust.belongsToMany.search');
     Route::post('{resourceName}/{id}/belongsToMany/{relationship}/updateOrder', 'ThrustBelongsToManyController@updateOrder')->name('thrust.belongsToMany.updateOrder');
     Route::delete('{resourceName}/{id}/belongsToMany/{relationship}/{detachId}', 'ThrustBelongsToManyController@delete')->name('thrust.belongsToMany.delete');
+    Route::get('{resourceName}/{id}/belongsToMany/{relationship}/{pivotId}/editInline', 'ThrustBelongsToManyController@editInline')->name('thrust.belongsToMany.editInline');
 
     Route::get('{resourceName}/{id}/hasMany/{relationship}', 'ThrustHasManyController@index')->name('thrust.hasMany');
 

@@ -12,6 +12,9 @@ class ThrustSearchController extends Controller
     {
         request()->merge(['search' => $searchText]);
         $resource = Thrust::make($resourceName);
+        if ($resource::$searchResource){        
+            $resource = Thrust::make($resource::$searchResource);
+        }
         return (new Index($resource))->show();
     }
 }

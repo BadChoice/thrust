@@ -1,11 +1,17 @@
 {
-    "name": "badchoice/thrust",
+    "name": "revosystems/thrust",
     "description": "A simple resource crud generator",
     "type": "library",
     "require": {
-        "laravel/framework": "^7.4",
+        "php": "^8.0",
+        "laravel/framework": "8.x|9.x",
         "intervention/image": "^2.5",
-        "psr/container": "^1.0"
+        "psr/container": "^1.0|^2.0",
+        "illuminate/contracts": "8.x|^9.43"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.17",
+        "nunomaduro/collision": "^6.3"
     },
     "license": "MIT",
     "authors": [
@@ -21,6 +27,17 @@
         "psr-4": {
             "BadChoice\\Thrust\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BadChoice\\Thrust\\Tests\\": "tests",
+            "App\\": "tests/skeleton"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php vendor/bin/testbench package:discover --ansi"
+        ]
     },
     "extra": {
         "laravel": {

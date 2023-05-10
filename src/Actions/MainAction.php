@@ -28,13 +28,18 @@ class MainAction
         if ($parent_id) {
             $link .= "?parent_id={$parent_id}";
         }
-        return "<a class='button showPopup' href='{$link}'> {$this->getIcon()} {$title} </a>";
+        return "<a class='{$this->getClasses()}' href='{$link}'> {$this->getIcon()} {$title} </a>";
+    }
+
+    public function getClasses()
+    {
+        return 'button showPopup';
     }
 
     protected function getIcon() : string
     {
         return $this->icon
-            ? "<i class='fa fa-plus'></i>"
+            ? "<i class='fa fa-{$this->icon}'></i>"
             : '';
     }
 

@@ -12,7 +12,7 @@
 </div>
 <div id="popup-results"></div>
 
-@if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'edit', $object))
+@if (app(BadChoice\Thrust\ResourceGate::class)->can($pivotResourceName, 'create'))
     <div class="mt4">
         <form id='belongsToManyForm' action="{{route('thrust.belongsToMany.store', [$resourceName, $object->id, $belongsToManyField->field]) }}" method="POST">
             {{ csrf_field() }}
@@ -82,4 +82,19 @@
         axis: "y",
     });
 
+    $("{{config('thrust.popupId', '#popup')}}  tr").on("dblclick", function(element){
+        if ($(this).find("a.edit").length == 0) return;
+        belongsToManyEditInline($(this).attr('id').replace("sort_", ""));
+    });
+
+    $("{{config('thrust.popupId', '#popup')}}  a.edit").on("click", function(element){
+        belongsToManyEditInline($(this).attr('id').replace("edit_", ""));
+    });
+
+    function belongsToManyEditInline(id){
+        var url = "{{route('thrust.belongsToMany.editInline', [$resourceName, $object->id, $belongsToManyField->field, 'pivotId'])}}".replace("pivotId", id);
+        $(`#sort_${id}`).load(url, () => {
+           $(`#sort_${id} input, #sort_${id} textarea, #sort_${id} select`).each((index, el)=>{ el.setAttribute('form', `thrust-form-${id}`)})
+        });
+    }
 </script>

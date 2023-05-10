@@ -7,9 +7,12 @@ class Validation
     protected $rules;
     protected $type;
 
-    public function __construct($rules, $type = 'text')
+    public function __construct(null|string|array $rules, $type = 'text')
     {
-        $this->rules    = collect(explode('|', $rules));
+        $this->rules    = collect(is_string($rules)
+            ? explode('|', $rules)
+            : $rules
+        );
         $this->type     = $type;
     }
 
@@ -41,6 +44,8 @@ class Validation
             $this->appendRuleEmail($output);
         } elseif ($rule == 'ip') {
             $this->appendRuleIp($output);
+        } elseif ($rule == 'regex') {
+            $this->appendRuleRegex($output, $params[1]);
         }
     }
 
@@ -91,6 +96,12 @@ class Validation
     public function appendRuleNumberMax(&$output, $max)
     {
         $output .= " max='{$max}' ";
+    }
+
+    public function appendRuleRegex(&$output, $regex)
+    {
+        $pattern = str_replace('/', '', $regex);
+        $output .= " pattern='{$pattern}' title='{$pattern}' ";
     }
 }
 
