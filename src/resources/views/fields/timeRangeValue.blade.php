@@ -28,10 +28,10 @@
                 <div id="keyValue-{{$loop->iteration}}" class="mb2 keyValueField-{{$field}}" style="height:auto">
                     <div class="inline" id="keyValueFields-{{$loop->iteration}}">
                         <div class="inline" id="start">
-                            <input @if($fixed) readonly="readonly" @endif type='time' id='{{$field.'['.$loop->iteration.'][start]'}}' value='{{$v->start}}' name='{{$field.'['.$loop->iteration.'][end]'}}' placeholder='start' style='width:132px'>
+                            <input @if($fixed) readonly="readonly" @endif type='time' id='{{$field.'['.$loop->iteration.'][start]'}}' value='{{$v->start}}' name='{{$field.'['.$loop->iteration.'][start]'}}' placeholder='start' style='width:132px'>
                         </div>
                         <div class="inline" id="end">
-                            <input @if($fixed) readonly="readonly" @endif type='time' id='{{$field.'['.$loop->iteration.'][end]'}}' value='{{$v->end}}' name='{{$field.'['.$loop->iteration.'][start]'}}' placeholder='end' style='width:132px'>
+                            <input @if($fixed) readonly="readonly" @endif type='time' id='{{$field.'['.$loop->iteration.'][end]'}}' value='{{$v->end}}' name='{{$field.'['.$loop->iteration.'][end]'}}' placeholder='end' style='width:132px'>
                         </div>
                         <div class="inline" id="value">
                             @if(! $keyValueField->valueOptions)
