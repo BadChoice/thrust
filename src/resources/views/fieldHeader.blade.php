@@ -5,9 +5,9 @@
     @if ($field->sortableInIndex() && !request('search'))
         @if(request('sort') == $field->field)
              @if(strtolower(request('sort_order')) == 'asc')
-                <a class="rounded bg-gray-200 p-1" href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'desc')}}'  class='sortDown'> {{ $field->getTitle(true) }} ▼</a>
+                <a class="rounded bg-gray-200 p-1" href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'asc')}}'  class='sortDown'> {{ $field->getTitle(true) }} ▼</a>
             @else
-            <a class="rounded bg-gray-200 p-1" href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'asc')}}' class='sortUp'> {{ $field->getTitle(true) }} ▲</a>
+            <a class="rounded bg-gray-200 p-1" href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'desc')}}' class='sortUp'> {{ $field->getTitle(true) }} ▲</a>
             @endif
         @else
             <a href='{{ BadChoice\Thrust\ResourceFilters\Sort::link($field->field, 'asc')}}' class='sortUp'>{{ $field->getTitle(true) }}</a>
