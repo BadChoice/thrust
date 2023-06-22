@@ -419,4 +419,9 @@ abstract class Resource
     {
         return $this->overlook;
     }
+
+    public function editTitle(mixed $object): ?string
+    {
+        return $object->{$this->nameField};
+    }
 }
