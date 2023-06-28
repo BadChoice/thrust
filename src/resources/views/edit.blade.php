@@ -2,7 +2,8 @@
 	<h2>{{ $title }}</h2>
     @else
         <div class="configForm">
-            <h2> {{ $object->{$nameField} ?? __('thrust::messages.new') }}</h2>
+            <span> {{ $breadcrumbs }} </span>
+            <h2> {{ $object->{$nameField} ?: __('thrust::messages.new') }} </h2>
         </div>
     @endif
 

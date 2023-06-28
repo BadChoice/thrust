@@ -419,4 +419,9 @@ abstract class Resource
     {
         return $this->overlook;
     }
+
+    public function breadcrumbs(mixed $object): ?string
+    {
+        return null;
+    }
 }

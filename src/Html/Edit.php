@@ -56,6 +56,7 @@ class Edit
         return view('thrust::edit', [
             'title'                     => $this->resource->getTitle(),
             'nameField'                 => $this->resource->nameField,
+            'breadcrumbs'               => $this->resource->breadcrumbs($object),
             'resourceName'              => $this->resourceName ? : $this->resource->name(),
             'fields'                    => $this->getEditFields($multiple),
             'object'                    => $object,
