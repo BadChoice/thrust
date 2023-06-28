@@ -2,15 +2,8 @@
 	<h2>{{ $title }}</h2>
     @else
         <div class="configForm">
-            <h2>
-                @forEach(explode('/', $objectName ?: __('thrust::messages.new')) as $pathComponent)
-                    @if($loop->last)
-                        <span>{{ $pathComponent }}</span>
-                    @else
-                        <span style="font-size:12px">{{ $pathComponent }} / </span>
-                    @endif
-                @endforeach
-            </h2>
+            <span> {{ $breadcrumbs }} </span>
+            <h2> {{ $object->{$nameField} ?: __('thrust::messages.new') }} </h2>
         </div>
     @endif
 

@@ -60,12 +60,13 @@ abstract class ChildResource extends Resource
         return $this::$parentChildsRelation && $parent ? [Thrust::resourceNameFromModel($parent), $parent->id, static::$parentChildsRelation] : null; 
     }
 
-    public function editTitle(mixed $object): ?string
+    public function breadcrumbs(mixed $object): ?string
     {
         $parent = $this->parent($object);
-        $path = $parent
-            ? Thrust::make(Thrust::resourceNameFromModel($parent))->editTitle($parent) . ' / '
-            : '';
-        return $path . parent::editTitle($object);
+        if(! $parent) {
+            return null;
+        }
+        $parentResource = Thrust::make(Thrust::resourceNameFromModel($parent));
+        return implode(' / ', array_filter([$parentResource->breadcrumbs($parent), $parent->{$parentResource->nameField}]));
     }
 }
