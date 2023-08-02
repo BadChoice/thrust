@@ -72,7 +72,8 @@ class ThrustController extends Controller
             return back()->withErrors(['message' => $e->getMessage()]);
         }
         if (request()->ajax()) { return response()->json($result);}
-        return back()->withMessage(__('thrust::messages.created'));
+
+        return $this->backWithMessage('created');
     }
 
     public function storeMultiple($resourceName)
@@ -95,7 +96,8 @@ class ThrustController extends Controller
         }
 
         DB::commit();
-        return back()->withMessage(__('thrust::messages.created'));
+
+        return $this->backWithMessage('created');
     }
 
     public function update($resourceName, $id)
@@ -110,7 +112,8 @@ class ThrustController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['message' => $e->getMessage()]);
         }
-        return back()->withMessage(__('thrust::messages.updated'));
+
+        return $this->backWithMessage('updated');
     }
 
     public function delete($resourceName, $id)
@@ -120,7 +123,8 @@ class ThrustController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['delete' => $e->getMessage()]);
         }
-        return back()->withMessage(__('thrust::messages.deleted'));
+
+        return $this->backWithMessage('deleted');
     }
 
     private function singleResourceIndex($resourceName, $resource)
@@ -130,5 +134,13 @@ class ThrustController extends Controller
             'resource'      => $resource,
             'object'        => $resource->first()
         ]);
+    }
+
+    private function backWithMessage(string $message)
+    {
+        if (session()->has('thrust-redirect')) {
+            return redirect(session('thrust-redirect'));
+        }
+        return back()->withMessage(__("'thrust::messages.{$message}"));
     }
 }
