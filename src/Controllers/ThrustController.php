@@ -72,6 +72,7 @@ class ThrustController extends Controller
             return back()->withErrors(['message' => $e->getMessage()]);
         }
         if (request()->ajax()) { return response()->json($result);}
+        if (session()->has('thrust-redirect')) { return redirect(session('thrust-redirect'));}
         return back()->withMessage(__('thrust::messages.created'));
     }
 
@@ -95,6 +96,7 @@ class ThrustController extends Controller
         }
 
         DB::commit();
+        if (session()->has('thrust-redirect')) { return redirect(session('thrust-redirect'));}
         return back()->withMessage(__('thrust::messages.created'));
     }
 
@@ -110,6 +112,7 @@ class ThrustController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['message' => $e->getMessage()]);
         }
+        if (session()->has('thrust-redirect')) { return redirect(session('thrust-redirect'));}
         return back()->withMessage(__('thrust::messages.updated'));
     }
 
@@ -120,6 +123,7 @@ class ThrustController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['delete' => $e->getMessage()]);
         }
+        if (session()->has('thrust-redirect')) { return redirect(session('thrust-redirect'));}
         return back()->withMessage(__('thrust::messages.deleted'));
     }
 
