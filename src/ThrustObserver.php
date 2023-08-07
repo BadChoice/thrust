@@ -137,7 +137,7 @@ class ThrustObserver
         ];
 
         try {
-            return DatabaseAction::create($attributes);
+            return DatabaseAction::on($model->getConnectionName())->create($attributes);
         } catch (QueryException $e) {
             // The table is probably not found because the user have not yet
             // logged in, so we don't bother to log anything.
