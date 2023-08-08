@@ -270,7 +270,7 @@ abstract class Resource
     public function actions()
     {
         return [
-            new Delete(),
+            ...($this->canDelete(self::$model) ? [new Delete()] : []),
         ];
     }
 
