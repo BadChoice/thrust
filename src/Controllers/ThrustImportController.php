@@ -7,6 +7,7 @@ use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\Importer\Importer;
 use BadChoice\Thrust\ResourceGate;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ThrustImportController extends Controller
 {
@@ -47,6 +48,7 @@ class ThrustImportController extends Controller
         app(ResourceGate::class)->check($resource, 'create');
         $importer = new Importer(request('csv'), $resource);
         try {
+            DB::connection()->disableQueryLog();
             $imported = $importer->import(request('mapping'));
         }catch(\Exception $e){
 //            dd($e->validator->errors()->getMessages());
