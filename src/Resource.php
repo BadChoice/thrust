@@ -16,7 +16,9 @@ use BadChoice\Thrust\ResourceFilters\Filters;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 abstract class Resource
 {
@@ -423,5 +425,13 @@ abstract class Resource
     public function breadcrumbs(mixed $object): ?string
     {
         return null;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function validate(Request $request, ?int $id = null): void
+    {
+        $request->validate($this->getValidationRules($id));
     }
 }
