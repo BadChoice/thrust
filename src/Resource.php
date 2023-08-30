@@ -15,6 +15,7 @@ use BadChoice\Thrust\Helpers\Translation;
 use BadChoice\Thrust\ResourceFilters\Filters;
 use BadChoice\Thrust\ResourceFilters\Search;
 use BadChoice\Thrust\ResourceFilters\Sort;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -430,8 +431,14 @@ abstract class Resource
     /**
      * @throws ValidationException
      */
-    public function validate(Request $request, ?int $id = null): void
+    final public function validate(Request $request, ?int $id = null): void
     {
-        $request->validate($this->getValidationRules($id));
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), $this->getValidationRules($id));
+        $this->withValidator($request, $validator);
+        $validator->validate();
+    }
+
+    protected function withValidator(Request $request, Validator $validator)
+    {
     }
 }
