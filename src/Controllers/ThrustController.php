@@ -64,7 +64,8 @@ class ThrustController extends Controller
     public function store($resourceName)
     {
         $resource = Thrust::make($resourceName);
-        request()->validate($resource->getValidationRules(null));
+        $resource->validate(request(), null);
+
         try {
             $result = $resource->create(request()->all());
         } catch (\Exception $e) {
@@ -104,7 +105,7 @@ class ThrustController extends Controller
     {
         $resource = Thrust::make($resourceName);
         if (! request()->has('inline')) {
-            request()->validate($resource->getValidationRules($id));
+            $resource->validate(request(), $id);
         }
 
         try {
