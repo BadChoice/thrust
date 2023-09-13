@@ -30,7 +30,7 @@ class Edit
                 return $field->excludeOnMultiple;
             });
         }
-        if ($this->resource::$sortable) {
+        if ($this->resource->canSort()) {
             $fields->prepend(Hidden::make($this->resource::$sortField));
         }
         if ($this->resource instanceof ChildResource) {
@@ -75,7 +75,7 @@ class Edit
             'nameField'     => $this->resource->nameField,
             'resourceName'  => $this->resource->name(),
             'fields'        => $this->getEditInlineFields(),
-            'sortable'      => $this->resource::$sortable,
+            'sortable'      => $this->resource->canSort(),
             'object'        => $object,
         ])->render();
     }
@@ -88,7 +88,7 @@ class Edit
             'nameField'          => $this->resource->nameField,
             'resourceName'       => $this->resource->name(),
             'fields'             => $this->getEditInlineFields(),
-            'sortable'           => $this->resource::$sortable,
+            'sortable'           => $this->resource->canSort(),
             'object'             => $object,
             'belongsToManyField' => $belongsToManyField,
             'relatedName' => $object->{$relation}?->{$belongsToManyField->relationDisplayField},
