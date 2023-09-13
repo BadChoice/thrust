@@ -216,6 +216,11 @@ abstract class Resource
         return $this->can('delete', $object);
     }
 
+    public function canSort(): bool
+    {
+        return static::$sortable && $this->can('update');
+    }
+
     public function can($ability, $object = null)
     {
         if (! $ability) {
@@ -405,7 +410,7 @@ abstract class Resource
 
     public function sortableIsActive()
     {
-        return static::$sortable && ! request('sort');
+        return $this->canSort() && ! request('sort');
     }
 
     public function getUpdateConfirmationMessage()
