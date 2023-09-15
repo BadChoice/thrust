@@ -277,9 +277,9 @@ abstract class Resource
 
     public function actions()
     {
-        return [
-            new Delete(),
-        ];
+        return $this->canDelete(static::$model)
+            ? [new Delete()]
+            : [];
     }
 
     public function filters()
