@@ -7,7 +7,7 @@
 <div class="inline">
     <form action="{{ route('thrust.image.store', [$resourceName, $object->id, $fileField->field]) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
-        <input type="file" name="image">
+        <input type="file" name="image" accept="image/png, image/gif, image/jpeg">
         <div>
             <button class="button-with-loading">{{ __("thrust::messages.save") }}</button>
         </div>
