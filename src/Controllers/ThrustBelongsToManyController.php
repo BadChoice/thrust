@@ -18,6 +18,7 @@ class ThrustBelongsToManyController extends Controller
         $belongsToManyField = $resource->fieldFor($relationship);
         $explodedPivotClass = explode('\\', $object->$relationship()->getPivotClass());
         return view('thrust::belongsToManyIndex', [
+            'resource'                => $resource,
             'resourceName'            => $resourceName,
             'pivotResourceName'       => end($explodedPivotClass),
             'object'                  => $object,
