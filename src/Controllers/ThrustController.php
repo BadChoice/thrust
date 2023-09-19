@@ -142,6 +142,6 @@ class ThrustController extends Controller
         if (session()->has('thrust-redirect')) {
             return redirect(session('thrust-redirect'));
         }
-        return back()->withMessage(__("'thrust::messages.{$message}"));
+        return back()->withMessage(__("thrust::messages.{$message}"));
     }
 }
