@@ -60,6 +60,18 @@ class ThrustActionsController extends Controller
         return back()->withMessage($response);
     }
 
+    public function index($resourceName)
+    {
+        $resource = Thrust::make($resourceName);
+        if(request('search') && $resource::$searchResource) {
+            $resource = Thrust::make($resource::$searchResource);
+        }
+        return view('thrust::components.actionsIndex', [
+            'actions' => collect($resource->actions()),
+            'resourceName' => $resource->name(),
+        ]);
+    }
+
     private function findActionForResource($resourceName, $actionClass)
     {
         $resource   = Thrust::make($resourceName);

@@ -10,39 +10,46 @@
 (function($) {
     $.fn.searcher = function( callbackUrl , options ) {
 
-        let settings = $.extend({
+        const settings = $.extend({
             resultsDiv   : 'results',
             allDiv       : 'all',
             minChars     : 3,
             onFound      : null,
             updateAddressBar : true
-        }, options);
+        }, options)
 
-        let timeout = null;
+        let timeout = null
         this.on('keyup',function(){
-            clearTimeout(timeout);
-            let self = $(this);
+            clearTimeout(timeout)
+            const self = this
             timeout = setTimeout(function () {
-                let searchString = (self.val());
+                const searchString = self.value
 
                 if (searchString.length >= settings.minChars) {
                     if (settings.updateAddressBar) {
-                        window.history.pushState("", "", '?search=' + searchString);
+                        window.history.pushState("", "", '?search=' + searchString)
                     }
-                    $('#' + settings.resultsDiv).show();
-                    $('#' + settings.allDiv).hide();
-                    $('#' + settings.resultsDiv).load(callbackUrl + self.val().replace(new RegExp(' ', 'g'), '%20'), settings.onFound);
+                    document.getElementById(settings.resultsDiv).style.display = 'block'
+                    document.getElementById(settings.allDiv).style.display = 'none'
+                    fetch(callbackUrl + self.value.replace(new RegExp(' ', 'g'), '%20')).then(response => {
+                        response.text().then(html => {
+                            document.getElementById(settings.resultsDiv).innerHTML = html
+                        })
+                    })
+                    window.dispatchEvent(new Event('thrust.searchStarted'))
                 } else {
                     if (settings.updateAddressBar) {
-                        window.history.pushState("", "", "?");
+                        window.history.pushState("", "", "?")
                     }
-                    $('#' + settings.resultsDiv).hide();
-                    $('#' + settings.allDiv).show();
+
+                    document.getElementById(settings.resultsDiv).style.display = 'none'
+                    document.getElementById(settings.allDiv).style.display = 'block'
+                    window.dispatchEvent(new Event('thrust.searchEnded'))
                 }
-            }, 300);
-        });
+            }, 300)
+        })
     }
-}(jQuery));
+}(jQuery))
 
 function RVAjaxSelect2(url, options) {
     this.options = {
@@ -58,7 +65,7 @@ function RVAjaxSelect2(url, options) {
             data: function (params) {
                 return {
                     search: params.term
-                };
+                }
             },
             processResults: function (data) {
                 return {
@@ -72,8 +79,8 @@ function RVAjaxSelect2(url, options) {
                 }
             }
         }
-    };
-    $.extend(this.options, options);
+    }
+    $.extend(this.options, options)
 
     this.show = function(itemId) {
         return $(itemId).select2(this.options)

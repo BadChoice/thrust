@@ -21,6 +21,7 @@ class ThrustHasManyController extends Controller
             'resourceName'            => $hasManyField->resourceName,
             'searchable'              => count($resource::$search) > 0,
             'resource'                => $childResource,
+            'actions'                 => collect($childResource->actions()),
             'parent_id'               => $id,
             'isChild'                 => $resource instanceof ChildResource && $backHasManyURLParams,
             'hasManyBackUrlParams'    => $backHasManyURLParams,
