@@ -6,7 +6,7 @@
             return alert("{!! __("thrust::messages.noRowsSelected") !!}")
         }
 
-        this.setAttribute('href', this.getAttribute('href') + "&ids=" + selected)
+        this.setAttribute('href', this.getAttribute('href') + "&ids=" + selected + "&search=" + searching)
         showPopup(this.getAttribute('href'))
     }
 
@@ -35,7 +35,8 @@
         $.post("{{ route('thrust.actions.perform', [$resourceName]) }}", {
             "_token": "{{ csrf_token() }}",
             "action" : actionClass,
-            "ids" : selected
+            "ids" : selected,
+            "search": searching,
         }).done(function(data){
             document.getElementById('actions-loading').style.display = 'none'
             if (data["responseAsPopup"]){
@@ -58,7 +59,6 @@
     }
 
     function toggleSelectAll(checkbox){
-        console.log([...document.querySelectorAll('input[name^=selected]')]);
         [...document.querySelectorAll('input[name^=selected]')]
             .forEach(elem => checkbox.checked
                 ? elem.checked = true
@@ -68,21 +68,26 @@
 
     registerActionPopupListeners()
 
-    window.addEventListener('thrust.searchStarted', () => {
-        fetch("{{ route('thrust.actions.index', ['resourceName' => $resourceName, 'search' => true]) }}").then(response => {
-            response.text().then(html => {
-                document.getElementById('thrust-resource-actions').innerHTML = html
-                registerActionPopupListeners()
+    let searching = false
+    @if($resource::$searchResource)
+        window.addEventListener('thrust.searchStarted', () => {
+            searching = true
+            fetch("{{ route('thrust.actions.index', ['resourceName' => $resourceName, 'search' => true]) }}").then(response => {
+                response.text().then(html => {
+                    document.getElementById('thrust-resource-actions').innerHTML = html
+                    registerActionPopupListeners()
+                })
             })
         })
-    })
 
-    window.addEventListener('thrust.searchEnded', () => {
-        fetch("{{ route('thrust.actions.index', ['resourceName' => $resourceName]) }}").then(response => {
-            response.text().then(html => {
-                document.getElementById('thrust-resource-actions').innerHTML = html
-                registerActionPopupListeners()
+        window.addEventListener('thrust.searchEnded', () => {
+            searching = false
+            fetch("{{ route('thrust.actions.index', ['resourceName' => $resourceName]) }}").then(response => {
+                response.text().then(html => {
+                    document.getElementById('thrust-resource-actions').innerHTML = html
+                    registerActionPopupListeners()
+                })
             })
         })
-    })
+    @endif
 </script>
