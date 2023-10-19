@@ -8,6 +8,7 @@ use BadChoice\Thrust\Actions\MainAction;
 use BadChoice\Thrust\Contracts\FormatsNewObject;
 use BadChoice\Thrust\Contracts\Prunable;
 use BadChoice\Thrust\Exceptions\CanNotDeleteException;
+use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\Fields\Edit;
 use BadChoice\Thrust\Fields\FieldContainer;
 use BadChoice\Thrust\Fields\Relationship;
@@ -280,6 +281,13 @@ abstract class Resource
         return $this->canDelete(static::$model)
             ? [new Delete()]
             : [];
+    }
+
+    public function searchActions(?bool $whileSearch = false)
+    {
+        return $whileSearch && static::$searchResource
+            ? Thrust::make(static::$searchResource)->actions()
+            : $this->actions();
     }
 
     public function filters()

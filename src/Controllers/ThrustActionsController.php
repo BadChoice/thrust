@@ -25,7 +25,7 @@ class ThrustActionsController extends Controller
 
     public function create($resourceName)
     {
-        $action      = $this->findActionForResource($resourceName, request('action'));
+        $action = $this->findActionForResource($resourceName, request('action'));
 
         if (! $action) {
             abort(404);
@@ -33,6 +33,9 @@ class ThrustActionsController extends Controller
         
         $action->setSelectedTargets(collect(explode(',', request('ids'))));
 
+        if(request('search')) {
+            $resourceName = Thrust::make($resourceName)::$searchResource ?? $resourceName;
+        }
         return view('thrust::actions.create', [
             'action'        => $action,
             'resourceName'  => $resourceName,
@@ -63,11 +66,9 @@ class ThrustActionsController extends Controller
     public function index($resourceName)
     {
         $resource = Thrust::make($resourceName);
-        if(request('search') && $resource::$searchResource) {
-            $resource = Thrust::make($resource::$searchResource);
-        }
+
         return view('thrust::components.actionsIndex', [
-            'actions' => collect($resource->actions()),
+            'actions' => collect($resource->searchActions(request('search'))),
             'resourceName' => $resource->name(),
         ]);
     }
@@ -75,10 +76,14 @@ class ThrustActionsController extends Controller
     private function findActionForResource($resourceName, $actionClass)
     {
         $resource   = Thrust::make($resourceName);
-        $action     =  collect($resource->actions())->first(function ($action) use ($actionClass) {
+        $action     =  collect($resource->searchActions(request('search')))->first(function ($action) use ($actionClass) {
             return $action instanceof $actionClass;
         });
-        $action->resource = $resource;
+
+        $action->resource = request('search') && $resource::$searchResource
+            ? Thrust::make($resource::$searchResource)
+            : $resource;
+            
         return $action;
     }
 }
