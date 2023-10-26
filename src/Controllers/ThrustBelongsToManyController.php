@@ -4,6 +4,7 @@ namespace BadChoice\Thrust\Controllers;
 
 use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\Fields\BelongsToMany;
+use BadChoice\Thrust\ResourceGate;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as BelongsToManyBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
@@ -17,6 +18,8 @@ class ThrustBelongsToManyController extends Controller
         $object             = $resource->find($id);
         $belongsToManyField = $resource->fieldFor($relationship);
         $explodedPivotClass = explode('\\', $object->$relationship()->getPivotClass());
+        app(ResourceGate::class)->check($resource, 'index');
+
         return view('thrust::belongsToManyIndex', [
             'resource'                => $resource,
             'resourceName'            => $resourceName,

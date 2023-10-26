@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Controllers;
 
+use BadChoice\Thrust\ResourceGate;
 use Illuminate\Routing\Controller;
 use BadChoice\Thrust\Facades\Thrust;
 use BadChoice\Thrust\ChildResource;
@@ -14,6 +15,7 @@ class ThrustHasManyController extends Controller
         $object             = $resource->find($id);
         $hasManyField       = $resource->fieldFor($relationship);
         $childResource      = Thrust::make($hasManyField->resourceName)->parentId($id);
+        app(ResourceGate::class)->check($resource, 'index');
 
         $backHasManyURLParams = $resource instanceof ChildResource ? $resource->getParentHasManyUrlParams($object) : null;
 
