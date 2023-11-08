@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+  <testsuites>
+    <testsuite name="thrust">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <env name="APP_KEY" value="iIXCgWTVG8B4wi2saWYgMMiC7rERMkEn"/>
+    <env name="DB_CONNECTION" value="testing"/>
+  </php>
+</phpunit>

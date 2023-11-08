@@ -19,4 +19,14 @@ return [
     'activate'               => 'Activate',
     'deactivate'             => 'Deactivate',
     'clearSorting'           => 'Clear sorting',
+    'clearSelection'         => 'Clear selection',
+    'amount'                 => 'Quantity',
+    'amountDesc'             => 'Number of copies to create.',
+    'createMultiple'         => 'Multiple creation',
+    'import'                 => 'Import',
+    'selectCsvFile'          => 'Select CSV file',
+    'rowsToImport'           => 'Columns to import',
+    'next'                   => 'Next',
+    'importFailed'           => 'Import failed',
+    'retryImport'            => 'Import again'
 ];

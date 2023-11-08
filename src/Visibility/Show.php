@@ -8,20 +8,21 @@ class Show
 {
 
     public $field;
-    public $value;
+    public $values;
     public $callback;
 
-    public function showWhen($field, $value = true)
+    public function showWhen($field, $values = true)
     {
+        $values = collect($values)->all();
         $this->field    = $field;
-        $this->value    = $value;
+        $this->values    = $values;
     }
 
     public function showCallback($callback){
         $this->callback = $callback;
     }
 
-    public function shouldShow($object)
+    public function shouldShow($object, $conditionally = false)
     {
         if ($this->callback){
             return call_user_func($this->callback, $object);
@@ -31,6 +32,9 @@ class Show
         }
         if (! $object)
             return false;
-        return $object->{$this->field} == $this->value;
+        if ($conditionally) {
+            return in_array($object->{$this->field}, $this->values);
+        }
+        return true;
     }
 }

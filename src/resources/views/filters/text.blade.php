@@ -1,4 +1,4 @@
 <input name="{{ $filter->class() }}"
-       title="{{$filter->title()}}"
+       title="{{$filter->getTitle()}}"
        value="{{$value}}"
-       placeholder="{{$filter->title()}}">
+       placeholder="{{$filter->getTitle()}}">

@@ -7,10 +7,17 @@ use BadChoice\Thrust\ResourceManager;
 class BelongsTo extends Relationship
 {
     protected $allowNull = false;
+    protected $inlineCreation = false;
 
-    public function allowNull($allowNull = true)
+    public function allowNull($allowNull = true) : self
     {
         $this->allowNull = $allowNull;
+        return $this;
+    }
+
+    public function inlineCreation($inlineCreation = true) : self
+    {
+        $this->inlineCreation = $inlineCreation;
         return $this;
     }
 
@@ -46,7 +53,7 @@ class BelongsTo extends Relationship
             return view('thrust::fields.selectAjax', [
                 'resourceName'  => app(ResourceManager::class)->resourceNameFromModel(get_class($object)),
                 'title'         => $this->getTitle(),
-                'field'         => $this->getRelationForeignKey($object),
+                'field'         => $this->databaseField($object),
                 'relationship'  => $this->field,
                 'value'         => $this->getValueId($object),
                 'name'          => $this->getRelationName($object),
@@ -54,20 +61,39 @@ class BelongsTo extends Relationship
                 'allowNull'     => $this->allowNull,
                 'inline'        => $inline,
                 'description'   => $this->getDescription(),
-            ]);
+                'inlineCreation' => $this->inlineCreation,
+                'inlineCreationData' => $this->inlineCreationData($object)
+            ])->render();
         }
         return view('thrust::fields.select', [
             'title'         => $this->getTitle(),
-            'field'         => $this->getRelationForeignKey($object),
+            'field'         => $this->databaseField($object),
             'searchable'    => $this->searchable,
             'value'         => $this->getValueId($object),
             'options'       => $this->getOptions($object),
             'inline'        => $inline,
             'description'   => $this->getDescription(),
-        ]);
+            'inlineCreation' => $this->inlineCreation,
+            'inlineCreationData' => $this->inlineCreationData($object)
+        ])->render();
     }
 
     public function getValueId($object){
         return $object->{$this->field}->{$this->getOwnerKey($object)} ?? null;
+    }
+
+    protected function inlineCreationData($object){
+        return [
+            "relationResource"     => collect(explode("\\", get_Class($this->getRelation($object)->getRelated())))->last(),
+            "relationDisplayField" => $this->relationDisplayField,
+        ];
+    }
+
+    public function sorted($field = 'order', $ascending = 'asc')
+    {
+        $this->relatedScope(function($query) use ($field, $ascending) {
+            return $query->orderBy($field,$ascending);
+        });
+        return $this;
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "badchoice/thrust",
+    "name": "revosystems/thrust",
     "description": "A simple resource crud generator",
     "type": "library",
     "require": {
@@ -20,6 +20,17 @@
         "psr-4": {
             "BadChoice\\Thrust\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BadChoice\\Thrust\\Tests\\": "tests",
+            "App\\": "tests/skeleton"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php vendor/bin/testbench package:discover --ansi"
+        ]
     },
     "extra": {
         "laravel": {

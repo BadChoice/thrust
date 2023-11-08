@@ -2,11 +2,13 @@
 
 namespace BadChoice\Thrust\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use BadChoice\Thrust\ResourceGate;
 use BadChoice\Thrust\Html\Edit;
 use BadChoice\Thrust\Facades\Thrust;
+use Illuminate\Support\Facades\DB;
 
 class ThrustController extends Controller
 {
@@ -37,6 +39,14 @@ class ThrustController extends Controller
         return (new Edit($resource))->show($object);
     }
 
+    public function createMultiple($resourceName)
+    {
+        $resource = Thrust::make($resourceName);
+        app(ResourceGate::class)->check($resource, 'create');
+        $object = $resource->makeNew();
+        return (new Edit($resource))->show($object, false, true);
+    }
+
     public function edit($resourceName, $id)
     {
         $resource = Thrust::make($resourceName);
@@ -55,11 +65,36 @@ class ThrustController extends Controller
     {
         $resource = Thrust::make($resourceName);
         request()->validate($resource->getValidationRules(null));
-        try{
-            $resource->create(request()->all());
+        try {
+            $result = $resource->create(request()->all());
         } catch (\Exception $e) {
+            if (request()->ajax()) { return response()->json(["error" => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);}
             return back()->withErrors(['message' => $e->getMessage()]);
         }
+        if (request()->ajax()) { return response()->json($result);}
+        return back()->withMessage(__('thrust::messages.created'));
+    }
+
+    public function storeMultiple($resourceName)
+    {
+        $resource = Thrust::make($resourceName);
+        request()->validate($resource->getValidationRules(null, true));
+        $amount   = request()->input('amount'); // amount to create
+        $request  = request()->except('amount');
+
+        DB::beginTransaction();
+        for ($i = 0; $i < $amount; ++$i) {
+            $request = array_merge($request, $resource->generateMultipleFields());
+
+            try {
+                $resource->create($request);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return back()->withErrors(['message' => $e->getMessage()]);
+            }
+        }
+
+        DB::commit();
         return back()->withMessage(__('thrust::messages.created'));
     }
 

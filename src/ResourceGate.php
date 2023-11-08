@@ -20,19 +20,30 @@ class ResourceGate
 
     public function can($resource, $ability, $object = null)
     {
-        $valid    = true;
-        $resource = Thrust::make($resource);
-        if ($resource::$gate) {
-            $valid = auth()->user()->can($resource::$gate);
-        }
-        $policy = $this->policyFor($resource);
-        if ($policy) {
-            $valid = auth()->user()->can($ability, $object ?? $resource::$model) && $valid;
-        }
+        $valid = true;
+        try{
+            $resource = Thrust::make($resource);
+            if ($resource::$gate) {
+                $valid = auth()->user()->can($resource::$gate);
+            }
+            $policy = $this->policyFor($resource);
+            if ($policy) {
+                $valid = $this->checkPolicyValidation($resource, $ability, $object, $policy);
+            }
+        } catch(\Exception $e) {}
         return $valid;
     }
 
+    public function checkPolicyValidation($resource, $ability, $object, $policy): bool
+    {
+        $policyInstance = new $policy;
+        if (method_exists($policyInstance, 'before') && $policyInstance->before(auth()->user(), $ability, $object) !== null) {
+            return $policyInstance->before(auth()->user(), $ability, $object);
+        }
+        return $policyInstance->$ability(auth()->user(), $object ?? $resource::$model);
+    }
+
     public function policyFor($resource){
-        return Gate::getPolicyFor($resource::$model);
+        return $resource::$policy ?? Gate::getPolicyFor($resource::$model);
     }
 }

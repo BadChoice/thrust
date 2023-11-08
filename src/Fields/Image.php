@@ -17,6 +17,7 @@ class Image extends File implements Prunable
 
     protected $maxHeight = 400;
     protected $maxWidth  = 400;
+    protected $square  = false;
 
     protected $maxFileSize = 1024; // 1 MB
 
@@ -34,6 +35,11 @@ class Image extends File implements Prunable
         return $this;
     }
 
+    public function square(){
+        $this->square = true;
+        return $this;
+    }
+
     public function displayInIndex($object)
     {
         return view('thrust::fields.image', [
@@ -43,6 +49,7 @@ class Image extends File implements Prunable
             'classes'       => $this->classes,
             'style'         => $this->indexStyle,
             'exists'        => $this->exists($object),
+            'exists'        => true,
             'resourceName'  => app(ResourceManager::class)->resourceNameFromModel($object),
             'id'            => $object->id,
             'field'         => $this->field,
@@ -80,18 +87,23 @@ class Image extends File implements Prunable
             $constraint->upsize();
         });
 
+        if ($this->square){
+            $size = min($image->width(), $image->height());
+            $image->crop($size, $size);
+        }
+
         $filename   = Str::random(10) . '.png';
-        Storage::put($this->getPath() . $filename, (string)$image->encode('png'));
-        Storage::put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
+        $this->getStorage()->put($this->getPath() . $filename, (string)$image->encode('png'), $this->storageVisibility);
+        $this->getStorage()->put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
-        })->encode('png'));
+        })->encode('png'), $this->storageVisibility);
         $this->updateField($object, $filename);
     }
 
     protected function deleteFile($object)
     {
         parent::deleteFile($object);
-        Storage::delete($this->filePath($object, $this->resizedPrefix));
+        $this->getStorage()->delete($this->filePath($object, $this->resizedPrefix));
     }
 }

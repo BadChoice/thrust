@@ -2,17 +2,21 @@
 
 namespace BadChoice\Thrust;
 
-use Illuminate\Support\Str;
-use BadChoice\Thrust\ResourceFilters\Sort;
-use BadChoice\Thrust\ResourceFilters\Search;
-use BadChoice\Thrust\ResourceFilters\Filters;
-use BadChoice\Thrust\Fields\Relationship;
-use BadChoice\Thrust\Fields\Panel;
-use BadChoice\Thrust\Fields\Edit;
-use BadChoice\Thrust\Contracts\Prunable;
-use BadChoice\Thrust\Contracts\FormatsNewObject;
-use BadChoice\Thrust\Actions\MainAction;
 use BadChoice\Thrust\Actions\Delete;
+use BadChoice\Thrust\Actions\Import;
+use BadChoice\Thrust\Actions\MainAction;
+use BadChoice\Thrust\Contracts\FormatsNewObject;
+use BadChoice\Thrust\Contracts\Prunable;
+use BadChoice\Thrust\Exceptions\CanNotDeleteException;
+use BadChoice\Thrust\Fields\Edit;
+use BadChoice\Thrust\Fields\FieldContainer;
+use BadChoice\Thrust\Fields\Relationship;
+use BadChoice\Thrust\Helpers\Translation;
+use BadChoice\Thrust\ResourceFilters\Filters;
+use BadChoice\Thrust\ResourceFilters\Search;
+use BadChoice\Thrust\ResourceFilters\Sort;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 abstract class Resource
 {
@@ -45,10 +49,41 @@ abstract class Resource
 
 
     /**
+    * You can make that search is performed to another resource and the result is displayed in the same page
+    */
+    public static $searchResource = null;
+
+
+    /**
      * @var Defines the global gate ability for the actions to be performed,
      * It goes along with the default Laravel resource Policy if any
      */
     public static $gate;
+
+    /**
+     * @var Class that defines the policy relation, over the $model.
+     */
+    public static $policy;
+
+    /**
+     * @var Determines if the underlying model must be observed and tracked into database actions.
+     */
+    public static $observes = true;
+
+    /**
+     * @var Enumerates the attributes from the underlying model that will be overlooked when the model is observed.
+     */
+    protected $overlook = [];
+
+    /**
+     * @var string when resource is update will show a confirmation alert with the message specified
+     */
+    public $updateConfirmationMessage = '';
+
+    /**
+     * @var bool define if a resource can be imported using thrust import features
+     */
+    public static $importable = false;
 
 
     /**
@@ -74,21 +109,19 @@ abstract class Resource
      */
     abstract public function fields();
 
-    public function getFields(){
+    public function getFields(?bool $inline = false)
+    {
         return array_merge(
             $this->fields(),
-            $this->editAndDeleteFields()
+            $inline
+                ? []
+                : $this->editAndDeleteFields()
         );
     }
 
-    public function fieldsFlattened()
+    public function fieldsFlattened(?bool $inline = false)
     {
-        return collect($this->getFields())->map(function ($field) {
-            if ($field instanceof Panel) {
-                return $field->fields;
-            }
-            return $field;
-        })->flatten();
+        return collect($this->getFields($inline))->flatMap->fieldsFlattened();
     }
 
     public function fieldFor($field)
@@ -96,11 +129,12 @@ abstract class Resource
         return $this->fieldsFlattened()->where('field', $field)->first();
     }
 
-    public function panels()
+    public function panels($object)
     {
         return collect($this->fields())->filter(function ($field) {
-            return ($field instanceof Panel);
-        });
+            return ($field instanceof FieldContainer);
+        })->each->withObject($object)
+        ->flatMap->panels($object);
     }
 
     public function name()
@@ -133,7 +167,23 @@ abstract class Resource
     {
         $object = $this->find($id);
         app(ResourceGate::class)->check($this, 'update', $object);
-        return $object->update($this->mapRequest($newData));
+        $result = $object->update($this->mapRequest($newData));
+        $this->onUpdated($object, $newData);
+        return $result;
+    }
+
+    public function updateOrCreate($data)
+    {
+        app(ResourceGate::class)->check($this, 'create');
+        $data = collect($this->mapRequest($data));
+        if ($data->has('id')) {
+            return static::$model::updateOrCreate($data->only('id')->all(), $data->except('id')->all());
+        }
+        return static::$model::create($data->all());
+    }
+
+    protected function onUpdated(Model $model, $newData): void
+    {
     }
 
     public function delete($id)
@@ -163,8 +213,11 @@ abstract class Resource
         return $this->can('delete', $object);
     }
 
-    public function can($ability, $object = null){
-        if (! $ability) return true;
+    public function can($ability, $object = null)
+    {
+        if (! $ability) {
+            return true;
+        }
         return app(ResourceGate::class)->can($this, $ability, $object);
     }
 
@@ -181,9 +234,14 @@ abstract class Resource
         return $object;
     }
 
-    public function getValidationRules($objectId)
+    public function getValidationRules($objectId, $multiple = false)
     {
         $fields = $this->fieldsFlattened()->where('showInEdit', true);
+        if ($multiple) {
+            $fields = $fields->reject(function ($field) {
+                return $field->excludeOnMultiple;
+            });
+        }
         return $fields->mapWithKeys(function ($field) use ($objectId) {
             return [$field->field => str_replace('{id}', $objectId, $field->validationRules)];
         })->filter(function ($value) {
@@ -203,7 +261,8 @@ abstract class Resource
 
     public function mainActions()
     {
-        return [
+        return  [
+            ...(static::$importable ? [new Import()] : []),
             MainAction::make('new'),
         ];
     }
@@ -211,7 +270,7 @@ abstract class Resource
     public function actions()
     {
         return [
-            new Delete
+            new Delete(),
         ];
     }
 
@@ -256,9 +315,8 @@ abstract class Resource
     public function query()
     {
         $query = $this->getBaseQuery();
-        if (request('search')) {
-            Search::apply($query, request('search'), static::$search);
-        }
+
+        $this->applySearch($query);
 
         $this->applySort($query);
 
@@ -268,11 +326,18 @@ abstract class Resource
         return $query;
     }
 
+    protected function applySearch(&$query)
+    {
+        if (request('search')) {
+            Search::apply($query, request('search'), static::$search);
+        }
+    }
+
     private function applySort(&$query)
     {
         if (request('sort') && $this->sortFieldIsValid(request('sort'))) {
             return Sort::apply($query, request('sort'), request('sort_order'));
-        } 
+        }
         
         if (static::$sortable) {
             return Sort::apply($query, static::$sortField, 'ASC');
@@ -287,6 +352,11 @@ abstract class Resource
             return $this->fetchRows();
         }
         return $this->alreadyFetchedRows;
+    }
+
+    public function getTitle()
+    {
+        return trans_choice(config('thrust.translationsPrefix') . Str::singular($this->name()), 2);
     }
 
     public function getDescription()
@@ -316,13 +386,14 @@ abstract class Resource
         return [Edit::make('edit'), Fields\Delete::make('delete')];
     }
 
-    private function fetchRows()
+    protected function fetchRows()
     {
         $this->alreadyFetchedRows = $this->query()->paginate($this->getPagination());
         return $this->alreadyFetchedRows;
     }
 
-    protected function getPagination(){
+    protected function getPagination()
+    {
         if (request('search')) {
             return 200;
         }
@@ -331,6 +402,21 @@ abstract class Resource
 
     public function sortableIsActive()
     {
-        return static::$sortable && !request('sort');
+        return static::$sortable && ! request('sort');
+    }
+
+    public function getUpdateConfirmationMessage()
+    {
+        return Translation::useTranslationPrefix($this->updateConfirmationMessage, $this->updateConfirmationMessage);
+    }
+
+    public function generateMultipleFields()
+    {
+        return [];
+    }
+
+    public function overlooked(): array
+    {
+        return $this->overlook;
     }
 }

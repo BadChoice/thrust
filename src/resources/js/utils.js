@@ -49,8 +49,10 @@ function addListeners(){
     });
 
     $('[data-delete]').off('click').on('click', function (e) {
+        console.log('enter data-delete');
         let dataDelete = $(this).attr('data-delete');
-        if (dataDelete.indexOf("confirm") !== -1 && ! confirm(confirmDelete)) {
+        let confirmDeleteMessage = $(this).attr('confirm-message');
+        if (dataDelete.indexOf("confirm") !== -1 && ! confirm(confirmDeleteMessage)) {
             return e.preventDefault();
         }
         if (dataDelete.indexOf("ajax") !== -1) {
@@ -61,7 +63,7 @@ function addListeners(){
             e.preventDefault();
             return $('<form action="' + $(this).attr('href') + '" method="POST"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="' + csrf_token + '"></form>').appendTo('body').submit();
         }
-        if (! confirm(confirmDelete)) {
+        if (! confirm(confirmDeleteMessage)) {
             e.preventDefault();
         }
     });
@@ -70,6 +72,12 @@ function addListeners(){
     $(".ajax").off('click').on('click', function(e){
         e.preventDefault();
         callAjax($(this).attr('href'));
+    });
+
+    // ajax and toggle
+    $(".ajax-get").off('click').on('click', function(e){
+        e.preventDefault();
+        ajaxGet($(this).attr('href'));
     });
 
     $(".showPopup").off('click').on('click',function(e) {
@@ -145,6 +153,31 @@ function callAjax(url, data){
                 showMessage("done");
                 reloadPopup();
             }
+        })
+        .fail(function(result) {
+            console.log(result);
+            $(".loadingImage").hide();
+            showMessage(result.responseText);
+        });
+}
+
+function ajaxGet(url, callback){
+
+    if(window.location.href.toString().search("public") != - 1){
+        url =  "/revo-retail/public" + url;
+    }
+
+    $.get(url, function(){})
+        .done(function(data) {
+            if(!data) {
+                return;
+            }
+            if(callback) {
+                return callback(data)
+            }
+            $(".loadingImage").hide();
+            showMessage("done");
+            reloadPopup();
         })
         .fail(function(result) {
             console.log(result);

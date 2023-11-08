@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\Html\Validation;
 use BadChoice\Thrust\Fields\Traits\Visibility;
@@ -15,15 +16,22 @@ abstract class Field
     protected $title;
     public $validationRules;
 
-    public $showInIndex = true;
-    public $showInEdit  = true;
+    public $showInIndex  = true;
+    public $showInEdit   = true;
     public $policyAction = null;
 
     public $withDesc    = false;
     public $description = false;
+    public $tooltip     = null;
 
-    public $withoutIndexHeader = false;
-    public $rowClass = '';
+    public $withoutIndexHeader  = false;
+    public $with                = [];
+    public $rowClass            = '';
+
+    public $excludeOnMultiple = false;
+
+    public $deleteConfirmationMessage = 'Are you sure';
+    public $importable = true;
 
     abstract public function displayInIndex($object);
 
@@ -31,9 +39,9 @@ abstract class Field
 
     public static function make($dbField, $title = null)
     {
-        $field        = new static;
-        $field->field = $dbField;
-        $field->title = $title;
+        $field         = app(static::class);
+        $field->field   = $dbField;
+        $field->title  = $title;
         return $field;
     }
 
@@ -68,12 +76,29 @@ abstract class Field
         return $this;
     }
 
+    public function tooltip($tooltip) {
+        $this->tooltip = $tooltip;
+        return $this;
+    }
+
+    public function getTooltip() {
+        return $this->tooltip;
+    }
+
+    public function with($with): self
+    {
+        $this->with = is_array($with) ? $with : func_get_args();
+        return $this;
+    }
+
     public function getTitle($forHeader = false)
     {
-        if ($forHeader && $this->withoutIndexHeader) return "";
+        if ($forHeader && $this->withoutIndexHeader) {
+            return '';
+        }
         $translationKey = $this->field;
-        if (Str::contains($this->field, '[')){
-            $translationKey = str_replace("]","",str_replace("[",".", $this->field));
+        if (Str::contains($this->field, '[')) {
+            $translationKey = str_replace(']', '', str_replace('[', '.', $this->field));
         }
         return $this->title ?? trans_choice(config('thrust.translationsPrefix').$translationKey, 1);
     }
@@ -91,8 +116,8 @@ abstract class Field
         if (Str::contains($this->field, '.')) {
             return data_get($object, $this->field);
         }
-        if (Str::contains($this->field, '[')){
-            $this->field = str_replace("]","",str_replace("[",".", $this->field));
+        if (Str::contains($this->field, '[')) {
+            $this->field = str_replace(']', '', str_replace('[', '.', $this->field));
             return data_get($object, $this->field);
         }
         return $object->{$this->field};
@@ -112,8 +137,8 @@ abstract class Field
 
     public function hide($hide = true)
     {
-        $this->showInIndex = !$hide;
-        $this->showInEdit  = !$hide;
+        $this->showInIndex = ! $hide;
+        $this->showInEdit  = ! $hide;
         return $this;
     }
 
@@ -149,6 +174,12 @@ abstract class Field
         return $this;
     }
 
+    public function excludeOnMultiple($exclude = true)
+    {
+        $this->excludeOnMultiple = $exclude;
+        return $this;
+    }
+
     public function mapAttributeFromRequest($value)
     {
         return $value;
@@ -159,8 +190,38 @@ abstract class Field
         return $this->field;
     }
 
-    public function getSortableHeaderClass(){
-        if (Str::contains($this->rowClass, 'text-right')) return 'sortableHeaderRight';
+    public function getSortableHeaderClass()
+    {
+        if (Str::contains($this->rowClass, 'text-right')) {
+            return 'sortableHeaderRight';
+        }
         return 'sortableHeader';
+    }
+
+    public function getDeleteConfirmationMessage()
+    {
+        return Translation::translate($this->deleteConfirmationMessage);
+    }
+
+    public function fieldsFlattened()
+    {
+        return collect([$this]);
+    }
+
+    public function sortableInIndex()
+    {
+        return $this->sortable;
+    }
+
+    public function isRequired() : bool {
+        if (is_array($this->validationRules)){
+            return in_array('required', $this->validationRules);
+        }
+        return str_contains($this->validationRules, 'required');
+    }
+
+    public function databaseField($object) : string
+    {
+        return $this->field;
     }
 }

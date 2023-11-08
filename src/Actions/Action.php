@@ -2,18 +2,31 @@
 
 namespace BadChoice\Thrust\Actions;
 
+use BadChoice\Thrust\Helpers\Iconable;
+use BadChoice\Thrust\Helpers\Titleable;
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 abstract class Action
 {
+    use Titleable;
+    use Iconable;
+
     public $needsConfirmation   = true;
-    public $confirmationMessage = 'Are you sure?';
-    public $title               = null;
-    public $icon                = null;
+
+    /* If when finishing the action, the page should be reloaded*/
+    public $shouldReload        = true;
+    
+    /*If the response should be show in a popup*/
+    public $responseAsPopup     = false;
+    public $confirmationMessage = 'Are you sure';
     public $main                = false;
     public $needsSelection      = true;
 
     public $resource;
+
+    protected $selectedTargets;
 
     abstract public function handle(Collection $objects);
 
@@ -31,15 +44,6 @@ abstract class Action
         return str_replace('\\', '\\\\', get_class($this));
     }
 
-    public function getTitle()
-    {
-        $title = $this->title ?? niceTitle(collect(explode('\\', get_class($this)))->last());
-        if ($this->icon) {
-            return icon($this->icon) . ' ' . $title ;
-        }
-        return $title;
-    }
-
     /**
      * If the action needs to perform an update to all objects, this query can be used to do it
      * with just one query
@@ -49,5 +53,16 @@ abstract class Action
     public function getAllObjectsQuery($objects)
     {
         return $objects->first()->query()->whereIn('id', $objects->pluck('id')->toArray());
+    }
+
+    public function setSelectedTargets($targets)
+    {
+        $this->selectedTargets = $targets;
+        return $this;
+    }
+
+    public function getConfirmationMessage(): string
+    {
+        return Translation::translate($this->confirmationMessage);
     }
 }

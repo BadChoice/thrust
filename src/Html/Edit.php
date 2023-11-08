@@ -3,9 +3,11 @@
 namespace BadChoice\Thrust\Html;
 
 use BadChoice\Thrust\ChildResource;
+use BadChoice\Thrust\Fields\Field;
 use BadChoice\Thrust\Fields\Hidden;
 use BadChoice\Thrust\Fields\ParentId;
 use BadChoice\Thrust\Resource;
+use Illuminate\Support\Str;
 
 class Edit
 {
@@ -18,11 +20,16 @@ class Edit
         $this->resourceName = $resourceName;
     }
 
-    public function getEditFields()
+    public function getEditFields($multiple = false)
     {
-        $fields = collect($this->resource->getFields())->filter(function($field){
+        $fields = collect($this->resource->getFields())->filter(function ($field) {
             return $field->showInEdit && $this->resource->can($field->policyAction);
         });
+        if ($multiple) {
+            $fields = $fields->reject(function ($field) {
+                return $field->excludeOnMultiple;
+            });
+        }
         if ($this->resource::$sortable) {
             $fields->prepend(Hidden::make($this->resource::$sortField));
         }
@@ -32,47 +39,31 @@ class Edit
         return $fields;
     }
 
-    public function getIndexFields()
+    public function getIndexFields(?bool $inline = false)
     {
-        return $this->resource->fieldsFlattened()->where('showInIndex', true);
+        return $this->resource->fieldsFlattened($inline)->where('showInIndex', true);
     }
 
-    public function getPanelHideVisibilityJson()
+    public function getEditInlineFields()
     {
-        return $this->resource->panels()->filter(function ($panel) {
-            return $panel->hideEdit->field != null;
-        })->mapWithKeys(function ($panel) {
-            return [$panel->getId() => [
-                'field' => $panel->hideEdit->field,
-                'value' => $panel->hideEdit->value]
-            ];
-        });
+        return $this->getIndexFields(true);
     }
 
-    public function getPanelShowVisibilityJson()
-    {
-        return $this->resource->panels()->filter(function ($panel) {
-            return $panel->showEdit->field != null;
-        })->mapWithKeys(function ($panel) {
-            return [$panel->getId() => [
-                'field' => $panel->showEdit->field,
-                'value' => $panel->showEdit->value]
-            ];
-        });
-    }
-
-    public function show($id, $fullPage = false)
+    public function show($id, $fullPage = false, $multiple = false)
     {
         view()->share('fullPage', $fullPage);
         $object = is_numeric($id) ? $this->resource->find($id) : $id;
         return view('thrust::edit', [
-            'nameField'     => $this->resource->nameField,
-            'resourceName'  => $this->resourceName ? : $this->resource->name(),
-            'fields'        => $this->getEditFields(),
-            'object'        => $object,
-            'hideVisibility'    => $this->getPanelHideVisibilityJson(),
-            'showVisibility'    => $this->getPanelShowVisibilityJson(),
-            'fullPage'      => $fullPage
+            'title'                     => $this->resource->getTitle(),
+            'nameField'                 => $this->resource->nameField,
+            'resourceName'              => $this->resourceName ? : $this->resource->name(),
+            'fields'                    => $this->getEditFields($multiple),
+            'object'                    => $object,
+            'hideVisibility'            => Field::getPanelHideVisibilityJson(collect($this->resource->panels($object))),
+            'showVisibility'            => Field::getPanelShowVisibilityJson(collect($this->resource->panels($object))),
+            'fullPage'                  => $fullPage,
+            'updateConfirmationMessage' => $this->resource->getUpdateConfirmationMessage(),
+            'multiple'                  => $multiple
         ])->render();
     }
 
@@ -82,9 +73,24 @@ class Edit
         return view('thrust::editInline', [
             'nameField'     => $this->resource->nameField,
             'resourceName'  => $this->resource->name(),
-            'fields'        => $this->getIndexFields(),
+            'fields'        => $this->getEditInlineFields(),
             'sortable'      => $this->resource::$sortable,
             'object'        => $object,
+        ])->render();
+    }
+
+    public function showBelongsToManyInline($id, $belongsToManyField)
+    {
+        $object = is_numeric($id) ? $this->resource->find($id) : $id;
+        $relation = Str::singular($belongsToManyField->field);
+        return view('thrust::belongsToManyEditInline', [
+            'nameField'          => $this->resource->nameField,
+            'resourceName'       => $this->resource->name(),
+            'fields'             => $this->getEditInlineFields(),
+            'sortable'           => $this->resource::$sortable,
+            'object'             => $object,
+            'belongsToManyField' => $belongsToManyField,
+            'relatedName' => $object->{$relation}?->{$belongsToManyField->relationDisplayField},
         ])->render();
     }
 }
