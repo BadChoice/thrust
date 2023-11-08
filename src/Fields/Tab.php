@@ -6,11 +6,11 @@ class Tab extends Panel
 {
     public $panelClass = 'formTab';
 
-    public static function make($fields, $title = null)
+    /*public static function make($fields, $title = null)
     {
-        $panel = parent::make($fields, $title)->panelId(str_replace(" ", "-", $title));
+        $panel = parent::make($fields, $title);
         return $panel;
-    }
+    }*/
 
     public function getTitle()
     {

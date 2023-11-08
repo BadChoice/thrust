@@ -17,14 +17,18 @@ class File extends Field implements Prunable
     public $prunable            = true;
     public $showInEdit          = false;
     public $editClasses         = 'br1';
+    protected $classes             = '';
     public $indexStyle          = 'height:30px; width:30px; object-fit: contain; border:solid 1px #eee;';
     public $editStyle           = 'height:150px; width:300px; object-fit: contain; border:solid 1px #eee;';
     public $withLink            = true;
     protected $filename         = null;
     public $onlyUpload          = false;
     protected $withoutExistsCheck = false;
+    protected ?string $storageVisibility = null;
 
     protected $maxFileSize = 10240; // 10 MB
+
+    protected $storage;
 
     public function classes($classes)
     {
@@ -32,9 +36,27 @@ class File extends Field implements Prunable
         return $this;
     }
 
+    public function storage($storage)
+    {
+        $this->storage = $storage;
+        return $this;
+    }
+
     public function withLink($withLink = true)
     {
         $this->withLink = $withLink;
+        return $this;
+    }
+
+    public function public() : self
+    {
+        $this->storageVisibility = 'public';
+        return $this;
+    }
+
+    public function private() : self
+    {
+        $this->storageVisibility = 'private';
         return $this;
     }
 
@@ -75,6 +97,7 @@ class File extends Field implements Prunable
             'title'         => $this->getTitle(),
             'path'          => $this->displayPath($object),
             'classes'       => $this->classes,
+            'exists'        => $this->exists($object),
             'style'         => $this->indexStyle,
             'resourceName'  => Thrust::resourceNameFromModel($object),
             'id'            => $object->id,
@@ -110,7 +133,7 @@ class File extends Field implements Prunable
         if ($this->displayCallback) {
             return call_user_func($this->displayCallback, $object, $prefix);
         }
-        return $this->filePath($object, $prefix);
+        return $this->getStorage()->url($this->filePath($object, $prefix));
     }
 
     public function onlyUpload($value)
@@ -134,9 +157,6 @@ class File extends Field implements Prunable
 
     protected function getPath()
     {
-        if (! $this->basePath) {
-            return storage_path('thrust');
-        }
         // TODO: Use the bindings!
         return str_replace('{user}', auth()->user()->username, $this->basePath);
     }
@@ -145,7 +165,7 @@ class File extends Field implements Prunable
     {
         $this->delete($object, false);
         $filename   = Str::random(10) . "." . $file->extension();
-        Storage::putFileAs($this->getPath(), $file, $this->filename ?? $filename);
+        $this->getStorage()->putFileAs($this->getPath(), $file, $this->filename ?? $filename, $this->storageVisibility);
         $this->updateField($object, $filename);
     }
 
@@ -160,9 +180,9 @@ class File extends Field implements Prunable
     public function exists($object)
     {
         if ($this->withoutExistsCheck) return true;
-        if (starts_with($object->{$this->field}, 'http')) return true;
+        if (Str::startsWith($object->{$this->field}, 'http')) return true;
         if (! $this->filename && ! $object->{$this->field}) return false;
-        return Storage::exists($this->getPath(). ($this->filename ?? $object->{$this->field}));
+        return $this->getStorage()->exists($this->getPath(). ($this->filename ?? $object->{$this->field}));
     }
 
     public function delete($object, $updateObject = false)
@@ -178,7 +198,7 @@ class File extends Field implements Prunable
 
     protected function deleteFile($object)
     {
-        Storage::delete($this->filePath($object));
+        $this->getStorage()->delete($this->filePath($object));
     }
 
     public function prune($object)
@@ -189,5 +209,9 @@ class File extends Field implements Prunable
     public function withoutExistCheck(){
         $this->withoutExistsCheck = true;
         return $this;
+    }
+
+    protected function getStorage() : \Illuminate\Filesystem\FilesystemAdapter {
+        return $this->storage ?? Storage::disk(config('filesystem.default'));
     }
 }

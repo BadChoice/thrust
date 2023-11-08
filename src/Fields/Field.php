@@ -2,6 +2,7 @@
 
 namespace BadChoice\Thrust\Fields;
 
+use BadChoice\Thrust\Helpers\Translation;
 use Illuminate\Support\Str;
 use BadChoice\Thrust\Html\Validation;
 use BadChoice\Thrust\Fields\Traits\Visibility;
@@ -21,9 +22,16 @@ abstract class Field
 
     public $withDesc    = false;
     public $description = false;
+    public $tooltip     = null;
 
-    public $withoutIndexHeader = false;
-    public $rowClass           = '';
+    public $withoutIndexHeader  = false;
+    public $with                = [];
+    public $rowClass            = '';
+
+    public $excludeOnMultiple = false;
+
+    public $deleteConfirmationMessage = 'Are you sure';
+    public $importable = true;
 
     abstract public function displayInIndex($object);
 
@@ -31,9 +39,9 @@ abstract class Field
 
     public static function make($dbField, $title = null)
     {
-        $field        = app(static::class);
-        $field->field = $dbField;
-        $field->title = $title;
+        $field         = app(static::class);
+        $field->field   = $dbField;
+        $field->title  = $title;
         return $field;
     }
 
@@ -65,6 +73,21 @@ abstract class Field
     {
         $this->withDesc    = $withDesc;
         $this->description = $description;
+        return $this;
+    }
+
+    public function tooltip($tooltip) {
+        $this->tooltip = $tooltip;
+        return $this;
+    }
+
+    public function getTooltip() {
+        return $this->tooltip;
+    }
+
+    public function with($with): self
+    {
+        $this->with = is_array($with) ? $with : func_get_args();
         return $this;
     }
 
@@ -151,6 +174,12 @@ abstract class Field
         return $this;
     }
 
+    public function excludeOnMultiple($exclude = true)
+    {
+        $this->excludeOnMultiple = $exclude;
+        return $this;
+    }
+
     public function mapAttributeFromRequest($value)
     {
         return $value;
@@ -169,6 +198,11 @@ abstract class Field
         return 'sortableHeader';
     }
 
+    public function getDeleteConfirmationMessage()
+    {
+        return Translation::translate($this->deleteConfirmationMessage);
+    }
+
     public function fieldsFlattened()
     {
         return collect([$this]);
@@ -177,5 +211,17 @@ abstract class Field
     public function sortableInIndex()
     {
         return $this->sortable;
+    }
+
+    public function isRequired() : bool {
+        if (is_array($this->validationRules)){
+            return in_array('required', $this->validationRules);
+        }
+        return str_contains($this->validationRules, 'required');
+    }
+
+    public function databaseField($object) : string
+    {
+        return $this->field;
     }
 }

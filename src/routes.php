@@ -24,13 +24,19 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
 
     Route::get('{resourceName}', 'ThrustController@index')->name('thrust.index');
     Route::post('{resourceName}', 'ThrustController@store')->name('thrust.store');
+    Route::post('{resourceName}/multiple', 'ThrustController@storeMultiple')->name('thrust.store.multiple');
     Route::get('{resourceName}/create', 'ThrustController@create')->name('thrust.create');
+    Route::get('{resourceName}/create/multiple', 'ThrustController@createMultiple')->name('thrust.create.multiple');
     Route::get('{resourceName}/{id}/edit', 'ThrustController@edit')->name('thrust.edit');
     Route::get('{resourceName}/{id}/editInline', 'ThrustController@editInline')->name('thrust.editInline');
     Route::put('{resourceName}/{id}', 'ThrustController@update')->name('thrust.update');
     Route::delete('{resourceName}/{id}', 'ThrustController@delete')->name('thrust.delete');
     Route::get('{resourceName}/search/{search}', 'ThrustSearchController@index')->name('thrust.search');
     Route::get('{resourceName}/export', 'ThrustExportController@index')->name('thrust.export');
+
+    Route::get('{resourceName}/import', 'ThrustImportController@index')->name('thrust.import');
+    Route::post('{resourceName}/import/csv', 'ThrustImportController@uploadCsv')->name('thrust.uploadCsv');
+    Route::post('{resourceName}/import', 'ThrustImportController@store')->name('thrust.doImport');
 
     Route::get('{resourceName}/{id}/image/{field}', 'ThrustImageController@edit')->name('thrust.image.edit');
     Route::post('{resourceName}/{id}/image/{field}', 'ThrustImageController@store')->name('thrust.image.store');
@@ -45,6 +51,7 @@ Route::group(['prefix' => config('thrust.routePrefix', 'thrust'), 'namespace' =>
     Route::get('{resourceName}/{id}/belongsToMany/{relationship}/search/{search}', 'ThrustBelongsToManyController@search')->name('thrust.belongsToMany.search');
     Route::post('{resourceName}/{id}/belongsToMany/{relationship}/updateOrder', 'ThrustBelongsToManyController@updateOrder')->name('thrust.belongsToMany.updateOrder');
     Route::delete('{resourceName}/{id}/belongsToMany/{relationship}/{detachId}', 'ThrustBelongsToManyController@delete')->name('thrust.belongsToMany.delete');
+    Route::get('{resourceName}/{id}/belongsToMany/{relationship}/{pivotId}/editInline', 'ThrustBelongsToManyController@editInline')->name('thrust.belongsToMany.editInline');
 
     Route::get('{resourceName}/{id}/hasMany/{relationship}', 'ThrustHasManyController@index')->name('thrust.hasMany');
 

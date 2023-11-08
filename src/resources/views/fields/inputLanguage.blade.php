@@ -1,8 +1,8 @@
 @component('thrust::components.formField' , ["field" => $field, "title" => $title, "description" => $description, "inline" => $inline])
     @php $id = str_replace("]", "", str_replace("[", "", $field)) @endphp
-    <div class="text-right mt2 mb3" style="max-width:300px">
+    <div class="thrust-language-selector-container" style="max-width:300px">
         @foreach ($languages as $language)
-            <a class="secondary p2 pointer uppercase circle languageSelector{{$id}}" id="{{$id}}languageSelector{{$language}}" onclick="changeLanguage('{{$id}}','{{$language}}')">{{ $language }}</a>
+            <a class="thrust-language-selector languageSelector{{$id}}" id="{{$id}}languageSelector{{$language}}" onclick="changeLanguage('{{$id}}','{{$language}}')">{{ $language }}</a>
         @endforeach
     </div>
 

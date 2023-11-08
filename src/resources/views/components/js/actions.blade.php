@@ -31,9 +31,18 @@
             "action" : actionClass,
             "ids" : selected
         }).done(function(data){
+            $('#actions-loading').hide();
             console.log("Action finished");
-            showMessage(data["message"]);
-            location.reload();
+            //console.log(data);
+            if (data["responseAsPopup"]){
+                $('#popup').popup('show');
+                $("#popupContent").html(data["message"]);
+            } else {
+                showMessage(data["message"]);
+            }
+            if (data["shouldReload"]) {
+                location.reload();
+            }
         }).fail(function(){
             console.log("Action failed");
             showMessage("Something went wrong");

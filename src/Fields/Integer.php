@@ -6,6 +6,6 @@ class Integer extends Decimal
 {
     protected function getFieldAttributes()
     {
-        return 'step=1';
+        return $this->attributes . ' step=1';
     }
 }

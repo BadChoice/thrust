@@ -1,4 +1,4 @@
-<div class="actions thrust-main-actions">
+<div class="thrust-main-actions">
     <?php
         $mainActions = collect($resource->mainActions());
         if ($resource->sortableIsActive()) {

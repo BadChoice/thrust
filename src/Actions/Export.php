@@ -16,7 +16,7 @@ class Export extends MainAction
 
         $title = $this->getTitle();
         $link  = route('thrust.export', $resourceName);
-        return "<a class='button' href='{$link}'> <i class='fa fa-download'></i> {$title} </a>";
+        return "<a class='' href='{$link}'> <i class='fa fa-download'></i> {$title} </a>";
     }
 
     protected function getTitle()

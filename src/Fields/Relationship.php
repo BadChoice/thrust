@@ -100,4 +100,9 @@ abstract class Relationship extends Field
     {
         return false;
     }
+
+    public function databaseField($object) : string
+    {
+        return $this->getRelationForeignKey($object);
+    }
 }

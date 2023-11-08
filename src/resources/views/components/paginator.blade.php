@@ -1,5 +1,5 @@
 @if ( method_exists($data, 'links')  && $data->lastPage() != 1)
-    <div class="mt4">
+    <div class="thrust-paginator">
         {{  $data->appends(Illuminate\Support\Arr::except(request()->query(),['page']))->links() }}
     </div>
     @if(isset($popupLinks))

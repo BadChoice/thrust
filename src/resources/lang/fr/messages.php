@@ -20,4 +20,13 @@ return [
     'deactivate'             => 'Désactiver',
     'clearSorting'           => 'Effacer le tri',
     'clearSelection'         => 'Effacer la sélection',
+    'amount'                 => 'Quantité',
+    'amountDesc'             => 'Nombre de copies à créer.',
+    'createMultiple'         => 'Création multiple',
+    'import'                 => 'Importer',
+    'selectCsvFile'          => 'Sélectionnez le fichier CSV',
+    'rowsToImport'           => 'Colonnes à importer',
+    'next'                   => 'Suivant',
+    'importFailed'           => 'Échec de l\'importation',
+    'retryImport'            => 'Importer à nouveau',
 ];

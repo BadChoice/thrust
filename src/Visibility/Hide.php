@@ -8,26 +8,31 @@ class Hide
 {
 
     public $field;
-    public $value;
+    public $values;
     public $callback;
 
-    public function hideWhen($field, $value = true)
+    public function hideWhen($field, $values = [true])
     {
+        $values = collect($values)->all();
         $this->field    = $field;
-        $this->value    = $value;
+        $this->values    = $values;
     }
 
     public function hideCallback($callback){
         $this->callback = $callback;
     }
 
-    public function shouldHide($object)
+    public function shouldHide($object, $conditionally = false)
     {
         if ($this->field == null || $this->callback) {
             return false;
         }
         if (! $object)
             return true;
-        return $object->{$this->field} === $this->value;
+        if ($conditionally){
+            return in_array($object->{$this->field}, $this->values);
+        }
+        return false;
+
     }
 }
