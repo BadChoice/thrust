@@ -68,10 +68,10 @@
 
     registerActionPopupListeners()
 
-    let searching = false
+    let searching = 0
     @if($resource::$searchResource)
         window.addEventListener('thrust.searchStarted', () => {
-            searching = true
+            searching = 1
             fetch("{{ route('thrust.actions.index', ['resourceName' => $resourceName, 'search' => true]) }}").then(response => {
                 response.text().then(html => {
                     document.getElementById('thrust-resource-actions').innerHTML = html
@@ -81,7 +81,7 @@
         })
 
         window.addEventListener('thrust.searchEnded', () => {
-            searching = false
+            searching = 0
             fetch("{{ route('thrust.actions.index', ['resourceName' => $resourceName]) }}").then(response => {
                 response.text().then(html => {
                     document.getElementById('thrust-resource-actions').innerHTML = html
