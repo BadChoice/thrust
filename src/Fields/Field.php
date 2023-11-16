@@ -18,6 +18,7 @@ abstract class Field
 
     public $showInIndex  = true;
     public $showInEdit   = true;
+    public $showInSearch = false;
     public $policyAction = null;
 
     public $withDesc    = false;
@@ -158,6 +159,12 @@ abstract class Field
     public function hideInEdit($hideInEdit = true)
     {
         $this->showInEdit = ! $hideInEdit;
+        return $this;
+    }
+
+    public function showInSearch(bool $show = true): self
+    {
+        $this->showInSearch = $show;
         return $this;
     }
 

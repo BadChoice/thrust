@@ -17,7 +17,7 @@
                 </div>
             </div>
             <span>
-                <a class="button secondary" onclick="keyValueRemove(this)">@icon(times)</a>
+                <a class="button secondary" onclick="keyValueRangeRemove(this)">@icon(times)</a>
             </span>
         </div>
 {{--    </template>--}}
@@ -43,7 +43,7 @@
                     </div>
                     @if(!$fixed)
                         <span>
-                            <a class="button secondary" onclick="keyValueRemove(this)">@icon(times)</a>
+                            <a class="button secondary" onclick="keyValueRangeRemove(this)">@icon(times)</a>
                         </span>
                     @endif
                 </div>
@@ -52,18 +52,18 @@
     </div>
     @if(! $fixed)
         <div>
-            <a class="button secondary" onclick="keyValueAdd('{{$field}}')" class="pointer"> @icon(plus) {{ __('admin.add') }}</a>
+            <a class="button secondary" onclick="keyValueRangeAdd('{{$field}}')" class="pointer"> @icon(plus) {{ __('admin.add') }}</a>
         </div>
     @endif
 
     @push('edit-scripts')
         <script>
-            function keyValueRemove(element){
+            function keyValueRangeRemove(element){
                 $(element).parent().parent().find('div').remove();
                 $(element).parent().parent().hide();
             }
 
-            function keyValueAdd(fieldName){
+            function keyValueRangeAdd(fieldName){
                 var template    = $("#template-"+fieldName).html();
                 var newKeyValue = $(template);
 

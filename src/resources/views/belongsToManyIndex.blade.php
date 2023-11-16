@@ -24,7 +24,7 @@
                 @endif
             </select>
             @foreach($belongsToManyField->pivotFields as $field)
-                @if(!$field->shouldHide($object, 'index'))
+                @if($field->showInEdit && $resource->can($field->policyAction))
                     {!! $field->displayInEdit(null, true)  !!}
                 @endif
             @endforeach

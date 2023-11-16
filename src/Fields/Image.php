@@ -18,6 +18,7 @@ class Image extends File implements Prunable
     protected $maxHeight = 400;
     protected $maxWidth  = 400;
     protected $square  = false;
+    protected $forceFilename = null;
 
     protected $maxFileSize = 1024; // 1 MB
 
@@ -25,6 +26,12 @@ class Image extends File implements Prunable
     {
         $this->gravatarField   = $field;
         $this->gravatarDefault = $default;
+        return $this;
+    }
+
+    public function withForcedFilename($filename) : self
+    {
+        $this->forceFilename = $filename;
         return $this;
     }
 
@@ -92,7 +99,7 @@ class Image extends File implements Prunable
             $image->crop($size, $size);
         }
 
-        $filename   = Str::random(10) . '.png';
+        $filename = $this->forceFilename ?? Str::random(10) . '.png';
         $this->getStorage()->put($this->getPath() . $filename, (string)$image->encode('png'), $this->storageVisibility);
         $this->getStorage()->put($this->getPath() . "{$this->resizedPrefix}{$filename}", (string)$image->resize(100, 100, function ($constraint) {
             $constraint->aspectRatio();

@@ -16,7 +16,7 @@ class Index
     public function getIndexFields()
     {
         return $this->resource->fieldsFlattened()->filter(function($field){
-            return $field->showInIndex;// && $this->resource->can($field->policyAction);
+            return $field->showInIndex || request('search') && $field->showInSearch;
         });
     }
 

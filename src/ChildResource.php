@@ -2,7 +2,7 @@
 
 namespace BadChoice\Thrust;
 
-use BadChoice\Thrust\ResourceManager;
+use BadChoice\Thrust\Facades\Thrust;
 
 abstract class ChildResource extends Resource
 {
@@ -57,6 +57,16 @@ abstract class ChildResource extends Resource
     public function getParentHasManyUrlParams($object)
     {
         $parent = $this->parent($object);
-        return $this::$parentChildsRelation && $parent ? [app(ResourceManager::class)->resourceNameFromModel($parent), $parent->id, static::$parentChildsRelation] : null; 
+        return $this::$parentChildsRelation && $parent ? [Thrust::resourceNameFromModel($parent), $parent->id, static::$parentChildsRelation] : null; 
+    }
+
+    public function breadcrumbs(mixed $object): ?string
+    {
+        $parent = $this->parent($object);
+        if(! $parent) {
+            return null;
+        }
+        $parentResource = Thrust::make(Thrust::resourceNameFromModel($parent));
+        return implode(' / ', array_filter([$parentResource->breadcrumbs($parent), $parent->{$parentResource->nameField}]));
     }
 }

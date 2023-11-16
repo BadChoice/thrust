@@ -24,7 +24,7 @@ class ResourceGate
         try{
             $resource = Thrust::make($resource);
             if ($resource::$gate) {
-                $valid = auth()->user()->can($resource::$gate);
+                $valid = $this->getUser()->can($resource::$gate);
             }
             $policy = $this->policyFor($resource);
             if ($policy) {
@@ -37,13 +37,18 @@ class ResourceGate
     public function checkPolicyValidation($resource, $ability, $object, $policy): bool
     {
         $policyInstance = new $policy;
-        if (method_exists($policyInstance, 'before') && $policyInstance->before(auth()->user(), $ability, $object) !== null) {
-            return $policyInstance->before(auth()->user(), $ability, $object);
+        if (method_exists($policyInstance, 'before') && $policyInstance->before($this->getUser(), $ability, $object) !== null) {
+            return $policyInstance->before($this->getUser(), $ability, $object);
         }
-        return $policyInstance->$ability(auth()->user(), $object ?? $resource::$model);
+        return $policyInstance->$ability($this->getUser(), $object ?? $resource::$model);
     }
 
     public function policyFor($resource){
         return $resource::$policy ?? Gate::getPolicyFor($resource::$model);
+    }
+
+    protected function getUser(): mixed
+    {
+        return auth()->user();
     }
 }
