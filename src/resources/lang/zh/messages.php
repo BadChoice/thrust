@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'search'                 => '搜索',
+    'save'                   => '保存',
+    'saveAndContinueEditing' => '保存并继续编辑',
+    'new'                    => '新建',
+    'saveOrder'              => '保存排序',
+    'add'                    => '添加',
+    'delete'                 => '删除',
+    'noData'                 => '没有数据',
+    'actions'                => '操作',
+    'perform'                => '执行',
+    'noRowsSelected'         => '没有选中的行',
+    'created'                => '已创建',
+    'updated'                => '已更新',
+    'deleted'                => '已删除',
+    'apply'                  => '应用',
+    'activate'               => '激活',
+    'deactivate'             => '停用',
+    'clearSorting'           => '清除排序',
+    'clearSelection'         => '清除选择',
+    'amount'                 => '数量',
+    'amountDesc'             => '要创建的副本数量。',
+    'createMultiple'         => '多重创建',
+    'import'                 => '导入',
+    'selectCsvFile'          => '选择 CSV 文件',
+    'rowsToImport'           => '要导入的行',
+    'next'                   => '下一步',
+    'importFailed'           => '导入失败',
+    'retryImport'            => '重试导入'
+];
